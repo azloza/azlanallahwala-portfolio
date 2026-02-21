@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building an Agentforce-Powered Service Desk That Resolved 40% of Cases Automatically — Azlan Allahwala</title>
+    <meta name="description" content="A deep technical walkthrough of designing and deploying Salesforce Agentforce for a mid-market SaaS company — from topic architecture and grounding data to escalation boundaries and measurable results.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../animations.css">
+    <link rel="stylesheet" href="../atmosphere.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="../index.html" class="nav__logo">
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
+            <div class="nav__links" id="navLinks">
+                <a href="../salesforce.html" class="nav__link">Salesforce</a>
+                <a href="../blog.html" class="nav__link">Blog</a>
+                <a href="../ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="../photography.html" class="nav__link">Photography</a>
+                <a href="../about.html" class="nav__link">About</a>
+                <a href="../contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="../salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="../blog.html" class="mobile-nav__link" style="--i:1">Blog</a>
+            <a href="../ai-lab.html" class="mobile-nav__link" style="--i:2">AI Lab</a>
+            <a href="../photography.html" class="mobile-nav__link" style="--i:3">Photography</a>
+            <a href="../about.html" class="mobile-nav__link" style="--i:4">About</a>
+            <a href="../contact.html" class="mobile-nav__link" style="--i:5">Contact</a>
+        </div>
+        <div class="mobile-nav__footer"><span class="mobile-nav__email">azlanallahwala@gmail.com</span></div>
+    </div>
+
+    <!-- SECTION HERO -->
+    <section class="section-hero section-hero--blog">
+        <div class="section-hero__grain"></div>
+        <div class="section-hero__content">
+            <h1 class="reveal">Building an Agentforce-Powered Service Desk That Resolved 40% of Cases Automatically</h1>
+            <p class="dek reveal" data-delay="100">How we moved beyond chatbot hype and built an autonomous AI agent grounded in real org data — cutting average resolution time by 58%.</p>
+        </div>
+    </section>
+
+    <!-- ARTICLE -->
+    <article class="blog-article">
+        <a href="../blog.html" class="blog-back"><span class="arrow">&rarr;</span> Back to Blog</a>
+
+        <div class="blog-meta">
+            <div class="blog-meta__item">
+                <span class="blog-meta__label">Published</span>
+                <span class="blog-meta__value">January 2026</span>
+            </div>
+            <div class="blog-meta__item">
+                <span class="blog-meta__label">Read Time</span>
+                <span class="blog-meta__value">10 min</span>
+            </div>
+            <div class="blog-meta__tags">
+                <span class="tag tag--small">Agentforce</span>
+                <span class="tag tag--small">Einstein AI</span>
+                <span class="tag tag--small">Service Cloud</span>
+            </div>
+        </div>
+
+        <!-- BODY CONTENT -->
+
+        <h2>The Case Volume Problem Nobody Wanted to Talk About</h2>
+
+        <p>When I first sat down with the support leadership team at this mid-market SaaS company, they opened with a number that told the whole story: 2,100 cases per month, handled by a team of 14 agents. That is 150 cases per agent per month, or roughly 7-8 per working day. On paper, that sounds manageable. In reality, it was anything but.</p>
+
+        <p>The deeper problem was composition. After auditing three months of case data — categorizing every case by type, complexity, and resolution path — we found that approximately 65% of all inbound cases fell into what I call "procedural resolution" categories. These were cases where the answer existed somewhere in the org already: a Knowledge article, a previous case resolution, a known configuration step, or a documented workaround. Password resets. License tier questions. API rate limit explanations. Feature toggle requests. Integration troubleshooting for well-documented connectors.</p>
+
+        <p>The agents were not doing complex problem-solving for the majority of their day. They were doing lookup and relay — finding information in one system and translating it into a customer-friendly response. Meanwhile, the genuinely complex cases (integration failures with edge-case configurations, data migration issues, escalations involving product bugs) were starved of attention. Average first response time had crept to 4.2 hours, and CSAT scores had dropped below 80% for two consecutive quarters.</p>
+
+        <p>The company had already tried a traditional chatbot. It deflected about 8% of cases, mostly by frustrating customers into giving up. That is not deflection — that is attrition. We needed something fundamentally different.</p>
+
+        <h2>Why Agentforce, Not Another Chatbot</h2>
+
+        <p>I want to be precise about the distinction here because it matters architecturally. A traditional chatbot — even one built on Einstein Bots with NLU — operates on a decision-tree paradigm. You define intents, map utterances to those intents, and script dialog flows. The bot follows a predetermined path. When the customer says something outside the script, the bot either loops or escalates. This is why most chatbot implementations plateau at 10-15% deflection: the real world is messier than any decision tree you can design.</p>
+
+        <p>Agentforce operates on a fundamentally different model. Instead of mapping utterances to scripted flows, it uses a large language model to reason about the customer's intent in context, then selects from a library of defined <strong>Topics</strong> and <strong>Actions</strong> to resolve the issue. The agent is not following a script — it is reasoning about which tool to use and when. This is the difference between giving someone a flowchart and giving someone a toolkit with clear instructions on what each tool does.</p>
+
+        <p>For this engagement, the reasoning capability was critical. Customer inquiries rarely arrive as clean, single-intent messages. A customer might write: "I'm trying to set up the Slack integration but I keep getting a 403 error, and also I noticed my API usage dashboard is showing way more calls than I expected — is that related?" That is two distinct issues, one of which may be related to the other. A decision-tree bot chokes on this. An Agentforce agent can decompose it, address each part, and reason about whether they are connected.</p>
+
+        <div class="blog-callout">
+            <span class="blog-callout__label">Key Takeaway</span>
+            <p>The architectural difference between a chatbot and an Agentforce agent is not incremental — it is categorical. Chatbots follow scripts. Agents reason about tools. Design your implementation around this distinction or you will end up building an expensive chatbot.</p>
+        </div>
+
+        <h2>Designing Topics and Actions: The 80/20 Architecture</h2>
+
+        <p>The topic and action architecture is where most Agentforce implementations succeed or fail, and it is where I spent the most design time. A Topic in Agentforce is essentially a bounded domain of customer intent — think of it as a namespace for a category of problems the agent knows how to handle. Each topic contains Actions, which are the discrete operations the agent can perform within that domain.</p>
+
+        <p>We started by clustering the three months of case data into natural groupings. Not by our internal taxonomy (which reflected how we organized teams), but by how customers described their problems. This distinction matters enormously. Your internal categories might split "Authentication" and "User Management" into separate queues, but customers do not think in those terms. A customer locked out of their account does not care whether the fix involves SSO configuration, password policy, or license assignment — they just want to get back in.</p>
+
+        <p>We landed on seven Topics after several rounds of refinement:</p>
+
+        <ol>
+            <li><strong>Account Access &amp; Authentication</strong> — password resets, SSO issues, MFA troubleshooting, locked accounts</li>
+            <li><strong>Billing &amp; Licensing</strong> — plan questions, usage inquiries, license assignments, upgrade paths</li>
+            <li><strong>Integration Setup &amp; Troubleshooting</strong> — connector configuration, API errors, webhook failures, OAuth flows</li>
+            <li><strong>Product Configuration</strong> — feature toggles, workspace settings, permission configurations, customization options</li>
+            <li><strong>Data &amp; Reporting</strong> — export requests, dashboard questions, data discrepancies, report building</li>
+            <li><strong>General Product Questions</strong> — feature inquiries, capability questions, roadmap-adjacent questions</li>
+            <li><strong>Bug Reports &amp; Known Issues</strong> — identifying known issues, providing workarounds, collecting reproduction steps for unknowns</li>
+        </ol>
+
+        <p>Each Topic was given a clear natural-language scope description and a set of classification instructions. This is one of the most under-discussed aspects of Agentforce design: the quality of your Topic descriptions directly determines how accurately the agent routes customer inquiries. I wrote these as if I were briefing a new support agent on their first day — explicit about what belongs in the topic, explicit about what does not, and specific about edge cases.</p>
+
+        <p>Within each Topic, we defined between 3 and 8 Actions. An Action is a specific operation the agent can invoke — querying Knowledge, looking up account data, executing an Apex invocable method, creating a follow-up task, or triggering a Flow. Here is a representative Action configuration for our most-used topic:</p>
+
+<pre><code>// Topic: Integration Setup & Troubleshooting
+// Action: Diagnose API Error
+
+Action: Diagnose_API_Error
+Description: "When a customer reports an API error, look up their
+  org's API usage, check for known error patterns, and provide
+  resolution steps."
+
+Inputs:
+  - error_code (extracted from customer message)
+  - integration_name (extracted or inferred from context)
+  - account_id (resolved from authenticated session)
+
+Steps:
+  1. Query API_Usage__c for the account's last 24h of calls
+  2. Match error_code against Known_API_Errors__c custom object
+  3. If match found → retrieve resolution_steps and related KB article
+  4. If no match → collect environment details and escalate to
+     Integration Support queue with pre-populated fields
+
+Guardrails:
+  - Never suggest modifying production API keys directly
+  - If rate limit exceeded, explain cooldown period before suggesting changes
+  - Escalate immediately if error involves data loss indicators (HTTP 5xx
+    with write operations)</code></pre>
+
+        <p>The guardrails section was something we added after the first round of testing. Without explicit boundaries on what the agent should <em>not</em> do within an action, we found it would occasionally suggest steps that were technically correct but operationally risky — like regenerating API keys to fix an auth error. Correct in isolation, potentially catastrophic if the customer has 15 downstream services depending on that key.</p>
+
+        <h2>Grounding Data Architecture: The Make-or-Break Layer</h2>
+
+        <p>This is the section I wish every Agentforce implementation guide led with. The reasoning capabilities of the underlying LLM are impressive, but an agent is only as good as the data it can access. Grounding — connecting the agent to your org's actual data so it can retrieve real, specific, current information rather than relying on general knowledge — is the single most impactful architectural decision you will make.</p>
+
+        <p>We built our grounding layer across three data surfaces:</p>
+
+        <p><strong>1. Knowledge Base (Salesforce Knowledge).</strong> This was the most obvious source, but it required significant cleanup before it was agent-ready. We audited 340 Knowledge articles and found that roughly 40% were outdated, duplicated, or written in a way that made sense to internal teams but not to an LLM trying to extract actionable resolution steps. We rewrote articles to follow a consistent structure: Problem Statement, Root Cause, Resolution Steps, Related Configuration. This structure gave the agent reliable extraction points. We also implemented a metadata tagging scheme using a custom <code>Article_Agent_Metadata__c</code> object that mapped articles to specific error codes, product features, and integration names — giving the agent precise retrieval paths rather than relying solely on semantic search.</p>
+
+        <p><strong>2. Case History.</strong> We exposed resolved case data as a grounding source, but with heavy filtering. Only cases closed in the last 6 months, with a CSAT score of 4 or above, and with a populated Resolution_Summary__c field were included. This prevented the agent from learning from outdated solutions or cases where the customer was ultimately dissatisfied with the resolution. We built a nightly batch job to maintain this filtered dataset.</p>
+
+        <p><strong>3. Custom Objects as Structured Reference Data.</strong> This was the layer that surprised me with how much impact it had. We created three custom objects — <code>Known_API_Errors__c</code>, <code>Feature_Configuration_Matrix__c</code>, and <code>Integration_Compatibility__c</code> — that served as structured lookup tables the agent could query directly through invocable Apex actions. Unlike Knowledge articles (which are unstructured text), these objects gave the agent deterministic, queryable answers. "Does the Slack integration support OAuth 2.0 with PKCE?" is not a question you want answered by semantic search over articles. You want a direct lookup.</p>
+
+        <p class="pull-quote">An Agentforce agent without well-structured grounding data is just a very expensive way to say "I don't know, let me transfer you to an agent."</p>
+
+        <p>Here is the invocable Apex action we built for the structured error lookup — this became one of the most-called actions in the entire implementation:</p>
+
+<pre><code>public class AgentforceErrorLookup {
+
+    @InvocableMethod(
+        label='Lookup Known API Error'
+        description='Searches known API errors by error code and
+          integration name. Returns resolution steps and related
+          Knowledge article IDs if a match is found.'
+    )
+    public static List&lt;ErrorLookupResult&gt; lookupError(
+        List&lt;ErrorLookupRequest&gt; requests
+    ) {
+        List&lt;ErrorLookupResult&gt; results = new List&lt;ErrorLookupResult&gt;();
+
+        for (ErrorLookupRequest req : requests) {
+            ErrorLookupResult result = new ErrorLookupResult();
+
+            List&lt;Known_API_Error__c&gt; matches = [
+                SELECT Id, Error_Code__c, Integration__c,
+                       Root_Cause__c, Resolution_Steps__c,
+                       Workaround__c, Related_KB_Article__c,
+                       Severity__c, Requires_Escalation__c
+                FROM Known_API_Error__c
+                WHERE Error_Code__c = :req.errorCode
+                AND (Integration__c = :req.integrationName
+                     OR Integration__c = 'All')
+                AND Is_Active__c = true
+                ORDER BY LastModifiedDate DESC
+                LIMIT 5
+            ];
+
+            if (!matches.isEmpty()) {
+                Known_API_Error__c topMatch = matches[0];
+                result.found = true;
+                result.rootCause = topMatch.Root_Cause__c;
+                result.resolutionSteps = topMatch.Resolution_Steps__c;
+                result.workaround = topMatch.Workaround__c;
+                result.relatedArticleId = topMatch.Related_KB_Article__c;
+                result.requiresEscalation = topMatch.Requires_Escalation__c;
+                result.severity = topMatch.Severity__c;
+            } else {
+                result.found = false;
+                result.resolutionSteps = 'No known error match. '
+                    + 'Collect environment details and escalate to '
+                    + 'Integration Support queue.';
+                result.requiresEscalation = true;
+            }
+
+            results.add(result);
+        }
+
+        return results;
+    }
+
+    public class ErrorLookupRequest {
+        @InvocableVariable(required=true)
+        public String errorCode;
+
+        @InvocableVariable(required=true)
+        public String integrationName;
+    }
+
+    public class ErrorLookupResult {
+        @InvocableVariable
+        public Boolean found;
+
+        @InvocableVariable
+        public String rootCause;
+
+        @InvocableVariable
+        public String resolutionSteps;
+
+        @InvocableVariable
+        public String workaround;
+
+        @InvocableVariable
+        public String relatedArticleId;
+
+        @InvocableVariable
+        public Boolean requiresEscalation;
+
+        @InvocableVariable
+        public String severity;
+    }
+}</code></pre>
+
+        <p>A few design decisions worth calling out in that code. The <code>Integration__c = 'All'</code> fallback in the WHERE clause handles generic errors that are not integration-specific (like rate limiting). The <code>Is_Active__c</code> filter lets us deprecate error entries without deleting data. And the <code>Requires_Escalation__c</code> flag gives us a data-driven way to force escalation for specific error patterns — even if the agent thinks it can handle it, we override that judgment for high-severity scenarios. More on that in the next section.</p>
+
+        <h2>Escalation Boundary Design: Knowing When to Stop</h2>
+
+        <p>This is the part of Agentforce design that I feel most strongly about, and where I see the most mistakes in other implementations. The temptation is to maximize automation — to push the agent to handle as many cases as possible. But an AI agent that resolves 60% of cases and badly mishandles 5% will do more damage to your customer relationships than one that resolves 35% and escalates cleanly for the rest.</p>
+
+        <p>We designed three distinct escalation boundaries:</p>
+
+        <p><strong>Hard boundaries</strong> are non-negotiable escalation triggers. The agent does not get to reason about these — if the condition is met, it escalates immediately. We defined hard boundaries for: any mention of data loss or data corruption, billing disputes over a specific dollar threshold, any request involving account deletion or data export under regulatory compliance (GDPR, CCPA), cases where the customer has expressed frustration more than twice in the conversation, and any scenario flagged by the <code>Requires_Escalation__c</code> field on our structured reference objects. These were implemented as pre-action validation checks.</p>
+
+        <p><strong>Soft boundaries</strong> are confidence-based triggers. If the agent's confidence in its proposed resolution falls below a defined threshold, it escalates rather than guessing. We set this threshold at 0.72 after testing — low enough that the agent does not escalate on every slightly ambiguous case, high enough that it does not confidently deliver wrong answers. This threshold is not a single number you set once; it is something you calibrate iteratively by reviewing escalated and non-escalated cases during the pilot period.</p>
+
+        <p><strong>Temporal boundaries</strong> are time-based triggers we implemented via Flow. If the agent has been in a conversation for more than 4 exchanges without reaching a resolution path, or if the case has been open with the agent for more than 15 minutes, it escalates with full conversation context. This prevents the agent from entering infinite clarification loops — a failure mode I have seen in multiple Agentforce deployments where the agent keeps asking follow-up questions without converging on a solution.</p>
+
+        <div class="blog-callout">
+            <span class="blog-callout__label">Key Takeaway</span>
+            <p>Design your escalation boundaries before you design your resolution paths. The question is not "what can the agent handle?" but "where must the agent stop?" Starting from constraints produces a more trustworthy system than starting from capabilities and trying to add guardrails after the fact.</p>
+        </div>
+
+        <p>Critically, every escalation included structured context transfer. We built a custom <code>Agent_Conversation_Summary__c</code> object that the agent populated on escalation: what the customer asked, what the agent tried, what data it retrieved, and why it escalated. Human agents receiving these escalations consistently reported that the context summary saved them 3-5 minutes per case versus a cold handoff. Escalation is not failure — it is a feature, and it should be designed with as much care as resolution.</p>
+
+        <h2>The Rollout: Phased Deployment and Shadow Mode</h2>
+
+        <p>We did not flip a switch and hand 2,100 monthly cases to an AI agent. The rollout happened in three phases over eight weeks.</p>
+
+        <p><strong>Phase 1 (Weeks 1-2): Shadow mode.</strong> The agent processed every incoming case in parallel with human agents but took no customer-facing action. Instead, it generated a proposed response and resolution path that was logged to a custom object. We reviewed these proposals daily, comparing the agent's suggested resolution against the human agent's actual resolution. This gave us a hit rate (did the agent identify the right resolution?) and a quality score (was the proposed response accurate, complete, and appropriately toned?). We started at a 61% hit rate and a 74% quality score.</p>
+
+        <p><strong>Phase 2 (Weeks 3-5): Controlled live deployment.</strong> We activated the agent on two of the seven Topics: Account Access &amp; Authentication and General Product Questions. These were chosen because they had the highest volume, the most predictable resolution paths, and the lowest risk of a bad answer causing material harm. Every agent resolution was reviewed within 24 hours by a QA team, and we maintained a kill switch that could route all cases back to human agents within minutes.</p>
+
+        <p><strong>Phase 3 (Weeks 6-8): Full deployment with monitoring.</strong> We activated all seven Topics, with the escalation boundaries and confidence thresholds calibrated based on Phase 2 data. We kept the 24-hour QA review for the first two weeks of full deployment, then moved to statistical sampling (reviewing 15% of agent-resolved cases weekly).</p>
+
+        <p>The shadow mode phase was worth every day it cost us. It surfaced issues that no amount of sandbox testing would have caught — subtle grounding failures where the agent retrieved a technically relevant but contextually wrong Knowledge article, edge cases in our Topic classification where customer messages were being routed to the wrong domain, and a critical gap in our escalation logic where multi-language cases were being handled in English regardless of the customer's language preference.</p>
+
+        <h2>Measuring Results: The Numbers and What They Actually Mean</h2>
+
+        <p>After 90 days of full deployment, here is where we landed:</p>
+
+        <p><strong>40.3% autonomous resolution rate.</strong> Of all inbound cases, the Agentforce agent resolved four out of ten without any human intervention. The customer received a resolution, confirmed it worked (or did not re-open the case within 72 hours), and the case was closed. This was against a baseline of 8% from the previous chatbot implementation.</p>
+
+        <p><strong>58% reduction in average first response time.</strong> From 4.2 hours down to 1.8 hours — and for the 40% handled autonomously, the average response time was under 90 seconds. The human-handled cases also improved because agents were no longer buried under procedural inquiries.</p>
+
+        <p><strong>CSAT improvement from 78% to 87%.</strong> This was the number the executive team cared about most. Interestingly, cases resolved by the Agentforce agent had a slightly higher CSAT (89%) than human-resolved cases (86%). My hypothesis: speed matters more than customers admit. A correct answer in 90 seconds beats a correct answer in 4 hours, even if the human response is warmer.</p>
+
+        <p><strong>22% increase in complex case resolution quality.</strong> This is the metric I am proudest of. Because human agents were freed from procedural cases, they had more time and mental bandwidth for genuinely complex issues. We measured this by tracking re-open rates on complex cases (Tier 2 and above), which dropped from 18% to 14%.</p>
+
+        <p>One metric I want to be honest about: the 40% resolution rate is not evenly distributed across Topics. Account Access &amp; Authentication hit 62% autonomous resolution. Bug Reports &amp; Known Issues only reached 19%. This variance is entirely predictable — some problem domains are more procedural than others — but it is important to set expectations correctly. When stakeholders hear "40% automation," they tend to assume uniform distribution. It is not, and your roadmap should account for the long tail of complex Topics that may never exceed 25-30% automation.</p>
+
+        <h2>Lessons Learned: What I Would Do Differently</h2>
+
+        <p><strong>Invest more in grounding data upfront.</strong> We spent about 30% of the project timeline on data preparation — cleaning Knowledge articles, building structured reference objects, curating case history. In retrospect, it should have been 40%. Every hour spent improving grounding data quality paid back tenfold in agent accuracy. If you are budgeting an Agentforce implementation, allocate at least a third of your total effort to grounding data architecture. It is not the glamorous work, but it is the work that determines your outcome.</p>
+
+        <p><strong>Build observability from day one.</strong> We added comprehensive logging in Phase 2, but I wish we had built it into the architecture from the start. Every agent decision — topic classification, action selection, grounding data retrieval, confidence scoring, escalation triggers — should be logged to a queryable object. Not just for debugging, but for the ongoing calibration work that never really ends. We built a custom dashboard that the support leadership team checks daily, and it has been invaluable for catching drift (the agent's performance gradually degrading as product changes outpace grounding data updates).</p>
+
+        <p><strong>Plan for content maintenance as a continuous process.</strong> The Agentforce agent is only as current as your grounding data. When the product team shipped a new integration connector three weeks after launch, the agent had no data on it and was confidently providing instructions for a different connector that had a similar name. We now have a standing process where every product release includes an Agentforce grounding data update as a required checklist item. This should have been established before go-live, not after an embarrassing customer interaction.</p>
+
+        <p><strong>Do not underestimate the change management.</strong> The support team's initial reaction to Agentforce was a mix of curiosity and anxiety. Several agents were openly concerned about being replaced. We addressed this head-on by reframing the agent's role: it handles the cases you find tedious so you can focus on the cases that actually challenge you. By the end of the pilot, the loudest skeptics had become the strongest advocates — not because they were persuaded by a presentation, but because their daily work had genuinely improved. They were solving interesting problems instead of resetting passwords.</p>
+
+        <p>Agentforce is not a product you install. It is an architecture you design, a dataset you curate, and a system you continuously calibrate. The 40% number in the headline is real, but it represents a sustained investment in doing the unsexy foundational work correctly. There are no shortcuts to grounding data quality, no hacks for escalation boundary design, and no substitute for a phased rollout that lets you learn from real customer interactions before scaling. If you are willing to invest in the foundation, the results are transformative. If you are looking for a quick win, you will build a very expensive chatbot.</p>
+
+        <!-- RELATED POSTS -->
+        <div class="related-posts">
+            <h3 class="related-posts__title">Related Posts</h3>
+            <div class="related-posts__grid">
+                <a href="migrating-2m-record-org.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Data Migration</span>
+                            <span class="article-card__date">12 min</span>
+                        </div>
+                        <h4 class="article-card__title">Migrating a 2M-Record Org</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+                <a href="governor-limit-crisis.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Performance</span>
+                            <span class="article-card__date">9 min</span>
+                        </div>
+                        <h4 class="article-card__title">When Flows Break at Scale</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </article>
+
+    <!-- CTA -->
+    <section class="cta-block">
+        <div class="cta-block__inner reveal">
+            <h3>Need a Salesforce architect?</h3>
+            <a href="../contact.html" class="btn btn--primary">Get in Touch <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="../index.html" class="footer__logo">Azlan<span class="nav__logo-dot">.</span></a>
+                <nav class="footer__nav">
+                    <a href="../salesforce.html">Salesforce</a>
+                    <a href="../blog.html">Blog</a>
+                    <a href="../ai-lab.html">AI Lab</a>
+                    <a href="../photography.html">Photography</a>
+                    <a href="../about.html">About</a>
+                    <a href="../contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../main.js"></script>
+</body>
+</html>

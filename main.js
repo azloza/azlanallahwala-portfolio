@@ -641,10 +641,15 @@
        ============================================ */
 
     function initActiveNavLink() {
-        var currentPath = window.location.pathname.split('/').pop() || 'index.html';
+        var fullPath = window.location.pathname;
+        var currentFile = fullPath.split('/').pop() || 'index.html';
+        var isInBlogDir = fullPath.indexOf('/blog/') !== -1;
+
         document.querySelectorAll('.nav__link').forEach(function (link) {
             var href = link.getAttribute('href');
-            if (href === currentPath) {
+            if (isInBlogDir && (href === '../blog.html' || href === 'blog.html')) {
+                link.classList.add('nav__link--active');
+            } else if (href === currentFile) {
                 link.classList.add('nav__link--active');
             }
         });

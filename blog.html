@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — Azlan Allahwala</title>
+    <meta name="description" content="Notes from the field: architecture decisions, debugging war stories, and lessons learned across enterprise Salesforce implementations.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="atmosphere.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="index.html" class="nav__logo">
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
+            <div class="nav__links" id="navLinks">
+                <a href="salesforce.html" class="nav__link">Salesforce</a>
+                <a href="blog.html" class="nav__link nav__link--active">Blog</a>
+                <a href="ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="photography.html" class="nav__link">Photography</a>
+                <a href="about.html" class="nav__link">About</a>
+                <a href="contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="blog.html" class="mobile-nav__link" style="--i:1">Blog</a>
+            <a href="ai-lab.html" class="mobile-nav__link" style="--i:2">AI Lab</a>
+            <a href="photography.html" class="mobile-nav__link" style="--i:3">Photography</a>
+            <a href="about.html" class="mobile-nav__link" style="--i:4">About</a>
+            <a href="contact.html" class="mobile-nav__link" style="--i:5">Contact</a>
+        </div>
+        <div class="mobile-nav__footer"><span class="mobile-nav__email">azlanallahwala@gmail.com</span></div>
+    </div>
+
+    <!-- SECTION HERO -->
+    <section class="section-hero section-hero--blog">
+        <div class="section-hero__grain"></div>
+        <div class="section-hero__content">
+            <h1 class="reveal">Blog</h1>
+            <p class="dek reveal" data-delay="100">Notes from the field: architecture decisions, debugging war stories, and lessons learned across enterprise Salesforce implementations.</p>
+        </div>
+    </section>
+
+    <!-- ALL POSTS -->
+    <section class="section">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">All Posts</span>
+            <span class="section-divider__num">06</span>
+        </div>
+        <div class="blog-grid">
+            <a href="blog/migrating-2m-record-org.html" class="article-card reveal" style="--i:0">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--nielsen-hero"></div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Data Migration</span>
+                        <span class="article-card__date">12 min read</span>
+                    </div>
+                    <h4 class="article-card__title">Migrating a 2M-Record Org: How We Unified Three Salesforce Instances Into One</h4>
+                    <p class="article-card__desc">A multi-org consolidation for a national healthcare network &mdash; from data audit to validation to the final cutover weekend.</p>
+                    <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="blog/agentforce-service-desk.html" class="article-card reveal" style="--i:1">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--cary"></div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Agentforce</span>
+                        <span class="article-card__date">10 min read</span>
+                    </div>
+                    <h4 class="article-card__title">Building an Agentforce-Powered Service Desk That Resolved 40% of Cases Automatically</h4>
+                    <p class="article-card__desc">How we implemented Salesforce Agentforce to handle routine service inquiries with AI-powered autonomous agents &mdash; and what we learned about grounding data.</p>
+                    <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="blog/classic-to-lwc-migration.html" class="article-card reveal" style="--i:2">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--yellowstone"></div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">LWC Migration</span>
+                        <span class="article-card__date">11 min read</span>
+                    </div>
+                    <h4 class="article-card__title">The Great Migration: Moving a 10-Year-Old Org from Classic to Lightning Web Components</h4>
+                    <p class="article-card__desc">A phased approach to modernizing a decade of Visualforce pages and Aura components into Lightning Web Components without disrupting operations.</p>
+                    <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="blog/governor-limit-crisis.html" class="article-card reveal" style="--i:3">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--pharmedium"></div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Performance</span>
+                        <span class="article-card__date">9 min read</span>
+                    </div>
+                    <h4 class="article-card__title">When Flows Break at Scale: Debugging a Governor Limit Crisis on a 500-User Org</h4>
+                    <p class="article-card__desc">A production org was grinding to a halt. CPU timeouts, cascading Flow failures, and a ticking clock. Here's how we diagnosed and fixed it.</p>
+                    <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="blog/spreadsheets-to-salesforce.html" class="article-card reveal" style="--i:4">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--doj"></div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Digital Transformation</span>
+                        <span class="article-card__date">11 min read</span>
+                    </div>
+                    <h4 class="article-card__title">From Spreadsheets to Salesforce: Designing a Grants Management Platform from Scratch</h4>
+                    <p class="article-card__desc">How we replaced 47 spreadsheets with a centralized Salesforce platform for tracking grants from application through close-out.</p>
+                    <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="blog/esri-vs-salesforce-maps.html" class="article-card reveal" style="--i:5">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--olympic"></div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">GIS Integration</span>
+                        <span class="article-card__date">10 min read</span>
+                    </div>
+                    <h4 class="article-card__title">Why We Chose Esri Over Salesforce Maps: Integrating GIS Into an Economic Development Platform</h4>
+                    <p class="article-card__desc">When Salesforce Maps wasn't enough, we integrated Esri ArcGIS for spatial analysis, parcel tracking, and zoning overlays in an economic development org.</p>
+                    <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-block">
+        <div class="cta-block__inner reveal">
+            <h3>Need a Salesforce architect?</h3>
+            <a href="contact.html" class="btn btn--primary">Get in Touch <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="index.html" class="footer__logo">Azlan<span class="nav__logo-dot">.</span></a>
+                <nav class="footer__nav">
+                    <a href="salesforce.html">Salesforce</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="ai-lab.html">AI Lab</a>
+                    <a href="photography.html">Photography</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

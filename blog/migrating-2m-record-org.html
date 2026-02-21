@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migrating a 2M-Record Org — Azlan Allahwala</title>
+    <meta name="description" content="How we unified three disconnected Salesforce instances into a single platform for a national healthcare network — from data audit to cutover weekend.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../animations.css">
+    <link rel="stylesheet" href="../atmosphere.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="../index.html" class="nav__logo">
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
+            <div class="nav__links" id="navLinks">
+                <a href="../salesforce.html" class="nav__link">Salesforce</a>
+                <a href="../blog.html" class="nav__link">Blog</a>
+                <a href="../ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="../photography.html" class="nav__link">Photography</a>
+                <a href="../about.html" class="nav__link">About</a>
+                <a href="../contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="../salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="../blog.html" class="mobile-nav__link" style="--i:1">Blog</a>
+            <a href="../ai-lab.html" class="mobile-nav__link" style="--i:2">AI Lab</a>
+            <a href="../photography.html" class="mobile-nav__link" style="--i:3">Photography</a>
+            <a href="../about.html" class="mobile-nav__link" style="--i:4">About</a>
+            <a href="../contact.html" class="mobile-nav__link" style="--i:5">Contact</a>
+        </div>
+        <div class="mobile-nav__footer"><span class="mobile-nav__email">azlanallahwala@gmail.com</span></div>
+    </div>
+
+    <!-- SECTION HERO -->
+    <section class="section-hero section-hero--blog">
+        <div class="section-hero__grain"></div>
+        <div class="section-hero__content">
+            <h1 class="reveal">Migrating a 2M-Record Org</h1>
+            <p class="dek reveal" data-delay="100">How we unified three disconnected Salesforce instances into a single platform for a national healthcare network.</p>
+        </div>
+    </section>
+
+    <!-- ARTICLE -->
+    <article class="blog-article">
+        <a href="../blog.html" class="blog-back"><span class="arrow">&rarr;</span> Back to Blog</a>
+
+        <div class="blog-meta">
+            <div class="blog-meta__item">
+                <span class="blog-meta__label">Published</span>
+                <span class="blog-meta__value">February 2026</span>
+            </div>
+            <div class="blog-meta__item">
+                <span class="blog-meta__label">Read Time</span>
+                <span class="blog-meta__value">12 min</span>
+            </div>
+            <div class="blog-meta__tags">
+                <span class="tag tag--small">Data Migration</span>
+                <span class="tag tag--small">Multi-Org</span>
+                <span class="tag tag--small">Healthcare</span>
+            </div>
+        </div>
+
+        <p>Every Salesforce architect has a migration story. This is mine. A national healthcare network with three regional Salesforce orgs, two million records scattered across them, and a mandate from the new CTO: one platform, one truth, six months. What followed was equal parts data engineering, political negotiation, and controlled demolition.</p>
+
+        <h2>Three Orgs, Zero Alignment</h2>
+
+        <p>The organization had grown through acquisition. Each regional division had stood up its own Salesforce instance over the years, independently configured by different consultants with different philosophies. The East Coast org was heavily customized with Apex everywhere. The Midwest org leaned on Flows and process builders. The West Coast org was practically vanilla Sales Cloud with a mountain of manual workarounds.</p>
+
+        <p>The result was predictable: three different Account models, three different opportunity stages, three different definitions of what a "closed deal" even meant. A patient who interacted with two regions existed as two completely unrelated records. Leadership had no consolidated view of anything.</p>
+
+        <p>Before writing a single line of migration code, we spent three weeks just understanding what we were dealing with. I ran metadata exports on all three orgs using the Metadata API and built a comparison matrix: custom objects, custom fields, Apex classes, Flows, validation rules, record types. The numbers were sobering.</p>
+
+        <ul>
+            <li>Combined custom objects: 87 (with 23 overlapping in purpose but not in schema)</li>
+            <li>Custom fields across all orgs: 2,400+</li>
+            <li>Active Apex classes: 340</li>
+            <li>Active Flows and Process Builders: 180</li>
+            <li>Total records to migrate: ~2.1 million</li>
+        </ul>
+
+        <h2>Mapping the Data Universe</h2>
+
+        <p>The audit phase was where we separated what we needed to keep from what we could leave behind. Not every field with data in it is a field worth migrating. We categorized every custom field into one of four buckets: <strong>migrate as-is</strong>, <strong>migrate and transform</strong>, <strong>merge into unified field</strong>, or <strong>deprecate</strong>.</p>
+
+        <p>The hardest conversations were about the "merge" bucket. Each region had its own way of tracking referral sources, for example. East Coast used a picklist with 45 values. Midwest used a lookup to a custom object. West Coast used a free-text field. We had to design a unified referral model that preserved the analytical value of the historical data without carrying forward three incompatible schemas.</p>
+
+        <div class="blog-callout">
+            <span class="blog-callout__label">Key Takeaway</span>
+            <p>Data migration is not a technical project. It is a business alignment project. The hardest part is not moving records from A to B. It is getting three regional directors to agree on what an opportunity stage means.</p>
+        </div>
+
+        <p>We built a field mapping document that became the single source of truth for the entire migration. Every field in the target org was mapped to its source (or sources), with transformation logic documented inline. This document was over 200 rows long, and every row was reviewed by both a technical lead and a business stakeholder.</p>
+
+        <h2>The Architecture Decision: Merge vs. Migrate</h2>
+
+        <p>We had two viable strategies. Option one: pick the most mature org as the "survivor" and migrate the other two into it. Option two: stand up a clean new org and migrate all three into it. Each had trade-offs.</p>
+
+        <p>Option one was faster and cheaper. The East Coast org had the most sophisticated automation and the largest user base. But it also carried years of technical debt: deprecated fields that were still referenced in reports, Apex classes that hadn't been touched since 2018, and a permission model that had been patched so many times it was essentially held together with duct tape.</p>
+
+        <p>We went with option two. A clean target org gave us the opportunity to build the unified data model correctly from the start, without inheriting anyone's legacy baggage. Yes, it meant more migration work. But it also meant we could standardize automation patterns, clean up the permission model, and establish governance from day one.</p>
+
+        <h2>Building the Migration Pipeline</h2>
+
+        <p>For a migration of this scale, Salesforce Data Loader running on someone's laptop was not going to cut it. We needed a repeatable, auditable pipeline that could be run multiple times during testing and then executed cleanly during the cutover window.</p>
+
+        <p>The pipeline had four stages: <strong>extract</strong>, <strong>transform</strong>, <strong>load</strong>, and <strong>validate</strong>. Extract pulled records from all three source orgs via Bulk API. Transform applied the field mapping logic, deduplication rules, and data cleansing. Load pushed records into the target org in dependency order. Validate ran record count comparisons and spot-check queries to verify integrity.</p>
+
+        <p>The sequencing of the load phase was critical. Salesforce enforces referential integrity on lookup and master-detail relationships. You cannot insert a Contact before its parent Account exists. You cannot insert an Opportunity Contact Role before both the Opportunity and the Contact exist. We mapped the full dependency graph and built the load sequence accordingly:</p>
+
+        <ol>
+            <li>Accounts (with external IDs from all three source orgs)</li>
+            <li>Contacts (matched to Accounts via external ID)</li>
+            <li>Opportunities (matched to Accounts)</li>
+            <li>Opportunity Contact Roles</li>
+            <li>Cases, Tasks, Events, Notes, Attachments</li>
+            <li>Custom junction objects and child records</li>
+        </ol>
+
+        <p>The external ID strategy was the linchpin. We created a custom field called <code>Legacy_External_ID__c</code> on every migrated object. This field stored a composite key: the source org identifier plus the original Salesforce record ID. This allowed us to use upsert operations, which are idempotent &mdash; meaning we could re-run the migration without creating duplicates.</p>
+
+<pre><code>public class AccountMigrationBatch implements Database.Batchable&lt;SObject&gt; {
+
+    public Database.QueryLocator start(Database.BatchableContext bc) {
+        return Database.getQueryLocator([
+            SELECT Legacy_External_ID__c, Name, BillingStreet,
+                   BillingCity, BillingState, BillingPostalCode,
+                   Phone, Website, Industry, Type,
+                   Region__c, Source_Org__c
+            FROM Account
+            WHERE Migration_Status__c = 'Pending'
+        ]);
+    }
+
+    public void execute(Database.BatchableContext bc, List&lt;Account&gt; scope) {
+        List&lt;Database.UpsertResult&gt; results = Database.upsert(
+            scope,
+            Account.Legacy_External_ID__c,
+            false  // allOrNone = false for partial success
+        );
+
+        List&lt;Migration_Log__c&gt; logs = new List&lt;Migration_Log__c&gt;();
+        for (Integer i = 0; i &lt; results.size(); i++) {
+            if (!results[i].isSuccess()) {
+                logs.add(new Migration_Log__c(
+                    Object_Type__c = 'Account',
+                    Record_ID__c = scope[i].Legacy_External_ID__c,
+                    Error_Message__c = results[i].getErrors()[0].getMessage(),
+                    Batch_Timestamp__c = Datetime.now()
+                ));
+            }
+        }
+        if (!logs.isEmpty()) insert logs;
+    }
+
+    public void finish(Database.BatchableContext bc) {
+        // Send summary email to migration team
+    }
+}</code></pre>
+
+        <p>Every batch job wrote failures to a <code>Migration_Log__c</code> custom object. This gave us a queryable audit trail of every record that failed, why it failed, and when. After each test run, we could pull a report of failures, fix the root causes in the transformation layer, and re-run.</p>
+
+        <h2>The Deduplication Problem</h2>
+
+        <p>With records coming from three separate orgs, deduplication was inevitable. The same healthcare provider might exist as an Account in all three instances, with slightly different names, addresses, and phone numbers. We could not simply merge on name &mdash; "St. Mary's Hospital" in one org might be "Saint Mary's Regional Medical Center" in another.</p>
+
+        <p>We built a fuzzy matching algorithm that scored potential duplicates across multiple dimensions: name similarity (using Jaro-Winkler distance), address proximity (normalized and geocoded), phone number match, and NPI (National Provider Identifier) for healthcare-specific matching. Records scoring above our confidence threshold were auto-merged. Records in the gray zone were flagged for manual review by regional data stewards.</p>
+
+        <p>The manual review queue ended up being about 1,200 records &mdash; far fewer than the 8,000+ we initially feared. Investing in a good matching algorithm upfront saved weeks of manual work downstream.</p>
+
+        <div class="pull-quote">
+            <p>The quality of your migration is determined before you move a single record. It is determined by how well you understand the data you are leaving behind.</p>
+        </div>
+
+        <h2>The Cutover Weekend</h2>
+
+        <p>We scheduled the production cutover for a Friday evening to Monday morning window. The healthcare network's lowest-activity period. We had rehearsed the full migration three times in sandbox environments, with each rehearsal getting faster and smoother. By the third rehearsal, the full pipeline completed in 14 hours.</p>
+
+        <p>The cutover plan was a 47-step runbook, with explicit go/no-go checkpoints at each stage. Every step had an owner, an estimated duration, and a rollback procedure. We also built a real-time dashboard that tracked migration progress: records processed, records succeeded, records failed, and estimated time to completion.</p>
+
+        <p>Friday at 6 PM, we froze all three source orgs (read-only profiles applied to all non-admin users), kicked off the extract jobs, and started the clock. By Saturday at 8 AM, all records were loaded. Saturday afternoon was validation: automated count reconciliation, sample audits by regional leads, and smoke testing of critical workflows. Sunday was buffer time for fixes. We found 340 Opportunity records with orphaned Contact Roles (the Contacts had been merged during dedup, invalidating the junction records) and wrote a quick fix script.</p>
+
+        <p>Monday at 6 AM, we flipped the new org to live. Users logged in to a unified platform for the first time. The first support ticket came in at 6:12 AM: "Where's my custom report?" We had anticipated this. A FAQ document and a dedicated Slack channel were ready.</p>
+
+        <h2>Validation and Reconciliation</h2>
+
+        <p>Migration is not done when the records land in the target org. It is done when the business confirms the data is correct, complete, and usable. We ran three levels of validation:</p>
+
+        <ul>
+            <li><strong>Automated count reconciliation:</strong> Record counts by object, by record type, and by owner, compared between source and target. Any variance over 0.1% triggered investigation.</li>
+            <li><strong>Field-level spot checks:</strong> Random sampling of 500 records per object, comparing every field value between source and target. We wrote an Apex utility that pulled both versions and generated a diff report.</li>
+            <li><strong>Business process validation:</strong> Regional leads walked through their top 10 workflows end-to-end in the new org. Could they find their key accounts? Were the opportunity amounts correct? Did the approval processes fire as expected?</li>
+        </ul>
+
+        <p>The spot checks uncovered a subtle bug in our date transformation logic: a timezone offset was shifting some <code>CloseDate</code> values by one day. It only affected records migrated from the West Coast org (UTC-8) where the original date was stored without timezone context. We fixed the transformation, re-ran the affected batch, and re-validated. Total impact: 4,200 records, zero data loss.</p>
+
+        <h2>What I Would Do Differently</h2>
+
+        <p>If I were running this migration again, I would change two things. First, I would start the deduplication process earlier &mdash; ideally during the audit phase, not after the field mapping was complete. Understanding the overlap between orgs informs the field mapping decisions and helps you catch schema conflicts sooner.</p>
+
+        <p>Second, I would invest more in user communication during the pre-cutover phase. We sent emails and held town halls, but many users didn't internalize the changes until they logged in Monday morning and couldn't find their bookmarked reports. A sandbox preview environment with their actual data, available two weeks before cutover, would have smoothed the transition significantly.</p>
+
+        <div class="blog-callout">
+            <span class="blog-callout__label">Key Takeaway</span>
+            <p>Multi-org migrations are 30% technical execution and 70% stakeholder alignment, data governance, and change management. The ETL pipeline is the easy part. Getting three regional teams to agree on a unified data model is the hard part.</p>
+        </div>
+
+        <p>The unified org has been live for over a year now. The healthcare network finally has a single view of every provider relationship across all regions. Pipeline reporting that used to require three separate exports and a manual merge in Excel now runs as a single Salesforce dashboard. And the new governance framework has prevented the kind of organic sprawl that created the problem in the first place.</p>
+
+        <p>Two million records, three orgs, one weekend. It was the hardest migration I have led, and the one I am most proud of.</p>
+
+        <!-- RELATED POSTS -->
+        <div class="related-posts">
+            <h3 class="related-posts__title">Related Posts</h3>
+            <div class="related-posts__grid">
+                <a href="governor-limit-crisis.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Performance</span>
+                            <span class="article-card__date">9 min</span>
+                        </div>
+                        <h4 class="article-card__title">When Flows Break at Scale</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+                <a href="spreadsheets-to-salesforce.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Digital Transformation</span>
+                            <span class="article-card__date">11 min</span>
+                        </div>
+                        <h4 class="article-card__title">From Spreadsheets to Salesforce</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </article>
+
+    <!-- CTA -->
+    <section class="cta-block">
+        <div class="cta-block__inner reveal">
+            <h3>Need a Salesforce architect?</h3>
+            <a href="../contact.html" class="btn btn--primary">Get in Touch <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="../index.html" class="footer__logo">Azlan<span class="nav__logo-dot">.</span></a>
+                <nav class="footer__nav">
+                    <a href="../salesforce.html">Salesforce</a>
+                    <a href="../blog.html">Blog</a>
+                    <a href="../ai-lab.html">AI Lab</a>
+                    <a href="../photography.html">Photography</a>
+                    <a href="../about.html">About</a>
+                    <a href="../contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../main.js"></script>
+</body>
+</html>

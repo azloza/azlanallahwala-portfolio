@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Spreadsheets to Salesforce: Designing a Grants Management Platform from Scratch — Azlan Allahwala</title>
+    <meta name="description" content="How we replaced 47 spreadsheets with a centralized Salesforce platform for tracking grants from application through close-out at a nonprofit organization.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../animations.css">
+    <link rel="stylesheet" href="../atmosphere.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="../index.html" class="nav__logo">
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
+            <div class="nav__links" id="navLinks">
+                <a href="../salesforce.html" class="nav__link">Salesforce</a>
+                <a href="../blog.html" class="nav__link nav__link--active">Blog</a>
+                <a href="../ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="../photography.html" class="nav__link">Photography</a>
+                <a href="../about.html" class="nav__link">About</a>
+                <a href="../contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="../salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="../blog.html" class="mobile-nav__link" style="--i:1">Blog</a>
+            <a href="../ai-lab.html" class="mobile-nav__link" style="--i:2">AI Lab</a>
+            <a href="../photography.html" class="mobile-nav__link" style="--i:3">Photography</a>
+            <a href="../about.html" class="mobile-nav__link" style="--i:4">About</a>
+            <a href="../contact.html" class="mobile-nav__link" style="--i:5">Contact</a>
+        </div>
+        <div class="mobile-nav__footer"><span class="mobile-nav__email">azlanallahwala@gmail.com</span></div>
+    </div>
+
+    <!-- SECTION HERO -->
+    <section class="section-hero section-hero--blog">
+        <div class="section-hero__grain"></div>
+        <div class="section-hero__content">
+            <a href="../blog.html" class="blog-back reveal"><span class="arrow">&rarr;</span> All Posts</a>
+            <h1 class="reveal">From Spreadsheets to Salesforce: Designing a Grants Management Platform from Scratch</h1>
+            <p class="dek reveal" data-delay="100">How we replaced 47 spreadsheets with a centralized Salesforce platform for tracking grants from application through close-out.</p>
+        </div>
+    </section>
+
+    <!-- BLOG ARTICLE -->
+    <article class="blog-article">
+
+        <div class="blog-meta">
+            <div class="blog-meta__item">
+                <span class="blog-meta__label">Date</span>
+                <span class="blog-meta__value">October 2025</span>
+            </div>
+            <div class="blog-meta__item">
+                <span class="blog-meta__label">Read</span>
+                <span class="blog-meta__value">~11 min</span>
+            </div>
+            <div class="blog-meta__tags">
+                <span class="tag tag--small">Nonprofit</span>
+                <span class="tag tag--small">Experience Cloud</span>
+                <span class="tag tag--small">Digital Transformation</span>
+            </div>
+        </div>
+
+        <p>Every digital transformation project starts with the same moment: the one where you finally see how the organization actually operates, not how anyone describes it in meetings. For this nonprofit organization, that moment came during a discovery workshop when the grants program director pulled up a shared drive containing 47 separate spreadsheets&mdash;each one a critical piece of the grants lifecycle that existed nowhere else. Applications in one file. Review scores in another. Award letters tracked by fiscal year in a folder nested three levels deep. Disbursement schedules maintained by a single staff member who had been there for nineteen years.</p>
+
+        <p>This is the story of how we designed, built, and deployed a Salesforce-based grants management platform that replaced all of it. Not by dropping a package on the org and calling it done, but by understanding the institutional knowledge embedded in those spreadsheets, mapping it to a sustainable data model, and delivering a system that the team actually trusted enough to adopt.</p>
+
+        <h2>47 Spreadsheets and a Prayer</h2>
+
+        <p>The inherited state was not chaos, exactly. It was a system&mdash;just one held together by human memory and quiet heroism. The grants team had been managing between 120 and 180 active grants at any given time using a combination of Excel workbooks, shared Google Sheets, a legacy Access database that only ran on one machine in the office, and email threads that served as the canonical audit trail for approval decisions.</p>
+
+        <p>During the first two weeks of discovery, I cataloged the data landscape. The 47 spreadsheets broke down roughly as follows:</p>
+
+        <ul>
+            <li><strong>12 application tracking sheets</strong>&mdash;one per grant program, with inconsistent column structures across all twelve</li>
+            <li><strong>8 review and scoring matrices</strong>&mdash;some using weighted scoring, some using simple pass/fail, none documented</li>
+            <li><strong>6 award and budget tracking workbooks</strong>&mdash;with manual formulas that had been copied and adjusted over multiple fiscal years</li>
+            <li><strong>9 disbursement and payment logs</strong>&mdash;reconciled monthly against the finance system by hand</li>
+            <li><strong>7 compliance and reporting templates</strong>&mdash;including two that were duplicates nobody had noticed for three years</li>
+            <li><strong>5 miscellaneous files</strong>&mdash;contact lists, historical archives, and a master "status tracker" that was perpetually two weeks behind reality</li>
+        </ul>
+
+        <p>The real risk was not inefficiency. It was institutional fragility. Three of those spreadsheets were maintained exclusively by one person. If she was out sick on a reporting deadline, the organization literally could not produce the compliance documentation required by its funders. That is not a technology problem. That is an organizational continuity problem, and it was the argument that got executive sponsorship for the project.</p>
+
+        <h2>Stakeholder Mapping: Who Actually Owns the Process?</h2>
+
+        <p>Before touching a single object in Salesforce, we spent three weeks mapping stakeholders. Not just names on an org chart&mdash;actual influence, actual decision-making authority, and actual daily involvement in the grants lifecycle. The distinction matters enormously in nonprofits, where the person with the title and the person with the institutional knowledge are often not the same individual.</p>
+
+        <p>We identified four stakeholder tiers:</p>
+
+        <ol>
+            <li><strong>Executive sponsors</strong>&mdash;the COO and Director of Programs. They needed dashboards, compliance confidence, and audit readiness. They would never log into Salesforce daily.</li>
+            <li><strong>Process owners</strong>&mdash;the grants management team of six. These were the people who lived in the spreadsheets. They would either champion the system or quietly undermine it. Getting their buy-in was non-negotiable.</li>
+            <li><strong>Peripheral users</strong>&mdash;finance, legal, and program officers who needed to interact with grant data at specific lifecycle stages but did not own the process end to end.</li>
+            <li><strong>External applicants</strong>&mdash;the organizations submitting grant applications through the portal. They needed a simple, clear experience and would have zero tolerance for a confusing interface.</li>
+        </ol>
+
+        <p>The stakeholder map directly shaped our architecture decisions. Executive sponsors drove the reporting layer. Process owners drove the data model and workflow design. Peripheral users drove the permission structure and record sharing rules. External applicants drove the Experience Cloud portal design. Each tier had different success criteria, and we documented all of them before writing a single line of configuration.</p>
+
+        <div class="blog-callout">
+            <span class="blog-callout__label">Key Takeaway</span>
+            <p>In nonprofit digital transformations, the stakeholder with the most influence over adoption is rarely the one who signs the contract. Identify the people who maintain the current process&mdash;the spreadsheet owners&mdash;and make them co-designers of the new system. If they feel ownership, they will champion it. If they feel replaced, they will resist it.</p>
+        </div>
+
+        <h2>Data Model Design: The Grants Lifecycle</h2>
+
+        <p>The core architecture challenge was modeling a grants lifecycle that moved through five distinct phases&mdash;Application, Review, Award, Disbursement, and Close-Out&mdash;with different data requirements, different user interactions, and different compliance obligations at each stage.</p>
+
+        <p>We built the data model around a central custom object called <code>Grant__c</code>, which served as the canonical record for each grant from intake to completion. Rather than creating separate objects for each lifecycle phase, we used a combination of record types and a picklist-driven stage field to control page layouts, validation rules, and Flow triggers at each transition.</p>
+
+        <p>The key objects and their relationships:</p>
+
+        <ul>
+            <li><code>Grant__c</code>&mdash;master object with record types for each grant program. Lookup to Account (the applicant organization) and a master-detail to <code>Grant_Program__c</code> (the funding program).</li>
+            <li><code>Grant_Application__c</code>&mdash;child of Grant__c, capturing the full application submission including budget narratives, project descriptions, and uploaded documents via Content Document Links.</li>
+            <li><code>Review_Score__c</code>&mdash;junction object between Grant_Application__c and a Reviewer (Contact with a specific role). Stored individual reviewer scores, comments, and conflict-of-interest declarations.</li>
+            <li><code>Disbursement__c</code>&mdash;child of Grant__c, tracking individual payment milestones with Amount, Scheduled Date, Actual Date, and Status fields. Rolled up to Grant__c for total disbursed vs. total awarded calculations.</li>
+            <li><code>Compliance_Report__c</code>&mdash;child of Grant__c, tracking required progress reports, financial reports, and final close-out documentation with due dates and submission status.</li>
+            <li><code>Grant_Activity__c</code>&mdash;a lightweight logging object that captured every status transition, approval action, and document upload as a timestamped record. This became the backbone of the audit trail.</li>
+        </ul>
+
+        <p>The decision to keep the lifecycle on a single Grant__c record rather than splitting it across phase-specific objects was deliberate. It meant every report, every dashboard, every list view could filter on a single Stage field without requiring cross-object joins. It also meant the audit trail was coherent&mdash;you could look at one record and see the full history of a grant from initial application to final close-out. The tradeoff was more complex page layouts and a heavier reliance on record-triggered Flows to enforce stage-gating logic, but that tradeoff was worth the simplicity it gave end users.</p>
+
+        <h2>Building the Applicant Portal with Experience Cloud</h2>
+
+        <p>The external-facing portal was where the project got genuinely interesting from a technical standpoint. The organization received between 300 and 500 grant applications per cycle across four distinct grant programs, each with different eligibility criteria, different required documents, and different review timelines. The existing process was entirely email-based: applicants downloaded a Word template, filled it out, and emailed it to a shared inbox. Staff manually entered the data into spreadsheets.</p>
+
+        <p>We built the portal on Experience Cloud using the Aura framework (this was before the LWR migration path was mature enough for our needs) with a custom theme that matched the organization's branding. The architecture was straightforward but required careful attention to guest user permissions and sharing rules.</p>
+
+        <p>The portal flow for applicants worked as follows: an applicant registered, creating a Contact and Account in Salesforce. Upon login, they saw a dashboard showing any in-progress or submitted applications and the status of any active grants. To start a new application, they selected a grant program from an available list (controlled by a <code>Grant_Program__c</code> field for Application_Open__c), which generated a new Grant__c record and its child Grant_Application__c. The application form itself was a multi-step screen Flow embedded in the portal page.</p>
+
+        <p>The multi-step form was the most complex piece. Each grant program had between 8 and 14 required fields plus document uploads. We used a single screen Flow with decision elements that dynamically showed or hid sections based on the grant program record type. This avoided building separate Flows for each program while still enforcing program-specific validation.</p>
+
+        <blockquote class="pull-quote">
+            <p>The best portal experiences feel like the system already knows what you need. Every conditional field, every pre-filled value, every intelligently hidden section is a small act of respect for the applicant's time.</p>
+            <cite>&mdash; Design principle we returned to throughout the build</cite>
+        </blockquote>
+
+        <p>Document uploads were handled through a Lightning File Upload component wired to the Grant_Application__c record. We enforced file type restrictions (PDF and DOCX only), maximum file sizes (10 MB per document), and required document checklists that prevented submission until all mandatory attachments were present. Each uploaded file was automatically linked to the parent Grant__c as well, so internal users could see all documents without navigating to the child application record.</p>
+
+        <h2>Compliance and Audit Trail Architecture</h2>
+
+        <p>For this organization, audit readiness was not a nice-to-have. Their funders required the ability to trace every grant decision back to a documented approval, every disbursement back to a verified milestone, and every compliance report back to a submission timestamp. The spreadsheet system could not do any of this reliably. Building a system that could was the single most important technical requirement.</p>
+
+        <p>The audit trail architecture had three layers:</p>
+
+        <p><strong>Layer 1: Field History Tracking.</strong> We enabled field history tracking on every field that represented a status change, an amount, or an approval decision across Grant__c, Disbursement__c, and Compliance_Report__c. This gave us out-of-the-box change tracking with timestamps and user attribution for the most critical fields.</p>
+
+        <p><strong>Layer 2: Grant Activity Log.</strong> The <code>Grant_Activity__c</code> object captured events that field history could not&mdash;specifically, multi-step approval outcomes, reviewer score submissions, document uploads, and portal submissions. Each record stored the Activity_Type__c (picklist), a Description__c (long text), the Acting_User__c (lookup to User or Contact for portal users), and a Timestamp__c (datetime). A record-triggered Flow created a new Grant_Activity__c record on every stage transition, every approval response, and every document upload.</p>
+
+        <p><strong>Layer 3: Approval Process Integration.</strong> We built a multi-stage approval process for grant awards that routed through three levels: program officer review, grants committee review, and executive approval. Each approval step wrote to both the standard Approval History related list and a corresponding Grant_Activity__c record. This dual-write pattern meant the audit trail was self-contained on the Grant__c record without requiring users to navigate to the approval history.</p>
+
+        <p>The following Flow logic handled the multi-stage approval routing. When a grant application completed the review phase and was recommended for funding, this auto-launched Flow determined the correct approval path based on the award amount and grant program:</p>
+
+        <pre><code>// Flow: Grant_Award_Approval_Router (Auto-launched)
+// Trigger: Grant__c.Stage__c is changed to 'Recommended for Award'
+
+// DECISION: Route by Award Amount
+// Branch 1: Award_Amount__c <= 25000
+//   -> Submit for Approval: 'Small_Grant_Approval'
+//   -> Approver: Grant_Program__c.Program_Officer__c
+//   -> Single-step approval
+
+// Branch 2: Award_Amount__c > 25000 AND Award_Amount__c <= 100000
+//   -> Submit for Approval: 'Standard_Grant_Approval'
+//   -> Step 1: Grant_Program__c.Program_Officer__c
+//   -> Step 2: Grants_Committee queue
+//   -> Two-step sequential approval
+
+// Branch 3: Award_Amount__c > 100000
+//   -> Submit for Approval: 'Major_Grant_Approval'
+//   -> Step 1: Grant_Program__c.Program_Officer__c
+//   -> Step 2: Grants_Committee queue
+//   -> Step 3: COO (User lookup on Grant_Program__c.Executive_Approver__c)
+//   -> Three-step sequential approval
+
+// POST-APPROVAL ACTIONS (Final Approval):
+// 1. Update Grant__c.Stage__c -> 'Awarded'
+// 2. Create Grant_Activity__c record:
+//      Activity_Type__c = 'Award Approved'
+//      Description__c = 'Grant award of $' + Award_Amount__c + ' approved.'
+//      Acting_User__c = Last Approver
+//      Timestamp__c = NOW()
+// 3. Send email notification to applicant Contact
+// 4. Generate first Disbursement__c record from Disbursement_Schedule__c template
+
+// POST-REJECTION ACTIONS:
+// 1. Update Grant__c.Stage__c -> 'Not Funded'
+// 2. Create Grant_Activity__c record:
+//      Activity_Type__c = 'Award Denied'
+//      Description__c = 'Grant application not approved for funding.'
+//      Timestamp__c = NOW()
+// 3. Send email notification to applicant Contact with feedback template</code></pre>
+
+        <p>This routing logic was the piece we iterated on most with the grants team. The initial design used a single approval process with conditional entry criteria, but we found that managing three separate approval processes&mdash;one per tier&mdash;was dramatically easier to maintain and troubleshoot. When a grants manager asks why an approval is stuck, you want to point them to a single, legible process rather than a branching tree of conditional steps.</p>
+
+        <h2>Reporting: Replacing the Master Status Tracker</h2>
+
+        <p>The most emotionally significant deliverable was replacing the master status tracker spreadsheet. This was the file the COO opened every Monday morning to understand the state of the grants portfolio. It was always slightly wrong because it depended on six people updating it independently, but it was the single source of truth for leadership visibility. Replacing it with something the team trusted was a critical adoption milestone.</p>
+
+        <p>We built a set of reports and dashboards that gave the COO the same information in real time, without manual updates. The primary dashboard included pipeline metrics (applications by stage), financial summaries (awarded vs. disbursed vs. remaining by program), compliance status (overdue reports flagged in red), and a grants timeline showing upcoming milestones across all active grants.</p>
+
+        <p>The SOQL query powering the core grants pipeline report illustrates how the single-object lifecycle model simplified reporting:</p>
+
+        <pre><code>SELECT
+    Grant_Program__r.Name,
+    Stage__c,
+    COUNT(Id) grant_count,
+    SUM(Award_Amount__c) total_awarded,
+    SUM(Total_Disbursed__c) total_disbursed,
+    SUM(Award_Amount__c) - SUM(Total_Disbursed__c) remaining_balance
+FROM Grant__c
+WHERE Fiscal_Year__c = '2025'
+    AND Stage__c NOT IN ('Draft', 'Withdrawn')
+GROUP BY Grant_Program__r.Name, Stage__c
+ORDER BY Grant_Program__r.Name, Stage__c</code></pre>
+
+        <p>That query would have required joining four separate spreadsheets in the old world. Here it was a single GROUP BY. The Total_Disbursed__c field was a roll-up summary from the Disbursement__c child records, and the Remaining Balance was a formula field on the report itself. No manual reconciliation. No stale data. The COO could open the dashboard at any point and see an accurate picture of the portfolio without asking anyone to update anything.</p>
+
+        <p>We also built a compliance dashboard that tracked Compliance_Report__c records by due date and submission status. Any report more than seven days overdue automatically triggered an escalation Flow that notified the assigned program officer and, if unresolved after fourteen days, the grants director. This replaced a manual process where someone checked a spreadsheet on Fridays and sent reminder emails by hand.</p>
+
+        <h2>Change Management: The Hardest Part</h2>
+
+        <p>I have built enough enterprise systems to know that the technical architecture is rarely what determines whether a project succeeds. The data model can be elegant. The Flows can be bulletproof. The dashboards can be beautiful. None of it matters if the people who need to use the system do not trust it, do not understand it, or do not see themselves in it.</p>
+
+        <p>Our change management strategy had three pillars:</p>
+
+        <p><strong>Co-design workshops.</strong> We ran weekly 90-minute sessions with the grants team for the first eight weeks of the build. Every design decision was presented, discussed, and adjusted based on their feedback. When we designed the Grant__c page layout, the grants manager physically rearranged printed field cards on a table until the layout matched her mental model of how she processed a grant. That layout is what we built. It was not the layout I would have designed, but it was the layout she would use.</p>
+
+        <p><strong>Parallel running.</strong> For the first full grant cycle after launch (approximately ten weeks), the team maintained both the spreadsheets and Salesforce. This was expensive in terms of staff time, but it was essential for building trust. Every Monday we compared the spreadsheet data against the Salesforce data and investigated any discrepancies. By week six, the discrepancies were consistently in the spreadsheets, not in Salesforce. That was the turning point. The team started treating Salesforce as the source of truth and the spreadsheets as the backup, and by week nine they stopped updating the spreadsheets entirely.</p>
+
+        <p><strong>Champion network.</strong> We identified two members of the grants team as system champions and gave them admin-lite permissions (report creation, list view management, and the ability to modify certain picklist values). This meant common customization requests could be handled internally without waiting for a Salesforce admin. It also gave those two individuals a sense of ownership that radiated outward to the rest of the team.</p>
+
+        <div class="blog-callout">
+            <span class="blog-callout__label">Key Takeaway</span>
+            <p>Parallel running is the most underrated change management technique in platform migrations. It is slow and it doubles the workload temporarily, but it gives the team empirical evidence that the new system works. You cannot argue people into trusting a new platform. You have to let them prove it to themselves.</p>
+        </div>
+
+        <h2>Results and Reflections</h2>
+
+        <p>Six months after full adoption, the metrics told a clear story. Grant application processing time dropped from an average of 23 business days to 9. The time from award decision to first disbursement went from 34 days to 11, primarily because the approval routing and disbursement scheduling were now automated rather than manual. Compliance report collection rates went from 74% on-time to 96%, driven by automated reminders and escalation Flows. And the COO stopped asking people to update the status tracker, because the dashboard was always current.</p>
+
+        <p>But the number I keep coming back to is this: the organization went through a funder audit four months after launch. In the old system, preparing for an audit took approximately three weeks of staff time to compile documentation, verify records, and produce reports. With the Salesforce platform, the grants director produced the complete audit package in two days. The auditors commented that it was the most organized documentation they had reviewed from an organization of that size.</p>
+
+        <p>The technical lessons were familiar ones, reinforced. Keep the data model as flat as the business logic allows. Use standard objects where they fit and custom objects where they do not, but never force a standard object into a role it was not designed for. Build the audit trail from day one, not as a retrofit. And invest heavily in the portal experience, because external users have no patience for systems that feel like they were designed for internal convenience.</p>
+
+        <p>The human lessons were less familiar and more important. The grants manager who maintained those 47 spreadsheets was not an obstacle to the transformation. She was its most valuable architect. Every formula she had built, every conditional formatting rule she had applied, every column she had added over the years was a business rule that nobody had documented. Our job was not to replace her expertise. It was to give it a more durable home.</p>
+
+        <!-- RELATED POSTS -->
+        <div class="related-posts">
+            <h3 class="related-posts__title">Related Posts</h3>
+            <div class="related-posts__grid">
+                <a href="migrating-2m-record-org.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Data Migration</span>
+                            <span class="article-card__date">12 min read</span>
+                        </div>
+                        <h4 class="article-card__title">Migrating a 2M-Record Org: How We Unified Three Salesforce Instances Into One</h4>
+                        <p class="article-card__desc">A multi-org consolidation for a national healthcare network &mdash; from data audit to validation to the final cutover weekend.</p>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+                <a href="esri-vs-salesforce-maps.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">GIS Integration</span>
+                            <span class="article-card__date">10 min read</span>
+                        </div>
+                        <h4 class="article-card__title">Why We Chose Esri Over Salesforce Maps: Integrating GIS Into an Economic Development Platform</h4>
+                        <p class="article-card__desc">When Salesforce Maps wasn't enough, we integrated Esri ArcGIS for spatial analysis, parcel tracking, and zoning overlays in an economic development org.</p>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </article>
+
+    <!-- CTA -->
+    <section class="cta-block">
+        <div class="cta-block__inner reveal">
+            <h3>Need a Salesforce architect?</h3>
+            <a href="../contact.html" class="btn btn--primary">Get in Touch <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="../index.html" class="footer__logo">Azlan<span class="nav__logo-dot">.</span></a>
+                <nav class="footer__nav">
+                    <a href="../salesforce.html">Salesforce</a>
+                    <a href="../blog.html">Blog</a>
+                    <a href="../ai-lab.html">AI Lab</a>
+                    <a href="../photography.html">Photography</a>
+                    <a href="../about.html">About</a>
+                    <a href="../contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../main.js"></script>
+</body>
+</html>

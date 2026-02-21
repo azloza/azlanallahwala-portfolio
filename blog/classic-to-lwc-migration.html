@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Migration: Moving a 10-Year-Old Org from Classic to Lightning Web Components — Azlan Allahwala</title>
+    <meta name="description" content="A senior architect's deep dive into migrating 80+ Visualforce pages and 30+ Aura components to Lightning Web Components for a logistics company — strategy, interop patterns, and hard-won lessons.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../animations.css">
+    <link rel="stylesheet" href="../atmosphere.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="../index.html" class="nav__logo">
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
+            <div class="nav__links" id="navLinks">
+                <a href="../salesforce.html" class="nav__link">Salesforce</a>
+                <a href="../blog.html" class="nav__link">Blog</a>
+                <a href="../ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="../photography.html" class="nav__link">Photography</a>
+                <a href="../about.html" class="nav__link">About</a>
+                <a href="../contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="../salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="../blog.html" class="mobile-nav__link" style="--i:1">Blog</a>
+            <a href="../ai-lab.html" class="mobile-nav__link" style="--i:2">AI Lab</a>
+            <a href="../photography.html" class="mobile-nav__link" style="--i:3">Photography</a>
+            <a href="../about.html" class="mobile-nav__link" style="--i:4">About</a>
+            <a href="../contact.html" class="mobile-nav__link" style="--i:5">Contact</a>
+        </div>
+        <div class="mobile-nav__footer"><span class="mobile-nav__email">azlanallahwala@gmail.com</span></div>
+    </div>
+
+    <section class="section-hero section-hero--blog">
+        <div class="section-hero__grain"></div>
+        <div class="section-hero__content">
+            <h1 class="reveal">The Great Migration: Moving a 10-Year-Old Org from Classic to Lightning Web Components</h1>
+            <p class="dek reveal" data-delay="100">How we untangled a decade of Visualforce and Aura debt for a logistics company — and what I would do differently the second time around.</p>
+        </div>
+    </section>
+
+    <article class="blog-article">
+        <a href="../blog.html" class="blog-back"><span class="arrow">&rarr;</span> Back to Blog</a>
+        <div class="blog-meta">
+            <div class="blog-meta__item">
+                <span class="blog-meta__label">Published</span>
+                <span class="blog-meta__value">December 2025</span>
+            </div>
+            <div class="blog-meta__item">
+                <span class="blog-meta__label">Read Time</span>
+                <span class="blog-meta__value">11 min</span>
+            </div>
+            <div class="blog-meta__tags">
+                <span class="tag tag--small">Lightning Migration</span>
+                <span class="tag tag--small">LWC</span>
+                <span class="tag tag--small">Aura</span>
+                <span class="tag tag--small">Visualforce</span>
+            </div>
+        </div>
+
+        <!-- BODY CONTENT -->
+
+        <p>When I first opened the org metadata export, I counted 83 Visualforce pages, 34 Aura bundles, 12 custom controllers with over 9,000 lines of Apex between them, and a handful of JavaScript remoting endpoints that hadn't been touched since 2016. The logistics company that owned this org had been on Salesforce for a decade. Every team, every process change, and every quick fix had left sediment in the codebase. The UI layer was a geological record of the platform's evolution — and it was time to modernize.</p>
+
+        <p>This is the story of how we migrated that entire front-end stack to Lightning Web Components over the course of eight months, without halting business operations and without a single data-loss incident. It was not clean, it was not painless, and the decisions we made along the way taught me more about pragmatic architecture than any certification ever could.</p>
+
+        <h2>Inheriting a Decade of Tech Debt</h2>
+
+        <p>The organization's Salesforce instance had grown organically. The earliest Visualforce pages dated back to 2014 and were written in a style that predated Lightning entirely — full-page overrides with inline CSS, JavaScript remoting calls that bypassed any semblance of a service layer, and Apex controllers that mixed query logic with presentation formatting. Some pages rendered HTML tables server-side by concatenating strings in Apex. Others used jQuery 1.x loaded from a static resource that had been uploaded once and never updated.</p>
+
+        <p>The Aura components came in a second wave around 2018 when the company made its first attempt at adopting Lightning Experience. A previous consulting team had built a set of custom components for shipment tracking, warehouse allocation, and driver dispatch. These Aura components were functional but tightly coupled — they communicated through application events fired broadly, with no clear contract between publisher and subscriber. A single event like <code>ShipmentUpdated</code> was handled by seven different components, each one interpreting the payload slightly differently.</p>
+
+        <p>The real problem was not just the code quality. It was the knowledge gap. The original developers were long gone. Documentation was nonexistent. The internal admin team could maintain configuration — flows, page layouts, validation rules — but the custom UI layer was a black box. When something broke, the response was to build a workaround rather than fix the root cause. The result was layers of workarounds stacked on top of each other, each one making the next migration incrementally harder.</p>
+
+        <h2>The Assessment and Audit Phase</h2>
+
+        <p>Before writing a single line of LWC code, we spent six weeks doing nothing but reading. I assigned two developers to the audit full-time. We built a spreadsheet that cataloged every Visualforce page and Aura component along five dimensions: usage frequency (from login history and page view analytics), business criticality (rated by the operations team), code complexity (cyclomatic complexity of the backing Apex), integration surface area (how many external systems or APIs the component touched), and data sensitivity (whether it handled PII or financial records).</p>
+
+        <p>We also ran the Salesforce Lightning Experience Readiness Report, but honestly, it told us what we already knew — the org was not ready. The more valuable exercise was mapping the dependency graph manually. We traced every Visualforce page to its controller, every controller to the objects it queried, every Aura component to the events it fired and handled, and every event to its subscribers. This dependency map became the single most important artifact of the entire project. Without it, we would have broken things we didn't even know existed.</p>
+
+        <div class="blog-callout">
+            <span class="blog-callout__label">Key Takeaway</span>
+            <p>Never start a migration by writing code. Start by building a complete dependency map. The time you invest in understanding the existing system will save you three times that amount in debugging broken integrations later. If you can't explain what a component does and who depends on it, you're not ready to replace it.</p>
+        </div>
+
+        <p>The audit surfaced a critical finding: only 31 of the 83 Visualforce pages were actively used. Nineteen had zero page views in the past twelve months. Another 33 were accessed fewer than ten times per month, mostly by a single admin who had bookmarked them years ago. That discovery immediately reduced the scope of what needed to be migrated versus what could simply be retired.</p>
+
+        <h2>The Migration Strategy: Rewrite, Refactor, or Retire</h2>
+
+        <p>We categorized every component into one of three buckets. The framework was simple but it forced discipline:</p>
+
+        <p><strong>Retire</strong> — pages and components with no active users or whose functionality had been superseded by declarative tools (flows, dynamic forms, Lightning record pages). We identified 27 Visualforce pages and 6 Aura components for retirement. We didn't delete them immediately. Instead, we added deprecation banners and monitored for 30 days. If nobody complained, they were archived in a static resource and removed from navigation.</p>
+
+        <p><strong>Refactor</strong> — components where the underlying Apex logic was sound but the UI layer needed replacement. This was the largest bucket: 38 Visualforce pages and 14 Aura components. For these, we kept the existing Apex controllers (sometimes renaming them to follow a consistent service-layer pattern) and built new LWC front-ends that called the same backend. This approach minimized risk because the business logic remained unchanged — we were only swapping the presentation layer.</p>
+
+        <p><strong>Rewrite</strong> — components where both the UI and the backend were problematic. These required new LWC components backed by new Apex classes built on a proper service-layer architecture. We identified 18 Visualforce pages and 14 Aura components for full rewrite. These were the high-complexity, high-usage components — the shipment tracker, the dispatch console, the warehouse dashboard. Getting these right mattered the most, so we scheduled them for the middle of the project timeline, after the team had built confidence on simpler refactors.</p>
+
+        <aside class="pull-quote">The hardest part of a migration is not building the new thing. It is deciding what does not need to be built at all.</aside>
+
+        <h2>Building the LWC Component Library</h2>
+
+        <p>One of the first architectural decisions was to invest heavily in a shared component library before building any feature-level components. The old Aura codebase suffered from rampant duplication — there were four different implementations of a data table, three modal dialogs, and two date pickers, none of which shared a common API. We were not going to repeat that mistake.</p>
+
+        <p>We built a base library of 16 reusable LWC components: a configurable data table with sorting, filtering, and inline editing; a modal system that supported stacking and focus trapping; a notification service using a singleton pattern with <code>lightning/messageService</code>; form field wrappers for all standard input types with consistent validation; and a set of layout primitives for responsive grids. Every feature-level component was required to compose from this library. If a developer needed something the library didn't provide, the rule was to build it as a library component first, then consume it.</p>
+
+        <p>Here is a simplified example of how we structured our base data table component to be composable and configuration-driven:</p>
+
+<pre><code>// logisticsDataTable.js
+import { LightningElement, api } from 'lwc';
+
+export default class LogisticsDataTable extends LightningElement {
+    @api columns = [];
+    @api records = [];
+    @api sortedBy;
+    @api sortDirection = 'asc';
+    @api enableInlineEdit = false;
+    @api keyField = 'Id';
+
+    _draftValues = [];
+
+    get hasRecords() {
+        return this.records &amp;&amp; this.records.length > 0;
+    }
+
+    handleSort(event) {
+        const { fieldName, sortDirection } = event.detail;
+        this.sortedBy = fieldName;
+        this.sortDirection = sortDirection;
+
+        const sorted = [...this.records].sort((a, b) => {
+            let valA = a[fieldName] || '';
+            let valB = b[fieldName] || '';
+            if (typeof valA === 'string') {
+                valA = valA.toLowerCase();
+                valB = valB.toLowerCase();
+            }
+            const direction = sortDirection === 'asc' ? 1 : -1;
+            return valA > valB ? direction : valA &lt; valB ? -direction : 0;
+        });
+
+        this.dispatchEvent(new CustomEvent('sorted', {
+            detail: { records: sorted, sortedBy: fieldName, sortDirection }
+        }));
+    }
+
+    handleSave(event) {
+        this.dispatchEvent(new CustomEvent('save', {
+            detail: { draftValues: event.detail.draftValues }
+        }));
+    }
+}</code></pre>
+
+        <p>The key principle was that the component never mutated its own data. Sorting produced a new event with sorted records; the parent decided whether to accept the change. Inline edits surfaced draft values through an event; the parent handled the Apex callout and refreshed the data. This unidirectional data flow was a deliberate departure from the old Aura style, where components freely modified shared state through two-way bindings and application-level events.</p>
+
+        <h2>Handling Aura-to-LWC Interoperability</h2>
+
+        <p>We couldn't migrate everything simultaneously. For three months, the org ran a hybrid UI where Aura and LWC components coexisted on the same Lightning pages. This interop period was the most technically challenging part of the project.</p>
+
+        <p>The fundamental issue is that Aura and LWC have different event systems. Aura uses application events and component events. LWC uses standard DOM events and Lightning Message Service (LMS). When an Aura component needs to talk to an LWC component, neither system can directly consume the other's events. Our solution was to build thin Aura wrapper components that acted as translators.</p>
+
+<pre><code>&lt;!-- auraToLwcBridge.cmp --&gt;
+&lt;aura:component&gt;
+    &lt;aura:handler event="c:ShipmentUpdatedEvent"
+                  action="{!c.handleAuraEvent}" /&gt;
+
+    &lt;lightning:messageChannel
+        type="ShipmentUpdate__c"
+        aura:id="shipmentChannel"
+        onMessage="{!c.handleLmsMessage}" /&gt;
+
+    &lt;c:shipmentTrackerLwc
+        shipmentId="{!v.currentShipmentId}"
+        onshipmentselected="{!c.handleLwcEvent}" /&gt;
+&lt;/aura:component&gt;
+
+// auraToLwcBridgeController.js
+({
+    handleAuraEvent: function(cmp, event) {
+        // Translate Aura application event to LMS for LWC consumers
+        var payload = {
+            shipmentId: event.getParam("shipmentId"),
+            status: event.getParam("status"),
+            source: "aura"
+        };
+        var channel = cmp.find("shipmentChannel");
+        channel.publish(payload);
+    },
+
+    handleLwcEvent: function(cmp, event) {
+        // Translate LWC DOM event back to Aura application event
+        var appEvent = $A.get("e.c:ShipmentSelectedEvent");
+        appEvent.setParams({
+            shipmentId: event.getParam("shipmentId")
+        });
+        appEvent.fire();
+    }
+})</code></pre>
+
+        <p>This bridge pattern allowed us to migrate components incrementally. We would replace an Aura component with its LWC equivalent, wrap it in a bridge if it still needed to communicate with remaining Aura components, and then remove the bridge once all its Aura neighbors had been migrated. We tracked bridge component count as a project metric — it peaked at 11 during month four and reached zero by month seven.</p>
+
+        <p>Lightning Message Service was the backbone of this strategy. We defined seven message channels that mapped to the core domain events in the logistics workflow: shipment updates, driver assignments, warehouse transfers, route optimizations, exception alerts, status changes, and bulk operations. Each channel had a strict schema documented in a shared wiki. Any component — Aura or LWC — could publish or subscribe through LMS, which gave us a technology-agnostic communication layer during the transition.</p>
+
+        <h2>Testing and Rollout Strategy</h2>
+
+        <p>Testing a UI migration is fundamentally different from testing a backend refactor. With backend changes, you can write unit tests that assert on return values. With a front-end migration, the behavior you're testing is visual and interactive — does the table render correctly, does the modal close when the user clicks outside it, does the form validation fire at the right time? We used a three-layer testing approach.</p>
+
+        <p>The first layer was Jest unit tests for every LWC component. We enforced 80% code coverage on the JavaScript layer, with particular emphasis on conditional rendering logic and event dispatch. We wrote approximately 340 Jest tests across the component library and feature components. These caught logic errors early but couldn't verify visual correctness.</p>
+
+        <p>The second layer was manual regression testing against a detailed test script. We wrote 62 test scenarios that covered the most critical user workflows — creating a shipment, assigning a driver, processing a warehouse transfer, generating an invoice. Each scenario was documented step-by-step with expected outcomes. We ran these in a full-copy sandbox with production-scale data. This layer caught the bugs that unit tests couldn't: CSS rendering issues, Lightning Data Service caching behavior, and edge cases with record types and page layout assignments.</p>
+
+        <p>The third layer was a phased production rollout using permission sets and custom permissions. We did not flip the switch for all 400 users at once. Instead, we rolled out in four waves over six weeks. Wave one was 15 power users from the operations team — the people who used the system eight hours a day and would find issues fastest. Wave two expanded to 60 users across operations and dispatch. Wave three added the warehouse teams. Wave four was everyone else. Each wave had a two-week bake period during which we monitored error logs, collected feedback through a dedicated Slack channel, and fixed issues before the next wave.</p>
+
+        <div class="blog-callout">
+            <span class="blog-callout__label">Key Takeaway</span>
+            <p>Phased rollouts are not optional for UI migrations. The bugs that surface in production are never the ones you anticipated in testing. Your most engaged users will find issues within hours that your QA team missed in weeks. Give them access first, listen aggressively, and fix fast before expanding the blast radius.</p>
+        </div>
+
+        <h2>Performance Gains and Measurable Outcomes</h2>
+
+        <p>The numbers told a compelling story. Average page load time for the shipment tracker dropped from 4.2 seconds (Visualforce with server-side rendering) to 1.1 seconds (LWC with wire service and client-side caching). The dispatch console, which previously required a full page reload to refresh driver assignments, became fully reactive — updates propagated through LMS in under 200 milliseconds. The warehouse dashboard, which had been crashing intermittently due to Aura's memory management issues with large datasets, ran stably with 10,000+ records using virtual scrolling in LWC.</p>
+
+        <p>Beyond performance, the reduction in maintenance overhead was significant. The total number of custom UI components dropped from 117 (83 VF + 34 Aura) to 48 LWC components. Lines of front-end code decreased by 40%. More importantly, the new codebase had a consistent architecture — every component followed the same patterns, used the same base library, and communicated through the same message channels. When a new developer joined the team three months after the migration, they were productive within a week. Under the old system, onboarding a developer to the Visualforce and Aura codebase had taken four to six weeks.</p>
+
+        <h2>Lessons Learned</h2>
+
+        <p>Eight months of migration distilled into the things I would tell myself if I were starting over:</p>
+
+        <p><strong>Map everything before you move anything.</strong> The dependency audit was the highest-ROI activity of the entire project. Every hour spent tracing event handlers and controller references saved us from breaking something in production. I would do it again, and I would spend even more time on it.</p>
+
+        <p><strong>Retire aggressively.</strong> Almost a third of the Visualforce pages were dead code. Migrating dead code is the purest form of waste. We should have run the usage analysis before the audit even began. If I had, I would have scoped the project at six months instead of eight.</p>
+
+        <p><strong>Invest in the component library early.</strong> The shared library paid dividends throughout the project. By month three, developers were composing new feature components in days instead of weeks because the building blocks were already there. The upfront cost felt slow at the time; in hindsight, it was the single best investment we made.</p>
+
+        <p><strong>Don't fear the bridge pattern.</strong> Aura-to-LWC interop is awkward, but bridge components are straightforward to build and straightforward to remove. The alternative — trying to migrate everything at once in a big-bang release — is far riskier. Incremental migration with bridge components gave us the ability to ship value continuously while reducing the blast radius of any single change.</p>
+
+        <p><strong>Treat LMS channel schemas like API contracts.</strong> We defined our message channel payloads in shared documentation and enforced them through code review. When one developer tried to add an undocumented field to the shipment update channel, the review caught it. That discipline prevented the kind of implicit coupling that had plagued the Aura event system.</p>
+
+        <p><strong>Plan for the hybrid period.</strong> There will be months where Aura and LWC coexist. Accept it, plan for it, and track bridge component count as a first-class metric. The goal is not to eliminate the hybrid state overnight — it is to ensure the hybrid state is stable and that the direction of travel is always toward LWC.</p>
+
+        <p>UI modernization on a mature Salesforce org is not a technology problem. It is a systems thinking problem — understanding what exists, deciding what matters, building the right abstractions, and managing change across a user base that depends on the system every day. The technology choices (LWC, LMS, Jest) are well-documented. The hard part is everything around them.</p>
+
+        <div class="related-posts">
+            <h3 class="related-posts__title">Related Posts</h3>
+            <div class="related-posts__grid">
+                <a href="governor-limit-crisis.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Performance</span>
+                            <span class="article-card__date">9 min</span>
+                        </div>
+                        <h4 class="article-card__title">When Flows Break at Scale</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+                <a href="migrating-2m-record-org.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Data Migration</span>
+                            <span class="article-card__date">12 min</span>
+                        </div>
+                        <h4 class="article-card__title">Migrating a 2M-Record Org</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </article>
+
+    <section class="cta-block">
+        <div class="cta-block__inner reveal">
+            <h3>Need a Salesforce architect?</h3>
+            <a href="../contact.html" class="btn btn--primary">Get in Touch <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="../index.html" class="footer__logo">Azlan<span class="nav__logo-dot">.</span></a>
+                <nav class="footer__nav">
+                    <a href="../salesforce.html">Salesforce</a>
+                    <a href="../blog.html">Blog</a>
+                    <a href="../ai-lab.html">AI Lab</a>
+                    <a href="../photography.html">Photography</a>
+                    <a href="../about.html">About</a>
+                    <a href="../contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../main.js"></script>
+</body>
+</html>

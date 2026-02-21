@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When Flows Break at Scale: Debugging a Governor Limit Crisis on a 500-User Org &mdash; Azlan Allahwala</title>
+    <meta name="description" content="A deep-dive into diagnosing and resolving governor limit failures in a 500-user Salesforce org at a financial services firm. Covers Flow recursion, bulkification patterns, and performance testing strategies.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../animations.css">
+    <link rel="stylesheet" href="../atmosphere.css">
+</head>
+<body>
+
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="../index.html" class="nav__logo">
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
+            <div class="nav__links" id="navLinks">
+                <a href="../salesforce.html" class="nav__link">Salesforce</a>
+                <a href="../blog.html" class="nav__link">Blog</a>
+                <a href="../ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="../photography.html" class="nav__link">Photography</a>
+                <a href="../about.html" class="nav__link">About</a>
+                <a href="../contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="../salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="../blog.html" class="mobile-nav__link" style="--i:1">Blog</a>
+            <a href="../ai-lab.html" class="mobile-nav__link" style="--i:2">AI Lab</a>
+            <a href="../photography.html" class="mobile-nav__link" style="--i:3">Photography</a>
+            <a href="../about.html" class="mobile-nav__link" style="--i:4">About</a>
+            <a href="../contact.html" class="mobile-nav__link" style="--i:5">Contact</a>
+        </div>
+        <div class="mobile-nav__footer"><span class="mobile-nav__email">azlanallahwala@gmail.com</span></div>
+    </div>
+
+    <section class="section-hero section-hero--blog">
+        <div class="section-hero__grain"></div>
+        <div class="section-hero__content">
+            <h1 class="reveal">When Flows Break at Scale: Debugging a Governor Limit Crisis on a 500-User Org</h1>
+            <p class="dek reveal" data-delay="100">How a 2 AM production outage at a financial services firm revealed cascading Flow recursion, and the bulkification patterns that fixed it for good.</p>
+        </div>
+    </section>
+
+    <article class="blog-article">
+        <a href="../blog.html" class="blog-back"><span class="arrow">&rarr;</span> Back to Blog</a>
+        <div class="blog-meta">
+            <div class="blog-meta__item">
+                <span class="blog-meta__label">Published</span>
+                <span class="blog-meta__value">November 2025</span>
+            </div>
+            <div class="blog-meta__item">
+                <span class="blog-meta__label">Read Time</span>
+                <span class="blog-meta__value">9 min</span>
+            </div>
+            <div class="blog-meta__tags">
+                <span class="tag tag--small">Performance</span>
+                <span class="tag tag--small">Governor Limits</span>
+                <span class="tag tag--small">Apex</span>
+            </div>
+        </div>
+
+        <!-- BODY CONTENT -->
+
+        <h2>The 2 AM Call Nobody Wants</h2>
+
+        <p>My phone lit up at 2:14 AM on a Tuesday. The message from the VP of Operations was terse: "Production is down. Nothing is saving. Users in Asia-Pacific can't process trades." For a financial services firm that handles cross-border transactions across three time zones, "nothing is saving" translates directly into regulatory exposure and lost revenue. Every minute mattered.</p>
+
+        <p>I pulled up the org's monitoring dashboard and saw the wreckage immediately. The error logs were flooded with a single exception: <code>System.LimitException: Too many DML statements: 151</code>. But this wasn't a new deployment gone wrong. The same automation had been running for months. What changed was volume: the firm had just onboarded 80 new users as part of a regional expansion, pushing the org from roughly 420 active users to just over 500. A batch process that ran nightly to reconcile transaction records had tipped over the edge.</p>
+
+        <p>The cruel thing about governor limits is that they don't degrade gracefully. You don't get a warning at 140 DML statements. You get silence at 149 and a brick wall at 151. Your transaction doesn't slow down&mdash;it dies. And in this case, it was taking a nightly reconciliation job with it, which meant downstream Flows that depended on those reconciled records were also failing in a cascade that was filling the debug logs faster than I could read them.</p>
+
+        <h2>Triage: Isolating the Bottleneck</h2>
+
+        <p>The first rule of production triage is: stop the bleeding before you diagnose the disease. I immediately disabled the scheduled batch job to prevent further failures from stacking up, then sent a status update to the operations team so the APAC desk knew the timeline. Only then did I open the debug logs.</p>
+
+        <p>Salesforce debug logs can be overwhelming. A single transaction can generate tens of thousands of lines. The trick is knowing what to filter for. I set the log levels to <code>APEX_CODE=FINEST</code> and <code>WORKFLOW=FINER</code>, then re-ran the batch process against a subset of 50 records in a sandbox we'd refreshed the previous week. What I was looking for was the DML_BEGIN and DML_END markers, and specifically, where they were being invoked relative to the loop structures.</p>
+
+        <p>Within minutes, the pattern was obvious. The debug log showed something like this:</p>
+
+<pre><code>15:42:03.112 (112847)|DML_BEGIN|[45]|Op:Update|Type:Transaction__c|Rows:1
+15:42:03.118 (118293)|DML_END|[45]
+15:42:03.119 (119001)|FLOW_START_INTERVIEWS_BEGIN|1
+15:42:03.125 (125440)|FLOW_START_INTERVIEW_BEGIN|Transaction_Reconciliation_Update
+15:42:03.198 (198712)|DML_BEGIN|[Flow]|Op:Update|Type:Account|Rows:1
+15:42:03.205 (205118)|DML_END|[Flow]
+15:42:03.206 (206331)|FLOW_START_INTERVIEWS_BEGIN|1
+15:42:03.211 (211894)|FLOW_START_INTERVIEW_BEGIN|Account_Risk_Score_Recalc
+15:42:03.289 (289100)|DML_BEGIN|[Flow]|Op:Update|Type:Risk_Assessment__c|Rows:1
+15:42:03.295 (295221)|DML_END|[Flow]
+15:42:03.296 (296017)|FLOW_START_INTERVIEWS_BEGIN|1
+15:42:03.301 (301445)|FLOW_START_INTERVIEW_BEGIN|Risk_Assessment_Notification
+15:42:03.378 (378200)|DML_BEGIN|[Flow]|Op:Insert|Type:Task|Rows:1
+...
+</code></pre>
+
+        <p>Each DML operation was triggering a record-change Flow, which performed its own DML, which triggered another Flow, which performed another DML. A single record update in the batch job was generating four or five DML operations through this chain. Multiply that by 200 records in the batch scope, and you're looking at 800-1000 DML statements in a single transaction&mdash;far beyond the 150-statement limit.</p>
+
+        <h2>The Hidden Recursion: Flow-Triggered Flows and Cascading DML</h2>
+
+        <p>Here is the part that makes this story worth telling. The automation wasn't built by one person. It was built by three different admins over eighteen months. Each Flow, in isolation, was perfectly reasonable:</p>
+
+        <p><strong>Flow 1: Transaction Reconciliation Update.</strong> When a <code>Transaction__c</code> record's status changed to "Reconciled," update the parent Account's <code>Last_Reconciliation_Date__c</code>.</p>
+
+        <p><strong>Flow 2: Account Risk Score Recalculation.</strong> When an Account's <code>Last_Reconciliation_Date__c</code> changed, recalculate the risk score and update the related <code>Risk_Assessment__c</code> record.</p>
+
+        <p><strong>Flow 3: Risk Assessment Notification.</strong> When a <code>Risk_Assessment__c</code> record's score crossed a threshold, create a Task for the compliance officer.</p>
+
+        <p>None of these Flows were wrong. Each one followed Salesforce best practices in isolation. But composed together, they formed a recursion chain where a single record update cascaded into four separate DML operations across three objects. The original batch job that worked fine with 50 records per batch scope was now processing 200 records (a previous admin had increased the scope size to "improve performance"), and 200 multiplied by 4 DML operations per record equals 800&mdash;well past the 150-statement governor limit.</p>
+
+        <aside class="pull-quote">
+            <p>Governor limits don't punish bad code. They punish invisible coupling between components that were each built correctly in isolation.</p>
+        </aside>
+
+        <p>This is the fundamental architectural problem with declarative automation at scale. Flows are incredibly powerful, but they lack the visibility that code provides. When you write an Apex trigger, you can see every callout, every DML statement, every loop in a single file. Flows distribute that logic across multiple automation components, and the interaction effects only reveal themselves under load.</p>
+
+        <h2>The Fix: Refactoring for Bulkification</h2>
+
+        <p>The immediate fix was straightforward: reduce the batch scope back to 50 records. That got production running again within the hour. But that was a band-aid. The real fix required rethinking the entire automation chain.</p>
+
+        <p>The approach I took was to replace the three cascading Flows with a single, bulkified Apex trigger on <code>Transaction__c</code> that handled all downstream updates in a controlled manner. Here's the before-and-after comparison that illustrates the difference.</p>
+
+        <p><strong>Before: The naive trigger pattern (effectively what the Flows were doing per-record)</strong></p>
+
+<pre><code>// ANTI-PATTERN: Per-record DML inside a loop
+trigger TransactionTrigger on Transaction__c (after update) {
+    for (Transaction__c txn : Trigger.new) {
+        Transaction__c oldTxn = Trigger.oldMap.get(txn.Id);
+
+        if (txn.Status__c == 'Reconciled' &amp;&amp;
+            oldTxn.Status__c != 'Reconciled') {
+
+            // DML #1: Update parent Account (PER RECORD!)
+            Account acc = [SELECT Id, Last_Reconciliation_Date__c
+                           FROM Account WHERE Id = :txn.Account__c];
+            acc.Last_Reconciliation_Date__c = Date.today();
+            update acc;
+
+            // DML #2: Recalculate risk score (PER RECORD!)
+            Risk_Assessment__c ra = [SELECT Id, Score__c
+                                     FROM Risk_Assessment__c
+                                     WHERE Account__c = :acc.Id
+                                     LIMIT 1];
+            ra.Score__c = RiskCalculator.recalculate(acc.Id);
+            update ra;
+
+            // DML #3: Create compliance task if threshold crossed
+            if (ra.Score__c > 75) {
+                insert new Task(
+                    Subject = 'Review High Risk Account',
+                    WhatId = acc.Id,
+                    OwnerId = ComplianceConfig.getOwnerId()
+                );
+            }
+        }
+    }
+}
+// Result: 3+ DML statements PER RECORD = 600 DML for 200 records
+</code></pre>
+
+        <p><strong>After: Bulkified trigger with collected DML</strong></p>
+
+<pre><code>trigger TransactionTrigger on Transaction__c (after update) {
+    Set&lt;Id&gt; reconciledAccountIds = new Set&lt;Id&gt;();
+
+    // Step 1: Collect — zero DML, zero SOQL
+    for (Transaction__c txn : Trigger.new) {
+        Transaction__c oldTxn = Trigger.oldMap.get(txn.Id);
+        if (txn.Status__c == 'Reconciled' &amp;&amp;
+            oldTxn.Status__c != 'Reconciled') {
+            reconciledAccountIds.add(txn.Account__c);
+        }
+    }
+
+    if (reconciledAccountIds.isEmpty()) return;
+
+    // Step 2: Query in bulk — 1 SOQL
+    Map&lt;Id, Account&gt; accounts = new Map&lt;Id, Account&gt;(
+        [SELECT Id, Last_Reconciliation_Date__c
+         FROM Account WHERE Id IN :reconciledAccountIds]
+    );
+
+    // Step 3: Prepare Account updates
+    for (Account acc : accounts.values()) {
+        acc.Last_Reconciliation_Date__c = Date.today();
+    }
+    update accounts.values(); // DML #1 — single bulk operation
+
+    // Step 4: Query risk assessments in bulk — 1 SOQL
+    List&lt;Risk_Assessment__c&gt; assessments = [
+        SELECT Id, Score__c, Account__c
+        FROM Risk_Assessment__c
+        WHERE Account__c IN :reconciledAccountIds
+    ];
+
+    // Step 5: Recalculate scores, collect tasks
+    List&lt;Task&gt; tasksToInsert = new List&lt;Task&gt;();
+    for (Risk_Assessment__c ra : assessments) {
+        ra.Score__c = RiskCalculator.recalculate(ra.Account__c);
+        if (ra.Score__c &gt; 75) {
+            tasksToInsert.add(new Task(
+                Subject = 'Review High Risk Account',
+                WhatId = ra.Account__c,
+                OwnerId = ComplianceConfig.getOwnerId()
+            ));
+        }
+    }
+    update assessments; // DML #2 — single bulk operation
+
+    if (!tasksToInsert.isEmpty()) {
+        insert tasksToInsert; // DML #3 — single bulk operation
+    }
+}
+// Result: Exactly 3 DML statements TOTAL regardless of batch size
+</code></pre>
+
+        <p>The difference is stark. The naive pattern executes 3+ DML statements per record, scaling linearly with volume. The bulkified version executes exactly 3 DML operations total, whether you're processing 1 record or 2,000. That's the entire philosophy of bulkification in a single example: collect first, operate once.</p>
+
+        <div class="blog-callout">
+            <div class="blog-callout__label">Key Takeaway</div>
+            <p>Bulkification is not an optimization&mdash;it is a survival strategy. On the Salesforce platform, any automation that performs DML inside a loop is a ticking time bomb. It will work in your sandbox with 5 test records. It will work in production with 50 users. And it will detonate the moment volume crosses a threshold you never tested for.</p>
+        </div>
+
+        <h2>The Governor Limit Reference You Actually Need</h2>
+
+        <p>Salesforce publishes a comprehensive list of governor limits in their documentation, but in my experience most architects only internalize the limits they've personally hit. Here are the ones that matter most in real-world, high-volume orgs&mdash;the limits I keep pinned to my desk:</p>
+
+        <p><strong>DML Statements: 150 per transaction.</strong> This is the one that bit us. Every <code>insert</code>, <code>update</code>, <code>delete</code>, or <code>upsert</code> call counts as one statement, regardless of how many records it includes. <code>update listOf200Records</code> counts as 1. Two hundred individual <code>update singleRecord</code> calls count as 200. This distinction is the entire basis of bulkification.</p>
+
+        <p><strong>SOQL Queries: 100 per synchronous transaction, 200 for asynchronous.</strong> Queries inside loops are the classic violation. But what catches people off guard is that Flow queries count against this limit too. A Flow with a Get Records element inside a loop will burn through this limit just as fast as a SOQL query inside a for-loop in Apex.</p>
+
+        <p><strong>Total records retrieved by SOQL: 50,000.</strong> This one is subtle. Even if you only run one query, if it returns more than 50,000 rows, you hit the limit. For orgs with large data volumes, this means your queries must be selective&mdash;indexed fields in WHERE clauses are not optional, they are mandatory.</p>
+
+        <p><strong>CPU Time: 10,000 ms synchronous, 60,000 ms asynchronous.</strong> This is the governor limit that reveals algorithmic inefficiency. If your trigger works correctly but times out, you likely have an O(n^2) pattern hiding somewhere&mdash;often a nested loop comparing two lists that should be using a Map for lookups.</p>
+
+        <p><strong>Heap Size: 6 MB synchronous, 12 MB asynchronous.</strong> This one hits hardest when you're serializing large data structures or processing attachment/file bodies. If you're building a complex in-memory data structure for processing, you need to think about whether you can process in chunks instead.</p>
+
+        <p><strong>Future Calls: 50 per transaction.</strong> And each future method counts individually. If you're making callouts to external systems inside automation, you need to batch those callouts rather than making one per record.</p>
+
+        <div class="blog-callout">
+            <div class="blog-callout__label">Key Takeaway</div>
+            <p>Governor limits are not arbitrary restrictions&mdash;they protect every tenant on the shared Salesforce infrastructure. Designing around them is not about working within constraints; it is about building automation that can scale by an order of magnitude without architectural changes. If your automation works today but breaks at 2x volume, it was never production-ready.</p>
+        </div>
+
+        <h2>Beyond the Fix: Preventing the Next Crisis</h2>
+
+        <p>After deploying the refactored trigger (behind a feature flag, with the old Flows deactivated but not deleted), I worked with the team to put safeguards in place so we would never get another 2 AM call for the same class of problem.</p>
+
+        <p><strong>Limit consumption monitoring in every test class.</strong> Every Apex test class now includes assertions against <code>Limits.getDmlStatements()</code> and <code>Limits.getQueries()</code>. We don't just assert that the code produces the right output&mdash;we assert that it does so within a defined performance envelope. If a future developer adds a query inside a loop, the test fails not because the result is wrong, but because the limit consumption exceeds the threshold.</p>
+
+        <p><strong>Volume testing as a deployment gate.</strong> We introduced a test data factory that generates records at 200x the expected single-transaction volume. Every trigger and Flow is tested with at least 200 records in the trigger context. This mimics the maximum batch size for Data Loader and API bulk operations and flushes out bulkification failures before they reach production.</p>
+
+        <p><strong>Automation inventory.</strong> We built a simple spreadsheet (later migrated to a custom metadata type) that catalogs every Flow, Process Builder, trigger, and workflow rule in the org, along with the objects they fire on and the DML operations they perform. When a new automation is proposed, we can trace the potential interaction chain before building anything. This is the kind of documentation that feels bureaucratic until it saves you from a cascading failure at 2 AM.</p>
+
+        <p><strong>Flow recursion guards.</strong> For the Flows that remained active, we implemented custom Apex actions that check a static variable before proceeding. If the Flow has already fired in the current transaction context, the guard short-circuits the execution. This is the same pattern experienced Apex developers have used with trigger handlers for years, but it requires deliberate implementation in the Flow world.</p>
+
+        <h2>The Architecture Lesson</h2>
+
+        <p>The deeper lesson from this incident isn't about Flows versus Apex. Flows are an excellent tool. The admin who built Flow 1 did exactly the right thing for a single-record use case. The problem was systemic: three independently correct automations composed into a system that nobody had analyzed as a whole.</p>
+
+        <p>In traditional software engineering, we call this emergent complexity. Each component passes its unit tests. The integration failures only appear at scale, under load, in production, at 2 AM. The Salesforce platform makes it remarkably easy to build powerful automation declaratively&mdash;and that same ease makes it possible for an org to accumulate dozens of interacting automations without anyone holding the architectural blueprint.</p>
+
+        <p>If you're a Solution Architect working on a Salesforce org with more than 200 users, I'd recommend three things. First, audit your automation inventory quarterly. Know every Flow, trigger, and Process Builder that fires on each object. Second, test every automation with at least 200 records in the trigger context, because that is the number that separates working-in-sandbox from surviving-in-production. Third, treat governor limits not as ceilings to avoid but as design constraints that inform your architecture from the start.</p>
+
+        <p>The org is stable now. The batch job processes 2,000 records nightly with a comfortable margin on every governor limit. The APAC team hasn't had a disruption since. And I keep my phone on vibrate at night&mdash;just in case.</p>
+
+        <div class="related-posts">
+            <h3 class="related-posts__title">Related Posts</h3>
+            <div class="related-posts__grid">
+                <a href="classic-to-lwc-migration.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">LWC Migration</span>
+                            <span class="article-card__date">11 min</span>
+                        </div>
+                        <h4 class="article-card__title">The Great Migration: Classic to LWC</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+                <a href="agentforce-service-desk.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Agentforce</span>
+                            <span class="article-card__date">10 min</span>
+                        </div>
+                        <h4 class="article-card__title">Building an Agentforce-Powered Service Desk</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </article>
+
+    <section class="cta-block">
+        <div class="cta-block__inner reveal">
+            <h3>Need a Salesforce architect?</h3>
+            <a href="../contact.html" class="btn btn--primary">Get in Touch <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="../index.html" class="footer__logo">Azlan<span class="nav__logo-dot">.</span></a>
+                <nav class="footer__nav">
+                    <a href="../salesforce.html">Salesforce</a>
+                    <a href="../blog.html">Blog</a>
+                    <a href="../ai-lab.html">AI Lab</a>
+                    <a href="../photography.html">Photography</a>
+                    <a href="../about.html">About</a>
+                    <a href="../contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../main.js"></script>
+</body>
+</html>

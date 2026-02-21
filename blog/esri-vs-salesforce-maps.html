@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why We Chose Esri Over Salesforce Maps: Integrating GIS Into an Economic Development Platform — Azlan Allahwala</title>
+    <meta name="description" content="A deep dive into why Esri ArcGIS was chosen over Salesforce Maps for spatial analysis, parcel tracking, and zoning overlays in an economic development Salesforce org.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../animations.css">
+    <link rel="stylesheet" href="../atmosphere.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="../index.html" class="nav__logo">
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
+            <div class="nav__links" id="navLinks">
+                <a href="../salesforce.html" class="nav__link">Salesforce</a>
+                <a href="../blog.html" class="nav__link nav__link--active">Blog</a>
+                <a href="../ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="../photography.html" class="nav__link">Photography</a>
+                <a href="../about.html" class="nav__link">About</a>
+                <a href="../contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="../salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="../blog.html" class="mobile-nav__link" style="--i:1">Blog</a>
+            <a href="../ai-lab.html" class="mobile-nav__link" style="--i:2">AI Lab</a>
+            <a href="../photography.html" class="mobile-nav__link" style="--i:3">Photography</a>
+            <a href="../about.html" class="mobile-nav__link" style="--i:4">About</a>
+            <a href="../contact.html" class="mobile-nav__link" style="--i:5">Contact</a>
+        </div>
+        <div class="mobile-nav__footer"><span class="mobile-nav__email">azlanallahwala@gmail.com</span></div>
+    </div>
+
+    <!-- SECTION HERO -->
+    <section class="section-hero section-hero--blog">
+        <div class="section-hero__grain"></div>
+        <div class="section-hero__content">
+            <a href="../blog.html" class="blog-back"><span class="arrow">&rarr;</span> All Posts</a>
+            <h1 class="reveal">Why We Chose Esri Over Salesforce Maps: Integrating GIS Into an Economic Development Platform</h1>
+            <div class="blog-meta">
+                <div class="blog-meta__item">
+                    <span class="blog-meta__label">By</span>
+                    <span class="blog-meta__value">Azlan Allahwala</span>
+                </div>
+                <div class="blog-meta__item">
+                    <span class="blog-meta__label">Date</span>
+                    <span class="blog-meta__value">September 2025</span>
+                </div>
+                <div class="blog-meta__item">
+                    <span class="blog-meta__label">Read</span>
+                    <span class="blog-meta__value">10 min</span>
+                </div>
+                <div class="blog-meta__tags">
+                    <span class="tag tag--small">Esri</span>
+                    <span class="tag tag--small">GIS</span>
+                    <span class="tag tag--small">Salesforce Maps</span>
+                    <span class="tag tag--small">Economic Development</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BLOG ARTICLE -->
+    <article class="blog-article">
+
+        <p>Most Salesforce implementations treat location as an afterthought &mdash; a geocoded address field, maybe a pin on a map. That works fine when you are managing sales territories or optimizing delivery routes. But when your users need to answer questions like "show me every vacant parcel within half a mile of the new transit corridor that is zoned for mixed-use commercial and sits inside a federally designated Opportunity Zone," you discover very quickly that Salesforce Maps was not built for that conversation.</p>
+
+        <p>This is the story of how we integrated Esri ArcGIS into a Salesforce-based economic development platform &mdash; why we made that decision, how we architected the integration, and what we learned about bridging two very different ecosystems that each think they own the concept of "location."</p>
+
+        <h2>The Project: Economic Development on Salesforce</h2>
+
+        <p>An economic development organization came to us with a familiar problem. They had been tracking business incentives, site selection inquiries, and parcel data across a constellation of disconnected tools: an aging GIS system that only two people in the agency knew how to operate, a set of Access databases for incentive tracking, spreadsheets for prospect pipeline management, and a shared inbox for handling site selection requests from businesses considering relocation.</p>
+
+        <p>The goal was to consolidate everything onto Salesforce. Accounts would represent businesses and property owners. Opportunities would track incentive applications and site selection inquiries. Custom objects would model parcels, zoning districts, incentive programs, and infrastructure assets. Experience Cloud would give external stakeholders &mdash; developers, realtors, business owners &mdash; a portal to search available sites and submit applications.</p>
+
+        <p>All of that was straightforward Salesforce architecture. The complication was the map. Every single workflow in this agency eventually came back to geography. A staff member reviewing an incentive application needed to see the parcel boundaries, the surrounding zoning, the proximity to utilities and transit, the demographic profile of the census tract, and the flood zone designation &mdash; all layered on top of each other, all queryable, all tied back to the Salesforce record they were working on.</p>
+
+        <p>The initial assumption from stakeholders was that Salesforce Maps would handle this. It did not.</p>
+
+        <h2>Where Salesforce Maps Falls Short</h2>
+
+        <p>Let me be clear: Salesforce Maps is a solid product for what it was designed to do. If you need to optimize field service routes, visualize account locations on a map, or do territory planning based on geographic boundaries, it handles those use cases well. The route optimization engine is genuinely good. The geocoding is reliable. The integration with Salesforce data is seamless because it is a native product.</p>
+
+        <p>But Salesforce Maps is not a GIS. That distinction matters enormously, and it is one that gets glossed over in a lot of vendor conversations. Here is where we hit walls:</p>
+
+        <ul>
+            <li><strong>No parcel-level geometry.</strong> Salesforce Maps works with points (addresses) and simple polygons (territories). It has no concept of parcel boundaries, irregular lot shapes, or cadastral data. The agency needed to display and query against 180,000+ parcel polygons with associated attribute data &mdash; lot area, frontage, assessed value, last sale date, improvement ratio. Salesforce Maps cannot ingest, store, or render that kind of vector data.</li>
+            <li><strong>No layer overlay and spatial analysis.</strong> The agency needed to stack multiple geographic layers &mdash; zoning districts, flood zones, Opportunity Zones, enterprise zones, utility service areas, transit corridors &mdash; and run intersection queries against them. "Find all parcels that are zoned C-2 or C-3, inside an Opportunity Zone, not in a flood plain, with at least 2 acres and road frontage on a state highway." That is a spatial query. Salesforce Maps does not support spatial predicates like intersects, contains, within distance, or overlay analysis.</li>
+            <li><strong>No custom basemap or tile layer support.</strong> The agency maintained their own aerial imagery, updated annually by their county GIS department. They needed to display this as the base layer, not Google Maps or Mapbox tiles. Salesforce Maps does not support custom tile services or Web Map Tile Services (WMTS).</li>
+            <li><strong>No demographic or census data integration.</strong> Economic development decisions depend heavily on demographic context &mdash; population density, median household income, labor force characteristics, commute patterns. Esri has the entire American Community Survey, LEHD Origin-Destination data, and dozens of proprietary demographic datasets built into its platform. Salesforce Maps has no equivalent.</li>
+            <li><strong>No geoprocessing.</strong> The agency needed to run buffer analyses, drive-time polygons, and site suitability models. These are standard GIS operations. They do not exist in Salesforce Maps.</li>
+        </ul>
+
+        <p>We realized within the first two weeks of discovery that Salesforce Maps would handle maybe 15% of the geographic requirements. The remaining 85% required a real GIS platform.</p>
+
+        <div class="blog-callout">
+            <span class="blog-callout__label">Key Takeaway</span>
+            <p>Salesforce Maps excels at route optimization, territory management, and geocoding &mdash; the operational logistics of "where are my customers and how do I get to them." But it was never designed for spatial analysis, parcel-level data management, or the kind of multi-layer geographic intelligence that GIS-dependent organizations require. Knowing where that boundary is early in a project saves months of workaround architecture.</p>
+        </div>
+
+        <h2>What Esri ArcGIS Brings to the Table</h2>
+
+        <p>Esri ArcGIS is the dominant GIS platform in government and economic development for good reason. The agency was already paying for ArcGIS Online licenses through a statewide enterprise agreement, which gave us access to the full stack: ArcGIS Online for hosted feature services and web maps, ArcGIS REST API for programmatic access, the ArcGIS JavaScript SDK for custom map rendering, and the Living Atlas &mdash; Esri's massive library of curated geographic datasets.</p>
+
+        <p>Here is what Esri gave us that Salesforce Maps could not:</p>
+
+        <ul>
+            <li><strong>Feature services with full vector geometry.</strong> We published the agency's parcel dataset as a hosted feature service on ArcGIS Online. Each parcel was a polygon with 40+ attribute fields. The feature service supported spatial queries natively &mdash; find all features that intersect a given geometry, fall within a buffer distance, or overlap with another layer.</li>
+            <li><strong>Multi-layer web maps.</strong> We built web maps in ArcGIS Online that stacked parcels, zoning, flood zones, Opportunity Zones, utility service areas, and the agency's custom aerial basemap into a single configurable view. Users could toggle layers, adjust transparency, and click any feature to see its attributes.</li>
+            <li><strong>Spatial query engine.</strong> The ArcGIS REST API supports a full spatial query language. You can pass in a geometry (a point, polygon, or envelope), specify a spatial relationship (intersects, contains, within, overlaps), and get back all matching features with their attributes and geometries. This is the foundation of every "find sites that match these criteria" workflow.</li>
+            <li><strong>Demographic enrichment.</strong> Esri's GeoEnrichment service lets you pass in a geometry and get back demographic, economic, and consumer spending data for that area. We used this to auto-populate demographic profiles on Salesforce records &mdash; when a staff member created a new site selection inquiry, the system would pull the relevant census tract demographics directly from Esri.</li>
+            <li><strong>Geoprocessing services.</strong> We used Esri's network analysis services to generate drive-time polygons (show me everything within a 15-minute drive of this site) and their geometry services for buffer and overlay operations.</li>
+        </ul>
+
+        <p>The Esri platform gave us a spatial analysis engine that could answer the kinds of questions this agency actually asked. The challenge was making it talk to Salesforce.</p>
+
+        <h2>Integration Architecture: Connecting Esri and Salesforce</h2>
+
+        <p>The architecture we built has three layers: a data synchronization layer that keeps parcel and zoning data flowing between systems, an API integration layer that lets Salesforce execute spatial queries against Esri in real time, and a UI layer that embeds interactive Esri maps directly into Salesforce Lightning pages.</p>
+
+        <p>Here is how each layer works:</p>
+
+        <h3>Data Synchronization</h3>
+
+        <p>The agency's parcel data lives authoritatively in Esri. County GIS staff update parcel boundaries, zoning designations, and land use codes in ArcGIS on a weekly cycle. We built a nightly sync process using a scheduled Apex batch job that calls the Esri Feature Service REST API, pulls down any parcels modified since the last sync, and upserts the attribute data into a custom <code>Parcel__c</code> object in Salesforce. We do not store the geometry in Salesforce &mdash; that stays in Esri. Salesforce stores the parcel ID (APN), centroid coordinates, and the attribute fields that staff need for filtering and reporting. The full polygon geometry is rendered from Esri when the map component loads.</p>
+
+        <h3>Real-Time Spatial Queries via Apex</h3>
+
+        <p>When a user needs to run a spatial search &mdash; for example, finding all available parcels within a quarter mile of a prospect's preferred location that meet their zoning and size requirements &mdash; the request goes from a Lightning Web Component to an Apex controller, which constructs a REST callout to the Esri Feature Service query endpoint. The callout passes in the geometry (typically a buffer around a point), the spatial relationship (intersects), and an attribute WHERE clause (zoning and acreage filters). Esri returns matching features as GeoJSON, and the Apex method parses the response and returns it to the LWC for display.</p>
+
+        <p>Here is a simplified version of the Apex callout that powers spatial queries:</p>
+
+<pre><code>public class EsriSpatialQueryService {
+
+    private static final String FEATURE_SERVICE_URL =
+        'https://services.arcgis.com/{orgId}/arcgis/rest/services/Parcels/FeatureServer/0/query';
+
+    /**
+     * Executes a spatial query against the Esri parcel feature service.
+     * @param longitude  Center point longitude
+     * @param latitude   Center point latitude
+     * @param bufferMeters  Search radius in meters
+     * @param zoningCodes   List of acceptable zoning codes (e.g., ['C-2','C-3','MU'])
+     * @param minAcreage    Minimum parcel size in acres
+     * @return List of matching parcel results with attributes
+     */
+    @AuraEnabled(cacheable=true)
+    public static List&lt;ParcelResult&gt; findParcelsNearPoint(
+        Decimal longitude, Decimal latitude,
+        Integer bufferMeters, List&lt;String&gt; zoningCodes,
+        Decimal minAcreage
+    ) {
+        // Build the spatial filter geometry (point + buffer)
+        String geometryParam = '{"x":' + longitude + ',"y":' + latitude
+            + ',"spatialReference":{"wkid":4326}}';
+
+        // Build the attribute WHERE clause
+        String zoningFilter = 'ZONING_CODE IN (\''
+            + String.join(zoningCodes, '\',\'') + '\')';
+        String whereClause = zoningFilter
+            + ' AND ACREAGE >= ' + minAcreage
+            + ' AND VACANCY_STATUS = \'Vacant\'';
+
+        // Construct the REST request
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(FEATURE_SERVICE_URL
+            + '?where=' + EncodingUtil.urlEncode(whereClause, 'UTF-8')
+            + '&geometry=' + EncodingUtil.urlEncode(geometryParam, 'UTF-8')
+            + '&geometryType=esriGeometryPoint'
+            + '&spatialRel=esriSpatialRelIntersects'
+            + '&distance=' + bufferMeters
+            + '&units=esriSRUnit_Meter'
+            + '&outFields=APN,ACREAGE,ZONING_CODE,ASSESSED_VALUE,OWNER_NAME'
+            + '&returnGeometry=true'
+            + '&f=geojson'
+            + '&token=' + getEsriToken()
+        );
+        req.setMethod('GET');
+        req.setTimeout(30000);
+
+        Http http = new Http();
+        HttpResponse res = http.send(req);
+
+        if (res.getStatusCode() != 200) {
+            throw new AuraHandledException(
+                'Esri query failed: ' + res.getStatusCode()
+            );
+        }
+
+        return parseGeoJsonResponse(res.getBody());
+    }
+
+    private static String getEsriToken() {
+        Esri_Settings__c settings = Esri_Settings__c.getOrgDefaults();
+        // Token refresh logic omitted for brevity
+        return settings.Access_Token__c;
+    }
+
+    private static List&lt;ParcelResult&gt; parseGeoJsonResponse(String body) {
+        List&lt;ParcelResult&gt; results = new List&lt;ParcelResult&gt;();
+        Map&lt;String, Object&gt; geoJson =
+            (Map&lt;String, Object&gt;) JSON.deserializeUntyped(body);
+        List&lt;Object&gt; features =
+            (List&lt;Object&gt;) geoJson.get('features');
+
+        for (Object feat : features) {
+            Map&lt;String, Object&gt; feature = (Map&lt;String, Object&gt;) feat;
+            Map&lt;String, Object&gt; props =
+                (Map&lt;String, Object&gt;) feature.get('properties');
+            ParcelResult pr = new ParcelResult();
+            pr.apn = (String) props.get('APN');
+            pr.acreage = (Decimal) props.get('ACREAGE');
+            pr.zoningCode = (String) props.get('ZONING_CODE');
+            pr.assessedValue = (Decimal) props.get('ASSESSED_VALUE');
+            pr.ownerName = (String) props.get('OWNER_NAME');
+            pr.geometry = JSON.serialize(feature.get('geometry'));
+            results.add(pr);
+        }
+        return results;
+    }
+
+    public class ParcelResult {
+        @AuraEnabled public String apn;
+        @AuraEnabled public Decimal acreage;
+        @AuraEnabled public String zoningCode;
+        @AuraEnabled public Decimal assessedValue;
+        @AuraEnabled public String ownerName;
+        @AuraEnabled public String geometry;
+    }
+}</code></pre>
+
+        <p>A few things to note about this pattern. We cache the results with <code>@AuraEnabled(cacheable=true)</code> because spatial queries against the same parameters should return consistent results within a reasonable window, and caching reduces callout volume against the Esri service. The Esri token is stored in a protected custom setting and refreshed via a scheduled job &mdash; never hardcoded or exposed to the client. And we return the geometry as a serialized JSON string so the LWC can pass it directly to the ArcGIS JavaScript SDK for rendering without a second round trip.</p>
+
+        <h2>Building the Map Component: Esri Inside Lightning</h2>
+
+        <p>The most visible piece of the integration is the Lightning Web Component that embeds an interactive Esri map directly into Salesforce record pages. Staff open a parcel record, a site selection inquiry, or an incentive application, and they see a fully functional ArcGIS map rendered inline &mdash; with parcel boundaries, zoning overlays, aerial imagery, and interactive tools for measurement, buffering, and layer toggling.</p>
+
+        <p>We use the ArcGIS JavaScript SDK loaded via a static resource (since LWC does not allow external script tags natively). The component initializes the map, loads the relevant feature layers from Esri, and centers the view on the geometry associated with the current Salesforce record.</p>
+
+<pre><code>// esriMapViewer.js
+import { LightningElement, api, wire } from 'lwc';
+import { loadScript, loadStyle } from 'lightning/platformResourceLoader';
+import ESRI_SDK from '@salesforce/resourceUrl/arcgis_js_sdk';
+import getParcelGeometry from
+    '@salesforce/apex/EsriMapController.getParcelGeometry';
+import getMapConfig from
+    '@salesforce/apex/EsriMapController.getMapConfig';
+
+export default class EsriMapViewer extends LightningElement {
+    @api recordId;
+    mapView;
+    esriLoaded = false;
+
+    @wire(getMapConfig)
+    mapConfig;
+
+    async connectedCallback() {
+        try {
+            await Promise.all([
+                loadScript(this, ESRI_SDK + '/init.js'),
+                loadStyle(this, ESRI_SDK + '/esri/themes/dark/main.css')
+            ]);
+            this.esriLoaded = true;
+            this.initializeMap();
+        } catch (error) {
+            console.error('Failed to load Esri SDK:', error);
+        }
+    }
+
+    async initializeMap() {
+        const [Map, MapView, FeatureLayer, GraphicsLayer, Graphic] =
+            await Promise.all([
+                this.loadEsriModule('esri/Map'),
+                this.loadEsriModule('esri/views/MapView'),
+                this.loadEsriModule('esri/layers/FeatureLayer'),
+                this.loadEsriModule('esri/layers/GraphicsLayer'),
+                this.loadEsriModule('esri/Graphic')
+            ]);
+
+        const config = this.mapConfig.data;
+
+        // Initialize map with agency's custom basemap
+        const map = new Map({
+            basemap: {
+                baseLayers: [{
+                    url: config.aerialTileServiceUrl,
+                    type: 'tile'
+                }]
+            }
+        });
+
+        // Create the map view
+        this.mapView = new MapView({
+            container: this.template.querySelector('.map-container'),
+            map: map,
+            zoom: 16,
+            center: [-78.6382, 35.7796] // Default center
+        });
+
+        // Add feature layers: parcels, zoning, opportunity zones
+        const parcelLayer = new FeatureLayer({
+            url: config.parcelServiceUrl,
+            outFields: ['APN', 'ACREAGE', 'ZONING_CODE', 'OWNER_NAME'],
+            popupTemplate: {
+                title: 'Parcel {APN}',
+                content: [
+                    { type: 'fields', fieldInfos: [
+                        { fieldName: 'ACREAGE', label: 'Acres' },
+                        { fieldName: 'ZONING_CODE', label: 'Zoning' },
+                        { fieldName: 'OWNER_NAME', label: 'Owner' }
+                    ]}
+                ]
+            },
+            renderer: {
+                type: 'simple',
+                symbol: {
+                    type: 'simple-fill',
+                    color: [232, 93, 58, 0.15],
+                    outline: { color: [232, 93, 58, 0.6], width: 1 }
+                }
+            }
+        });
+
+        const zoningLayer = new FeatureLayer({
+            url: config.zoningServiceUrl,
+            visible: false, // Toggled by user
+            opacity: 0.4
+        });
+
+        map.addMany([parcelLayer, zoningLayer]);
+
+        // Load and highlight the current record's parcel
+        this.loadRecordGeometry(Graphic, GraphicsLayer, map);
+    }
+
+    async loadRecordGeometry(Graphic, GraphicsLayer, map) {
+        try {
+            const result = await getParcelGeometry({
+                recordId: this.recordId
+            });
+            if (result &amp;&amp; result.geometry) {
+                const geom = JSON.parse(result.geometry);
+                const highlightLayer = new GraphicsLayer();
+                const graphic = new Graphic({
+                    geometry: {
+                        type: 'polygon',
+                        rings: geom.coordinates[0],
+                        spatialReference: { wkid: 4326 }
+                    },
+                    symbol: {
+                        type: 'simple-fill',
+                        color: [255, 200, 50, 0.3],
+                        outline: { color: [255, 200, 50, 1], width: 2.5 }
+                    }
+                });
+                highlightLayer.add(graphic);
+                map.add(highlightLayer);
+                this.mapView.goTo(graphic.geometry.extent.expand(2));
+            }
+        } catch (error) {
+            console.error('Failed to load parcel geometry:', error);
+        }
+    }
+
+    loadEsriModule(modulePath) {
+        return new Promise((resolve) => {
+            window.require([modulePath], (module) => resolve(module));
+        });
+    }
+}</code></pre>
+
+        <p>The component is placed on record pages via Lightning App Builder. For parcel records, it loads and highlights the specific parcel polygon. For site selection inquiry records, it centers on the prospect's area of interest and highlights all parcels that match their criteria. For incentive application records, it shows the subject parcel along with the surrounding zoning and Opportunity Zone boundaries &mdash; giving reviewers the geographic context they need to evaluate the application without leaving Salesforce.</p>
+
+        <div class="pull-quote">
+            <p>The real power of this integration is not that users can see a map in Salesforce. It is that the map is not just a picture &mdash; it is a live spatial query engine connected to the same data model that drives their workflows, approvals, and reports.</p>
+            <cite>Azlan Allahwala, reflecting on the project</cite>
+        </div>
+
+        <h2>Data Flow: Keeping Two Systems in Sync</h2>
+
+        <p>One of the harder architectural decisions was figuring out which system owns which data and how changes propagate. We settled on a clear ownership model:</p>
+
+        <ul>
+            <li><strong>Esri owns all geographic data.</strong> Parcel geometry, zoning boundaries, flood zones, aerial imagery, and any dataset that is fundamentally spatial lives in and is maintained through ArcGIS. County GIS staff use ArcGIS Pro for editing. Changes publish to ArcGIS Online feature services automatically.</li>
+            <li><strong>Salesforce owns all business process data.</strong> Incentive applications, site selection inquiries, contact records, activity history, approval workflows, and reporting all live in Salesforce. This is the system of record for "what happened with this parcel from a business perspective."</li>
+            <li><strong>The parcel ID (APN) is the shared key.</strong> Every parcel record in Salesforce carries the Assessor's Parcel Number as an external ID. Every feature in the Esri parcel service has the same APN as an attribute. This is the join key for every query, every sync, and every UI linkage between the two systems.</li>
+        </ul>
+
+        <p>Data flows in both directions, but through controlled channels:</p>
+
+        <p><strong>Esri to Salesforce (nightly batch):</strong> A scheduled Apex batch job runs at 2 AM, queries the Esri feature service for parcels modified in the last 24 hours (using the <code>EditDate</code> field), and upserts attribute data into <code>Parcel__c</code> records. This keeps Salesforce current with zoning changes, ownership transfers, and other updates made by the county. The batch processes in chunks of 200 to stay within governor limits, and logs sync results to a custom <code>Integration_Log__c</code> object for auditability.</p>
+
+        <p><strong>Salesforce to Esri (event-driven):</strong> When a staff member updates the status of a parcel in Salesforce &mdash; marking it as "Under Incentive Agreement" or "Available for Development" &mdash; a platform event fires. A subscriber process picks up the event and makes a callout to the Esri feature service to update the corresponding attribute on the parcel feature. This ensures the web map always reflects the current development status without waiting for a batch cycle.</p>
+
+        <p>We considered using Salesforce Connect with an OData adapter to create a live virtual connection to Esri data, but rejected that approach. The Esri feature service REST API does not expose an OData endpoint natively, and the overhead of building a middleware OData wrapper was not justified when the batch sync pattern handled our requirements cleanly. External Objects also have significant limitations around reporting, SOQL joins, and trigger support that would have created friction in downstream business processes.</p>
+
+        <div class="blog-callout">
+            <span class="blog-callout__label">Key Takeaway</span>
+            <p>Resist the temptation to make one system the master of everything. Geographic data should live in a GIS. Business process data should live in your CRM. Define a clean shared key, build controlled sync channels, and accept that some data will be eventually consistent rather than real-time. The alternative &mdash; trying to force Salesforce to be a GIS or Esri to be a CRM &mdash; creates a system that is bad at both.</p>
+        </div>
+
+        <h2>Results and What the Agency Got</h2>
+
+        <p>The platform went live after a five-month build. Here is what changed for the agency:</p>
+
+        <p><strong>Site selection response time dropped from weeks to hours.</strong> Previously, when a business inquired about available sites, a staff member had to email the GIS team, wait for them to run a manual analysis, receive a PDF map, then cross-reference it with spreadsheet data about incentive eligibility. Now, the staff member opens the inquiry record, clicks "Find Matching Sites" in the LWC, and gets an interactive map of every parcel that meets the prospect's criteria &mdash; with zoning, demographics, and incentive eligibility calculated on the fly.</p>
+
+        <p><strong>Incentive review gained geographic context.</strong> Reviewers approving incentive applications can now see exactly where the subject parcel sits in relation to Opportunity Zones, transit corridors, and existing development. The spatial context that previously lived only in the GIS analyst's head is now embedded in the approval workflow.</p>
+
+        <p><strong>Public-facing site search replaced a broken PDF map.</strong> The agency's Experience Cloud portal includes an embedded Esri map where developers and realtors can search available sites by location, zoning, size, and incentive eligibility. Leads flow directly into Salesforce when a user submits an inquiry from the portal. This replaced a static PDF that was updated quarterly and was perpetually out of date.</p>
+
+        <p><strong>Reporting bridged the spatial and business worlds.</strong> Because parcel attributes sync nightly into Salesforce, the agency can build standard Salesforce reports and dashboards that include geographic dimensions &mdash; incentive dollars by zoning district, vacancy rates by council district, development activity by Opportunity Zone. The data lives in Salesforce, so it works with existing report types, dashboards, and CRM Analytics datasets without any custom reporting infrastructure.</p>
+
+        <h2>Lessons Learned</h2>
+
+        <p>After deploying this integration and supporting it through the first six months of production use, here are the lessons I would pass along to anyone considering a similar architecture:</p>
+
+        <p><strong>Evaluate Salesforce Maps honestly before adding another system.</strong> If your geographic requirements are limited to "show me where my accounts are on a map" and "optimize these field service routes," Salesforce Maps is the right choice and you should not add the complexity of an Esri integration. The threshold for bringing in Esri is when you need true spatial analysis &mdash; polygon-on-polygon queries, multi-layer overlays, or geoprocessing. Be honest about whether your use case actually requires that. Ours did. Many do not.</p>
+
+        <p><strong>The ArcGIS JavaScript SDK in a static resource is not ideal, but it works.</strong> Ideally, you would load the Esri SDK from their CDN. LWC's Locker Service makes that complicated because it restricts access to the global <code>window</code> object and certain DOM APIs. Packaging the SDK as a static resource works but creates a version management burden &mdash; you have to manually update the resource when Esri releases a new SDK version. We are monitoring Salesforce's evolving Locker Service policies to see if CDN loading becomes more practical.</p>
+
+        <p><strong>Governor limits are the constant constraint.</strong> Every Esri callout from Apex counts against your org's callout limits (100 per transaction, 120-second cumulative timeout). Spatial queries that return large feature sets can hit the 12 MB heap limit when you parse the GeoJSON response. We mitigated this by limiting result sets (use <code>resultRecordCount</code> on the Esri query), paginating large syncs, and caching aggressively with Platform Cache for repeat queries.</p>
+
+        <p><strong>Invest in the data model bridge early.</strong> The mapping between Esri feature attributes and Salesforce fields seems trivial at first, but it has implications for field types (Esri uses different numeric precision than Salesforce), null handling (Esri features can have null geometry; Salesforce records cannot have null external IDs), and picklist alignment (Esri zoning codes need to match Salesforce picklist values exactly). We spent more time debugging sync discrepancies than we expected, and a thorough field mapping document created during the design phase would have saved us significant rework.</p>
+
+        <p><strong>Security requires thought on both sides.</strong> Esri tokens should never be exposed to the client. We generate and refresh tokens server-side in Apex using OAuth 2.0 client credentials, store them in a protected custom setting with field-level encryption, and pass data to the LWC &mdash; never the token. Named Credentials would be the cleaner approach, but at the time of this build, Named Credentials did not support the Esri token exchange flow cleanly. That has improved in recent Salesforce releases and is worth revisiting.</p>
+
+        <p>This was one of the most technically interesting Salesforce projects I have worked on, precisely because it required bridging two platforms that each have deep opinions about how location data should be managed. The result is a system that gives users the spatial intelligence of a GIS and the workflow capabilities of a CRM &mdash; without asking them to learn or switch between two separate applications. That, ultimately, is what good integration architecture should do: make powerful systems disappear behind a seamless experience.</p>
+
+        <!-- RELATED POSTS -->
+        <div class="related-posts">
+            <h3 class="related-posts__title">Related Posts</h3>
+            <div class="related-posts__grid">
+                <a href="classic-to-lwc-migration.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">LWC Migration</span>
+                        </div>
+                        <h4 class="article-card__title">The Great Migration: Moving a 10-Year-Old Org from Classic to Lightning Web Components</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+                <a href="spreadsheets-to-salesforce.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Digital Transformation</span>
+                        </div>
+                        <h4 class="article-card__title">From Spreadsheets to Salesforce: Designing a Grants Management Platform from Scratch</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </article>
+
+    <!-- CTA -->
+    <section class="cta-block">
+        <div class="cta-block__inner reveal">
+            <h3>Need a Salesforce architect?</h3>
+            <a href="../contact.html" class="btn btn--primary">Get in Touch <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="../index.html" class="footer__logo">Azlan<span class="nav__logo-dot">.</span></a>
+                <nav class="footer__nav">
+                    <a href="../salesforce.html">Salesforce</a>
+                    <a href="../blog.html">Blog</a>
+                    <a href="../ai-lab.html">AI Lab</a>
+                    <a href="../photography.html">Photography</a>
+                    <a href="../about.html">About</a>
+                    <a href="../contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../main.js"></script>
+</body>
+</html>
