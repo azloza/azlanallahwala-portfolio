@@ -675,6 +675,10 @@ body::before {
     transition: transform 0.4s var(--ease-out-expo);
 }
 
+.nav__logo-mark {
+    transition: transform 0.5s var(--ease-out-expo);
+}
+
 /* --- NAV LINK HOVER: UNDERLINE DRAW --- */
 .nav__link::after {
     content: '';

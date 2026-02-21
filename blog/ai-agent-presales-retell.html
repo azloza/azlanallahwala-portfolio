@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orchestrating AI Agents for Pre-Sales: Claude Code + Retell AI — Azlan Allahwala</title>
+    <meta name="description" content="How we built a multi-agent system using Claude Code and Retell AI to automate pre-sales research, lead qualification, and voice outreach for Salesforce consulting.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../animations.css">
+    <link rel="stylesheet" href="../atmosphere.css">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="../index.html" class="nav__logo">
+                <svg class="nav__logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <polygon points="16,1 29,8.5 29,23.5 16,31 3,23.5 3,8.5" stroke="#F0F0F0" stroke-width="0.8" fill="none" opacity="0.3"/>
+                    <line x1="9" y1="25" x2="16" y2="6" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="23" y1="25" x2="16" y2="6" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="11" y1="19" x2="21" y2="19" stroke="#E85D3A" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
+            <div class="nav__links" id="navLinks">
+                <a href="../salesforce.html" class="nav__link">Salesforce</a>
+                <a href="../blog.html" class="nav__link">Blog</a>
+                <a href="../ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="../photography.html" class="nav__link">Photography</a>
+                <a href="../about.html" class="nav__link">About</a>
+                <a href="../contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="../salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="../blog.html" class="mobile-nav__link" style="--i:1">Blog</a>
+            <a href="../ai-lab.html" class="mobile-nav__link" style="--i:2">AI Lab</a>
+            <a href="../photography.html" class="mobile-nav__link" style="--i:3">Photography</a>
+            <a href="../about.html" class="mobile-nav__link" style="--i:4">About</a>
+            <a href="../contact.html" class="mobile-nav__link" style="--i:5">Contact</a>
+        </div>
+        <div class="mobile-nav__footer"><span class="mobile-nav__email">azlanallahwala@gmail.com</span></div>
+    </div>
+
+    <!-- SECTION HERO -->
+    <section class="section-hero section-hero--blog">
+        <div class="section-hero__grain"></div>
+        <div class="section-hero__content">
+            <h1 class="reveal">Orchestrating AI Agents for Pre-Sales: Claude Code + Retell AI Voice Calling</h1>
+            <p class="dek reveal" data-delay="100">How we built a multi-agent system that researches prospects, qualifies leads, and conducts AI-powered voice outreach — all orchestrated through Claude Code.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <a href="../blog.html" class="blog-back">&larr; Back to Blog</a>
+        <div class="blog-meta">
+            <div class="blog-meta__item"><span class="blog-meta__label">Author</span><span class="blog-meta__value">Azlan Allahwala</span></div>
+            <div class="blog-meta__item"><span class="blog-meta__label">Published</span><span class="blog-meta__value">January 2026</span></div>
+            <div class="blog-meta__item"><span class="blog-meta__label">Read Time</span><span class="blog-meta__value">12 min</span></div>
+            <div class="blog-meta__tags">
+                <span class="tag tag--small">AI Agents</span>
+                <span class="tag tag--small">Claude Code</span>
+                <span class="tag tag--small">Retell AI</span>
+                <span class="tag tag--small">Pre-Sales</span>
+            </div>
+        </div>
+
+        <article class="blog-article">
+
+            <h2>The Pre-Sales Bottleneck</h2>
+
+            <p>In Salesforce consulting, the pre-sales cycle is where deals are won or lost long before a statement of work gets signed. It is a process that demands deep research into a prospect's business, an honest assessment of their existing Salesforce org, a careful understanding of their pain points, and then the human work of actually reaching out, qualifying the opportunity, and scheduling discovery calls. For a small consulting practice, this cycle is brutal. Every hour spent researching a prospect who turns out to be a poor fit is an hour not spent on billable delivery work.</p>
+
+            <p>I had been tracking my own pre-sales metrics for about six months and the numbers were discouraging. On average, I was spending 2.5 hours per prospect on initial research and qualification before even making first contact. Of the prospects I reached out to, roughly 30% converted to a discovery call, and of those, about 40% moved forward to a proposal. Running the math backwards, that meant I was investing roughly 20 hours of pre-sales effort for every signed engagement. For a solo architect trying to balance delivery with business development, that ratio was unsustainable.</p>
+
+            <p>The work itself was not intellectually complex. It was repetitive, structured, and followed predictable patterns: look up the company, identify their industry and size, figure out what Salesforce products they were likely using, check for public indicators of their org's maturity, draft a personalized outreach message, make the call, log the result. Each step was straightforward. The problem was the cumulative time cost across dozens of prospects per month, and the cognitive overhead of context-switching between deep technical delivery work and the very different mental mode of sales research.</p>
+
+            <p>I started asking myself whether this was a workflow that could be decomposed into discrete, automatable steps coordinated by an intelligent orchestration layer. The answer, it turned out, was yes — but it required thinking about AI agents not as monolithic assistants, but as specialized workers in a coordinated pipeline.</p>
+
+            <h2>The Multi-Agent Architecture</h2>
+
+            <p>The key insight that unlocked this project was recognizing that pre-sales is not one task. It is a pipeline of distinct tasks, each requiring different capabilities, different data sources, and different interaction modes. A single AI agent trying to do everything — research, analysis, qualification scoring, voice outreach, CRM updates — would be mediocre at all of them. But a system of specialized agents, each optimized for one stage of the pipeline and coordinated by an orchestration layer, could be genuinely good at each stage.</p>
+
+            <p>We designed a four-stage pipeline with three specialized agents coordinated by Claude Code acting as the orchestration brain:</p>
+
+            <ol>
+                <li><strong>Research Agent</strong> — Gathers company intelligence, identifies Salesforce org signals, maps organizational structure, and produces a structured prospect profile.</li>
+                <li><strong>Qualification Agent</strong> — Scores and prioritizes prospects based on the research output, applies ideal customer profile criteria, and generates personalized talking points for outreach.</li>
+                <li><strong>Voice Agent</strong> — Powered by Retell AI, conducts AI voice calls to qualified prospects for initial outreach, lead qualification, and demo scheduling.</li>
+                <li><strong>CRM Sync</strong> — Updates Salesforce with all gathered intelligence, call outcomes, and next steps, maintaining a complete audit trail.</li>
+            </ol>
+
+            <p>Claude Code sits at the center as the orchestration layer. It does not perform the research or make the calls itself. Instead, it coordinates the flow of data between agents, decides when each agent should be invoked, handles error states and retry logic, and maintains the overall pipeline state. Think of it as a project manager who delegates work to specialists and makes sure the handoffs between them are clean.</p>
+
+            <div class="blog-callout">
+                <span class="blog-callout__label">Key Takeaway</span>
+                <p>Multi-agent systems outperform monolithic agents when the workflow has distinct stages requiring different capabilities. The orchestration layer's job is not to do the work — it is to coordinate the specialists, manage data flow between them, and handle the edge cases that arise at stage boundaries.</p>
+            </div>
+
+            <h2>Agent 1: The Research Agent</h2>
+
+            <p>The Research Agent is the first stage of the pipeline and the foundation everything else builds on. Its job is to take a company name and domain as input and produce a structured prospect profile as output. The profile needs to be comprehensive enough that a human sales professional could walk into a discovery call fully prepared, without having done any manual research.</p>
+
+            <p>The agent gathers intelligence across several dimensions. Company fundamentals come first: industry vertical, employee count, revenue range, headquarters location, and recent news or funding events. Then it moves into Salesforce-specific signals: job postings mentioning Salesforce (which indicate active investment or pain), technology stack indicators from public sources, any Salesforce AppExchange reviews or community forum posts from the company's employees, and LinkedIn profiles of their Salesforce administrators or IT leadership. Finally, it looks for org maturity indicators: are they posting about basic administration challenges (suggesting a newer org) or complex integration and governance issues (suggesting a mature org that might need architectural guidance)?</p>
+
+            <p>The agent is implemented as a Claude Code tool-use pattern, where the LLM reasons about what information to gather and invokes a set of defined tools — web search, LinkedIn lookup, job board analysis, and a custom AppExchange review scraper — to collect the data. The structured output is a JSON document that feeds directly into the next stage. Here is a simplified version of the orchestration code that invokes the Research Agent:</p>
+
+<pre><code>import anthropic
+import json
+from datetime import datetime
+
+client = anthropic.Anthropic()
+
+RESEARCH_TOOLS = [
+    {
+        "name": "web_search",
+        "description": "Search the web for company information, news, and public data.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "Search query"},
+                "num_results": {"type": "integer", "default": 10}
+            },
+            "required": ["query"]
+        }
+    },
+    {
+        "name": "analyze_job_postings",
+        "description": "Search job boards for Salesforce-related postings from the target company.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "company_name": {"type": "string"},
+                "keywords": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "default": ["Salesforce", "CRM", "Apex", "Lightning"]
+                }
+            },
+            "required": ["company_name"]
+        }
+    },
+    {
+        "name": "build_prospect_profile",
+        "description": "Compile all gathered data into a structured prospect profile.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "company_name": {"type": "string"},
+                "domain": {"type": "string"},
+                "company_data": {"type": "object"},
+                "sf_signals": {"type": "object"},
+                "org_maturity_indicators": {"type": "array", "items": {"type": "string"}}
+            },
+            "required": ["company_name", "domain", "company_data"]
+        }
+    }
+]
+
+def run_research_agent(company_name: str, domain: str) -> dict:
+    """Execute the Research Agent for a single prospect."""
+    messages = [
+        {
+            "role": "user",
+            "content": f"""Research the company '{company_name}' (domain: {domain}) as a
+potential Salesforce consulting prospect. Gather company fundamentals,
+Salesforce-specific signals, org maturity indicators, and key contacts.
+Use the available tools to build a comprehensive prospect profile."""
+        }
+    ]
+
+    profile = None
+    while profile is None:
+        response = client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=4096,
+            tools=RESEARCH_TOOLS,
+            messages=messages
+        )
+
+        if response.stop_reason == "tool_use":
+            tool_results = []
+            for block in response.content:
+                if block.type == "tool_use":
+                    result = execute_tool(block.name, block.input)
+                    tool_results.append({
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": json.dumps(result)
+                    })
+                    if block.name == "build_prospect_profile":
+                        profile = result
+            messages.append({"role": "assistant", "content": response.content})
+            messages.append({"role": "user", "content": tool_results})
+        else:
+            break
+
+    return profile</code></pre>
+
+            <p>One critical design decision was having the Research Agent output a structured JSON profile rather than free-text analysis. Structured output ensures that downstream agents can parse the data programmatically. The Qualification Agent needs to read specific fields like <code>estimated_employee_count</code> or <code>sf_products_detected</code> without guessing at how to extract them from prose. This is a pattern I now apply to every multi-agent system: the contract between agents is a schema, not a natural language summary.</p>
+
+            <h2>Agent 2: The Qualification Agent</h2>
+
+            <p>The Qualification Agent takes the structured prospect profile from the Research Agent and produces two outputs: a numerical qualification score (0-100) and a set of personalized talking points for the voice outreach stage. This is where the system applies business judgment — determining not just who the prospect is, but whether they are a good fit and how to approach them.</p>
+
+            <p>The scoring model is built around what I call an Ideal Customer Profile (ICP) matrix. It is not a machine learning model in the traditional sense. It is a set of weighted criteria that reflect the characteristics of my best past engagements. Companies in the 200-2000 employee range score higher than enterprise accounts (where sales cycles are long and procurement is complex) or very small companies (where budgets are tight). Companies showing active Salesforce investment signals — recent Salesforce job postings, AppExchange activity, community engagement — score higher than those with dormant orgs. Companies in industries where I have deep domain expertise (financial services, healthcare technology, professional services) get an industry fit bonus.</p>
+
+            <p>The personalized talking points are the more interesting output. Based on the research profile, the Qualification Agent generates three to five conversation starters that are specific to the prospect's situation. If the Research Agent detected that the company recently posted for a Salesforce Administrator, the talking point might reference the challenges of scaling a Salesforce org without dedicated architectural guidance. If public indicators suggest they are running Classic rather than Lightning, the talking point addresses the modernization opportunity. These are not generic sales scripts — they are tailored observations based on real data, and they feed directly into the Voice Agent's conversation framework.</p>
+
+            <p>Prospects scoring above 70 are routed to the Voice Agent for immediate outreach. Prospects scoring 50-70 are queued for a secondary review where I manually verify the qualification before deciding on outreach. Prospects below 50 are logged in Salesforce with the full research profile but deprioritized. This tiered approach ensures the Voice Agent's time (and my credibility) is spent on the highest-probability opportunities.</p>
+
+            <h2>Integrating Retell AI for Voice Outreach</h2>
+
+            <p>This is where the system transitions from behind-the-scenes research to real-world interaction. Retell AI provides the infrastructure for building AI-powered voice agents that can conduct natural phone conversations. The voice agent is not reading a script line by line — it is engaging in a dynamic conversation, responding to what the prospect says, handling objections, answering basic questions, and working toward a specific call outcome: qualifying the prospect's interest and scheduling a follow-up discovery call with me.</p>
+
+            <p>Configuring the Retell voice agent required careful thought about conversation design. I built the call flow around three phases. The <strong>opening phase</strong> introduces the purpose of the call, establishes context (referencing something specific from the prospect's profile to demonstrate this is not a cold spray-and-pray call), and asks for permission to continue the conversation. The <strong>discovery phase</strong> asks two to three open-ended qualification questions: what their current Salesforce challenges are, whether they are planning any major initiatives in the next quarter, and what their timeline looks like for addressing their pain points. The <strong>closing phase</strong> either proposes a specific time for a discovery call (if the prospect is interested) or gracefully ends the conversation with an offer to send follow-up materials.</p>
+
+            <p>The Retell AI integration is handled via their API, with webhook callbacks delivering post-call analysis. Here is the core integration code that creates a call and processes the results:</p>
+
+<pre><code>import requests
+from dataclasses import dataclass
+
+RETELL_API_KEY = "your_retell_api_key"
+RETELL_BASE_URL = "https://api.retellai.com"
+
+@dataclass
+class CallOutcome:
+    call_id: str
+    prospect_name: str
+    disposition: str  # "interested", "not_interested", "callback", "no_answer"
+    meeting_scheduled: bool
+    meeting_time: str | None
+    call_summary: str
+    transcript: str
+    sentiment_score: float
+    qualification_signals: list[str]
+
+def initiate_voice_outreach(
+    prospect_profile: dict,
+    talking_points: list[str],
+    agent_id: str
+) -> str:
+    """Launch a Retell AI voice call for a qualified prospect."""
+
+    # Build dynamic variables from prospect research
+    dynamic_vars = {
+        "prospect_name": prospect_profile["primary_contact"]["name"],
+        "company_name": prospect_profile["company_name"],
+        "industry": prospect_profile["industry"],
+        "personalized_opener": talking_points[0],
+        "talking_point_2": talking_points[1] if len(talking_points) > 1 else "",
+        "talking_point_3": talking_points[2] if len(talking_points) > 2 else "",
+        "sf_pain_points": ", ".join(
+            prospect_profile.get("detected_pain_points", [])
+        ),
+        "caller_name": "Azlan Allahwala",
+        "caller_title": "Salesforce Solution Architect"
+    }
+
+    # Create the call via Retell API
+    response = requests.post(
+        f"{RETELL_BASE_URL}/v2/create-phone-call",
+        headers={
+            "Authorization": f"Bearer {RETELL_API_KEY}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "from_number": "+14155550123",
+            "to_number": prospect_profile["primary_contact"]["phone"],
+            "override_agent_id": agent_id,
+            "retell_llm_dynamic_variables": dynamic_vars,
+            "metadata": {
+                "prospect_id": prospect_profile["id"],
+                "qualification_score": prospect_profile["qualification_score"],
+                "pipeline_run_id": prospect_profile["pipeline_run_id"]
+            }
+        }
+    )
+
+    call_data = response.json()
+    return call_data["call_id"]
+
+def process_call_webhook(webhook_payload: dict) -> CallOutcome:
+    """Process Retell webhook after call completion."""
+    call_id = webhook_payload["call_id"]
+    call_analysis = webhook_payload.get("call_analysis", {})
+    transcript = webhook_payload.get("transcript", "")
+
+    # Extract structured outcomes from Retell's post-call analysis
+    outcome = CallOutcome(
+        call_id=call_id,
+        prospect_name=webhook_payload["metadata"].get("prospect_name", ""),
+        disposition=call_analysis.get("call_disposition", "unknown"),
+        meeting_scheduled="meeting_booked" in call_analysis.get("tags", []),
+        meeting_time=call_analysis.get("scheduled_meeting_time"),
+        call_summary=call_analysis.get("call_summary", ""),
+        transcript=transcript,
+        sentiment_score=call_analysis.get("sentiment_score", 0.0),
+        qualification_signals=call_analysis.get("qualification_signals", [])
+    )
+
+    return outcome</code></pre>
+
+            <p>The <code>retell_llm_dynamic_variables</code> field is what makes each call feel personalized rather than robotic. By injecting the prospect's name, company, industry, and a research-backed opening line directly into the voice agent's context, the conversation starts with relevant specificity. The prospect hears a reference to their actual business situation in the first ten seconds of the call, which immediately differentiates this from a generic sales dial. Retell's post-call analysis webhook provides structured data about the call outcome, sentiment, and any meetings scheduled, which feeds directly back into the orchestration layer.</p>
+
+            <p>One lesson learned the hard way: voice agent conversation design requires extensive testing with real call scenarios. The first version of our call flow was too aggressive about pushing for a meeting. Prospects who expressed mild interest but wanted to think about it were being pushed toward commitment, which created friction. We redesigned the closing phase to include a softer path — offering to send a brief overview document and follow up in a few days — which actually increased our meeting booking rate by 15% because it reduced the pressure on the initial call.</p>
+
+            <div class="pull-quote">The best multi-agent system is one where each agent does one thing exceptionally well, and the orchestration layer makes sure those agents never step on each other's work.</div>
+
+            <h2>The Orchestration Layer: Claude Code as the Brain</h2>
+
+            <p>Claude Code is the central nervous system of this entire pipeline. It does not merely sequence tasks — it makes decisions about flow control, handles errors gracefully, manages state across the pipeline, and adapts based on the outcomes of each stage. The orchestration logic is where the system's intelligence lives, separate from the specialized capabilities of each individual agent.</p>
+
+            <p>The orchestration layer manages several critical concerns. <strong>Pipeline state management</strong> tracks where each prospect is in the pipeline, what data has been gathered, and what the next step should be. If the Research Agent fails to find sufficient data on a prospect (which happens with smaller private companies), the orchestrator does not blindly push them to the Qualification Agent. Instead, it flags the prospect for manual research supplementation and moves on to the next prospect in the queue. <strong>Error handling and retry logic</strong> addresses the reality that external API calls fail. If Retell's API returns a rate limit error, the orchestrator implements exponential backoff and re-queues the call. If a webhook callback never arrives, a timeout mechanism triggers a manual review flag after 30 minutes.</p>
+
+            <p><strong>Conditional routing</strong> is where the orchestration adds the most value. Not every prospect follows the same path through the pipeline. A prospect who scores 90 on qualification and has a phone number on file goes straight to voice outreach. A prospect who scores 75 but has no phone number gets routed to an email outreach path instead. A prospect whose research profile reveals they already work with a competing consultancy gets flagged for a different approach entirely — one focused on displacement positioning rather than greenfield opportunity messaging. These routing decisions live in the orchestration layer, not in any individual agent.</p>
+
+            <p><strong>Concurrency management</strong> was a practical concern I did not anticipate. When processing a batch of 50 prospects, the Research Agent can run in parallel across multiple prospects (it is making independent API calls for each), but the Voice Agent has to be serialized — you cannot make 50 simultaneous outbound calls. The orchestrator manages a call queue with configurable concurrency limits and time-of-day windowing (calls only go out during business hours in the prospect's timezone). It also respects rate limits on all external APIs, batching requests to stay within quotas.</p>
+
+            <div class="blog-callout">
+                <span class="blog-callout__label">Key Takeaway</span>
+                <p>The orchestration layer is not just a task sequencer. It is the decision-making brain that handles conditional routing, error recovery, concurrency management, and state tracking. Invest as much design effort in orchestration logic as you do in the individual agents. A chain of excellent agents with poor orchestration will produce mediocre results.</p>
+            </div>
+
+            <h2>Salesforce CRM Integration: Closing the Loop</h2>
+
+            <p>Every piece of data generated by this pipeline — from the initial research profile to the voice call transcript — needs to land in Salesforce. This is not just about record-keeping. It is about creating a complete, auditable trail that makes the eventual human touchpoint (the discovery call with me) as productive as possible. When I sit down for a discovery call, I want to open the Lead or Opportunity record and see everything: the research profile, the qualification score, the talking points that resonated on the voice call, the prospect's stated pain points, and any specific questions they asked.</p>
+
+            <p>We built the CRM integration using Salesforce's REST API, with a custom set of fields and a related object structure designed to capture pipeline data without cluttering the standard Lead layout. The core Lead record gets standard field updates: company information, contact details, lead source (tagged as "AI Pipeline"), and a lead score mapped from the qualification score. A custom <code>AI_Pipeline_Data__c</code> related object stores the detailed research profile, qualification rationale, and talking points. A second custom object, <code>AI_Call_Log__c</code>, captures the voice call data: duration, disposition, transcript summary, sentiment score, and whether a meeting was scheduled.</p>
+
+            <p>The integration also handles the critical handoff moment: when a voice call results in a scheduled discovery meeting, the orchestrator creates a Salesforce Event linked to the Lead, sends me a notification with the complete prospect dossier, and updates the Lead status to "Discovery Scheduled." By the time I open my calendar for the meeting, I have a full briefing document generated entirely by the pipeline — the prospect's business context, their likely Salesforce challenges, what was discussed on the AI call, and recommended discussion topics for the discovery session.</p>
+
+            <p>One design decision I am particularly glad we made: every AI-generated data point in Salesforce is tagged with a <code>Source__c</code> field that identifies which agent produced it and when. This is not just for auditing. It is essential for debugging when something goes wrong. If a prospect tells me during a discovery call that the AI voice agent referenced incorrect information about their company, I can trace that data back to the specific Research Agent run, see what sources it pulled from, and correct both the data and the agent's behavior for future runs.</p>
+
+            <h2>Results and Lessons Learned</h2>
+
+            <p>After running this system for three months across approximately 200 prospects, the numbers tell a clear story. Research time per prospect dropped from 2.5 hours to approximately 15 minutes of human review time (the Research Agent does the heavy lifting, I verify and supplement). The qualification stage, which used to be an intuitive gut check, now produces consistent, criteria-based scores that have proven to be better predictors of eventual deal closure than my manual assessments were. And the voice outreach stage — which I was most skeptical about — has been the biggest surprise.</p>
+
+            <p>The AI voice agent achieved a 28% conversation rate (meaning 28% of answered calls resulted in a substantive conversation rather than an immediate hang-up or request to be removed from the list). Of those conversations, 34% resulted in a scheduled discovery call. For comparison, my manual cold-calling conversion rate was around 22% for conversations and 38% for meetings-from-conversations. The AI agent is slightly better at getting people to talk (likely because it is unfailingly patient and polished in its delivery) and slightly worse at converting conversations to meetings (likely because it cannot improvise as fluidly as a human when a prospect goes off-script). The net result is roughly equivalent pipeline generation at a fraction of the time investment.</p>
+
+            <p>The overall impact on my pre-sales efficiency has been substantial. I went from spending roughly 20 hours of pre-sales effort per signed engagement to approximately 6 hours — and most of those 6 hours are spent on the high-value activities (discovery calls, proposal writing) rather than the research and outreach grind. The pipeline volume has also increased. Because the system can process prospects in parallel, I am evaluating three to four times more prospects per month than I could manually, which has directly increased my pipeline coverage.</p>
+
+            <p>The lessons learned fall into a few categories. First, <strong>agent specialization matters more than agent sophistication</strong>. A Research Agent that is excellent at gathering and structuring data but cannot make a phone call is far more valuable than a general-purpose agent that does both poorly. Second, <strong>the orchestration layer is where the real complexity lives</strong>. Getting three agents to work together reliably, handling failures gracefully, managing state across a multi-stage pipeline — this is harder than building any individual agent. Third, <strong>voice AI is closer to production-ready than most people think</strong>. Retell AI's voice quality and conversational fluidity surprised me, and the prospects I have spoken with after their AI call rarely mention that anything felt off about the initial outreach. Fourth, <strong>the human-in-the-loop checkpoints are essential</strong>. The system works because I review qualification scores before voice outreach happens, I verify research profiles when something looks off, and I personally conduct every discovery call. The AI handles the volume; I handle the judgment.</p>
+
+            <p>This system is not replacing the human element of pre-sales. It is eliminating the parts of pre-sales that do not require human judgment — the research, the data gathering, the initial outreach — so that the human effort is concentrated where it actually moves deals forward. For a solo Salesforce architect trying to build a practice while delivering excellent work, that concentration of effort is the difference between a sustainable business and perpetual overwhelm.</p>
+
+        </article>
+    </section>
+
+    <!-- RELATED POSTS -->
+    <section class="section">
+        <div class="related-posts">
+            <h3 class="related-posts__title">Related Posts</h3>
+            <div class="related-posts__grid">
+                <a href="sf-documentation-toolkit.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Claude Code</span>
+                        </div>
+                        <h4 class="article-card__title">Building a Salesforce Documentation Toolkit with Claude Code</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+                <a href="agentforce-service-desk.html" class="article-card">
+                    <div class="article-card__body">
+                        <div class="article-card__meta">
+                            <span class="tag tag--small">Agentforce</span>
+                        </div>
+                        <h4 class="article-card__title">Building an Agentforce-Powered Service Desk That Resolved 40% of Cases Automatically</h4>
+                        <span class="text-link text-link--small">Read post <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-block">
+        <div class="cta-block__inner reveal">
+            <h3>Need a Salesforce architect?</h3>
+            <a href="../contact.html" class="btn btn--primary">Get in Touch <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="../index.html" class="footer__logo">
+                    <svg class="footer__logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <polygon points="16,1 29,8.5 29,23.5 16,31 3,23.5 3,8.5" stroke="#F0F0F0" stroke-width="0.8" fill="none" opacity="0.3"/>
+                        <line x1="9" y1="25" x2="16" y2="6" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="23" y1="25" x2="16" y2="6" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="11" y1="19" x2="21" y2="19" stroke="#E85D3A" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Azlan<span class="nav__logo-dot">.</span>
+                </a>
+                <nav class="footer__nav">
+                    <a href="../salesforce.html">Salesforce</a>
+                    <a href="../blog.html">Blog</a>
+                    <a href="../ai-lab.html">AI Lab</a>
+                    <a href="../photography.html">Photography</a>
+                    <a href="../about.html">About</a>
+                    <a href="../contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../main.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Outer hexagonal frame -->
+  <polygon points="16,1 29,8.5 29,23.5 16,31 3,23.5 3,8.5" stroke="#F0F0F0" stroke-width="0.8" fill="none" opacity="0.3"/>
+  <!-- Stylized A — left leg -->
+  <line x1="9" y1="25" x2="16" y2="6" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"/>
+  <!-- Stylized A — right leg -->
+  <line x1="23" y1="25" x2="16" y2="6" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"/>
+  <!-- Accent crossbar -->
+  <line x1="11" y1="19" x2="21" y2="19" stroke="#E85D3A" stroke-width="2" stroke-linecap="round"/>
+</svg>
