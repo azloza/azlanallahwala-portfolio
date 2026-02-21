@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azlan Allahwala — Salesforce Architect, AI Builder, Visual Storyteller</title>
+    <meta name="description" content="Portfolio of Azlan Allahwala: enterprise Salesforce solutions, AI experiments, and cinematic photography.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="atmosphere.css">
+</head>
+<body data-page="home">
+
+    <!-- ============================================
+         BREATHING BACKGROUND OVERLAY
+         Set BREATHING_BG_ENABLED to false to disable.
+         ============================================ -->
+    <div class="breathing-bg" aria-hidden="true"></div>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="index.html" class="nav__logo">
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav__links" id="navLinks">
+                <a href="salesforce.html" class="nav__link">Salesforce</a>
+                <a href="ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="photography.html" class="nav__link">Photography</a>
+                <a href="about.html" class="nav__link">About</a>
+                <a href="contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV OVERLAY -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="ai-lab.html" class="mobile-nav__link" style="--i:1">AI Lab</a>
+            <a href="photography.html" class="mobile-nav__link" style="--i:2">Photography</a>
+            <a href="about.html" class="mobile-nav__link" style="--i:3">About</a>
+            <a href="contact.html" class="mobile-nav__link" style="--i:4">Contact</a>
+        </div>
+        <div class="mobile-nav__footer">
+            <span class="mobile-nav__email">azlanallahwala@gmail.com</span>
+        </div>
+    </div>
+
+    <!-- ============================================
+         HERO — SINGLE IDENTITY
+         ============================================ -->
+    <section class="hero" id="hero">
+        <div class="hero__grain"></div>
+        <div class="hero__gradient"></div>
+
+        <!-- Signature Monogram — blended into background -->
+        <div class="hero__signature" aria-hidden="true">
+            <svg class="hero__signature-svg" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer ring -->
+                <circle cx="200" cy="200" r="180" stroke="currentColor" stroke-width="0.5" opacity="0.15"/>
+                <circle cx="200" cy="200" r="160" stroke="currentColor" stroke-width="0.3" opacity="0.08"/>
+                <!-- Initials: AA — elegant editorial monogram -->
+                <text x="200" y="225" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="140" font-weight="700" font-style="italic" fill="currentColor" opacity="0.06">AA</text>
+                <!-- Decorative crossbar -->
+                <line x1="100" y1="200" x2="300" y2="200" stroke="currentColor" stroke-width="0.4" opacity="0.08"/>
+            </svg>
+        </div>
+
+        <div class="hero__content">
+            <div class="hero__issue">Volume 01 — Portfolio & Practice</div>
+            <h1 class="hero__title">
+                Building<br>
+                <em>Systems.</em><br>
+                Telling<br>
+                <em>Stories.</em>
+            </h1>
+            <p class="hero__dek">Salesforce Architect · AI Builder · Visual Storyteller</p>
+        </div>
+        <div class="hero__scroll">
+            <div class="hero__scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- ISSUE BAR -->
+    <div class="issue-bar">
+        <div class="issue-bar__inner">
+            <span>Currently: Independent Consultant</span>
+            <span class="issue-bar__sep">·</span>
+            <span>Available for Projects</span>
+            <span class="issue-bar__sep">·</span>
+            <span>Issue No. 01 — 2026</span>
+        </div>
+    </div>
+
+    <!-- ============================================
+         COVER STORY / FEATURED WORK
+         ============================================ -->
+    <section class="lead-story section" id="leadStory">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">Cover Story</span>
+            <span class="section-divider__num">01</span>
+        </div>
+        <div class="lead-story__grid">
+            <div class="lead-story__image reveal">
+                <div class="lead-story__img-wrapper">
+                    <div class="placeholder-img placeholder-img--nielsen-hero">
+                    </div>
+                </div>
+            </div>
+            <div class="lead-story__content reveal" data-delay="150">
+                <span class="tag tag--accent">Salesforce &middot; Nielsen</span>
+                <h2 class="lead-story__title">Rebuilding the Data Backbone for the World's Largest Media Measurement Company</h2>
+                <p class="lead-story__dek">Nielsen's Salesforce org had become a graveyard of legacy customizations. I led the platform modernization that replaced 200+ outdated automation rules, migrated 15 years of client data, and delivered a unified architecture serving global sales operations across 55 countries.</p>
+                <a href="salesforce.html" class="text-link">Read all 8 case studies <span class="arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECOND FEATURED ITEM -->
+    <section class="section" style="padding-top: 0;">
+        <div class="recent-work__grid" style="grid-template-columns: 1fr 1fr;">
+            <a href="ai-lab.html" class="article-card reveal" style="--i:0">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--synthdoc">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">AI Lab</span>
+                        <span class="article-card__date">SynthDoc</span>
+                    </div>
+                    <h4 class="article-card__title">Turning 10,000 Messy PDFs into Structured Knowledge</h4>
+                    <p class="article-card__desc">An LLM-powered extraction pipeline that processes chaotic enterprise documents &mdash; scanned invoices, regulatory filings, nested tables &mdash; with 96.4% accuracy. Deployed in a Salesforce-integrated workflow.</p>
+                    <span class="text-link text-link--small">Explore project <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="photography.html" class="article-card reveal" style="--i:1">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--geometry">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Photography</span>
+                        <span class="article-card__date">2024&ndash;25</span>
+                    </div>
+                    <h4 class="article-card__title">The Geometry of Solitude</h4>
+                    <p class="article-card__desc">Eighteen months, three cities, one question: what does loneliness look like in the spaces between strangers? Shot across Tokyo, Istanbul, and S&atilde;o Paulo.</p>
+                    <span class="text-link text-link--small">View series <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- BY THE NUMBERS -->
+    <section class="section" style="padding-top: 0; padding-bottom: var(--space-3xl)">
+        <div class="stats-row">
+            <div class="stat-callout reveal">
+                <div class="stat-callout__number">10+</div>
+                <div class="stat-callout__label">Years in enterprise tech</div>
+            </div>
+            <div class="stat-callout reveal">
+                <div class="stat-callout__number">40+</div>
+                <div class="stat-callout__label">Projects delivered</div>
+            </div>
+            <div class="stat-callout reveal">
+                <div class="stat-callout__number">12</div>
+                <div class="stat-callout__label">Salesforce certifications</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CHAPTER 1 — SALESFORCE
+         ============================================ -->
+    <section class="recent-work section">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">Salesforce</span>
+            <span class="section-divider__num">02</span>
+        </div>
+        <div class="recent-work__grid">
+            <a href="salesforce.html" class="article-card reveal" style="--i:0">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--yellowstone">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Salesforce</span>
+                        <span class="article-card__date">Yellowstone Club</span>
+                    </div>
+                    <h4 class="article-card__title">Building a Private Luxury CRM from Scratch</h4>
+                    <p class="article-card__desc">Designed and implemented the entire Salesforce ecosystem for one of the most exclusive private residential communities in the world. Member lifecycle, property management, and concierge services &mdash; all in one platform.</p>
+                    <span class="text-link text-link--small">Read case study <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="salesforce.html" class="article-card reveal" style="--i:1">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--doj">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Salesforce</span>
+                        <span class="article-card__date">Federal Agency</span>
+                    </div>
+                    <h4 class="article-card__title">Grants Management System</h4>
+                    <p class="article-card__desc">Built a comprehensive grants management platform on Salesforce, replacing fragmented legacy processes with centralized lifecycle tracking, compliance reporting, and an Experience Cloud applicant portal.</p>
+                    <span class="text-link text-link--small">Read case study <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="salesforce.html" class="article-card reveal" style="--i:2">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--cary">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Salesforce</span>
+                        <span class="article-card__date">Town of Cary</span>
+                    </div>
+                    <h4 class="article-card__title">Agentforce Implementation</h4>
+                    <p class="article-card__desc">Deployed Salesforce Agentforce with Einstein AI for the Town of Cary, NC &mdash; automating citizen service requests and routing cases through intelligent, self-learning agents.</p>
+                    <span class="text-link text-link--small">Read case study <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="salesforce.html" class="article-card reveal" style="--i:3">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--olympic">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Salesforce</span>
+                        <span class="article-card__date">Olympic Club</span>
+                    </div>
+                    <h4 class="article-card__title">Member Engagement Platform</h4>
+                    <p class="article-card__desc">Built a member engagement platform for one of the oldest and most prestigious athletic clubs in the United States, unifying Sales Cloud, Experience Cloud, and Marketing Cloud.</p>
+                    <span class="text-link text-link--small">Read case study <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+        </div>
+        <div style="text-align: center; padding-top: var(--space-2xl);">
+            <a href="salesforce.html" class="text-link">View all 8 case studies <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- FEATURED STRIP — VISUAL BREAK -->
+    <section class="featured-strip">
+        <div class="featured-strip__grain"></div>
+        <div class="featured-strip__content reveal">
+            <blockquote class="featured-strip__quote">
+                "The best systems are invisible.<br>The best stories are unforgettable."
+            </blockquote>
+            <span class="featured-strip__attr">— A.A.</span>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CHAPTER 2 — AI LAB
+         ============================================ -->
+    <section class="recent-work section">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">AI Lab</span>
+            <span class="section-divider__num">03</span>
+        </div>
+        <div class="recent-work__grid">
+            <a href="ai-lab.html" class="article-card reveal" style="--i:0">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--agentic">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Agents</span>
+                        <span class="article-card__date">2025</span>
+                    </div>
+                    <h4 class="article-card__title">Agentic Workflow Orchestrator</h4>
+                    <p class="article-card__desc">Multi-agent system using Claude and tool-use to plan, execute, and self-correct complex business processes. Agents negotiate task allocation, escalate edge cases, and produce audit trails for every decision made.</p>
+                    <span class="text-link text-link--small">Explore <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="ai-lab.html" class="article-card reveal" style="--i:1">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--codeassist">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">RAG</span>
+                        <span class="article-card__date">2025</span>
+                    </div>
+                    <h4 class="article-card__title">Context-Aware Code Assistant</h4>
+                    <p class="article-card__desc">RAG-powered code review tool that ingests an entire repository, maps dependency graphs, and provides architecture-aware suggestions. Uses hybrid search with BM25 + dense embeddings for precise retrieval.</p>
+                    <span class="text-link text-link--small">Explore <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="ai-lab.html" class="article-card reveal" style="--i:2">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--summarizer">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Fine-tuning</span>
+                        <span class="article-card__date">2025</span>
+                    </div>
+                    <h4 class="article-card__title">Domain-Specific Summarizer</h4>
+                    <p class="article-card__desc">Fine-tuned Mistral 7B on 15K legal and compliance documents to generate executive summaries that preserve critical clauses. Outperforms zero-shot GPT-4 on domain-specific ROUGE-L by 18%.</p>
+                    <span class="text-link text-link--small">Explore <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="ai-lab.html" class="article-card reveal" style="--i:3">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--evalharness">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Evals</span>
+                        <span class="article-card__date">2025</span>
+                    </div>
+                    <h4 class="article-card__title">LLM Evaluation Harness</h4>
+                    <p class="article-card__desc">Custom evaluation framework for comparing LLM outputs across accuracy, latency, cost, and hallucination rate. Runs head-to-head benchmarks with human-in-the-loop scoring and automated regression detection.</p>
+                    <span class="text-link text-link--small">Explore <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+        </div>
+        <div style="text-align: center; padding-top: var(--space-2xl);">
+            <a href="ai-lab.html" class="text-link">View all experiments <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CHAPTER 3 — AZLOZA PHOTOGRAPHY
+         ============================================ -->
+    <section class="recent-work section">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">Azloza Photography</span>
+            <span class="section-divider__num">04</span>
+        </div>
+        <div class="recent-work__grid">
+            <a href="photography.html" class="article-card reveal" style="--i:0">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--rain">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Street</span>
+                        <span class="article-card__date">Tokyo</span>
+                    </div>
+                    <h4 class="article-card__title">Parenthesis in Rain</h4>
+                    <p class="article-card__desc">A woman steps through a curtain of rain on Takeshita-dori, her umbrella a parenthesis around a private world.</p>
+                    <span class="text-link text-link--small">View <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="photography.html" class="article-card reveal" style="--i:1">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--theatre">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Landscape</span>
+                        <span class="article-card__date">Iceland</span>
+                    </div>
+                    <h4 class="article-card__title">Theatre of Stone</h4>
+                    <p class="article-card__desc">Storm light turns the Icelandic highlands into a theatre stage &mdash; black sand, silver rivers, and a single shaft of sun on moss-green lava fields.</p>
+                    <span class="text-link text-link--small">View <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="photography.html" class="article-card reveal" style="--i:2">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--saffron">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Travel</span>
+                        <span class="article-card__date">Marrakech</span>
+                    </div>
+                    <h4 class="article-card__title">Pyramids of Saffron</h4>
+                    <p class="article-card__desc">Spice merchants in the souks of Marrakech arrange their wares in pyramids of saffron, cumin, and dried rose &mdash; geometry born from centuries of ritual.</p>
+                    <span class="text-link text-link--small">View <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="photography.html" class="article-card reveal" style="--i:3">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--descent">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Architecture</span>
+                        <span class="article-card__date">London</span>
+                    </div>
+                    <h4 class="article-card__title">Descent into Order</h4>
+                    <p class="article-card__desc">A brutalist stairwell in the Barbican spirals downward into a geometry that Escher might have dreamed but never dared to draw.</p>
+                    <span class="text-link text-link--small">View <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+        </div>
+        <div style="text-align: center; padding-top: var(--space-2xl);">
+            <a href="photography.html" class="text-link">View all 15 series <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- ABOUT TEASER -->
+    <section class="about-teaser section">
+        <div class="about-teaser__grid">
+            <div class="about-teaser__portrait reveal portrait-blend">
+                <img src="images/azlan-portrait.png" alt="Azlan Allahwala" class="portrait-blend__img">
+            </div>
+            <div class="about-teaser__content reveal" data-delay="150">
+                <span class="overline">About</span>
+                <h2 class="about-teaser__title">Azlan Allahwala</h2>
+                <p class="about-teaser__bio">Ten years deep in enterprise Salesforce. Building AI tools that actually ship. Shooting photographs in cities most people only see from a plane window. I take things apart, understand how they work, and put them back together better than I found them &mdash; whether that's a platform serving 10,000 users or a frame of light falling through a train window in Tokyo at 6 AM.</p>
+                <a href="about.html" class="text-link">The full story <span class="arrow">&rarr;</span></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUSTED BY -->
+    <section class="section" style="padding-top: 0; padding-bottom: 0;">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">Trusted By</span>
+            <span class="section-divider__num">05</span>
+        </div>
+        <div class="skills-bar reveal" style="justify-content: center; gap: var(--space-2xl); padding: var(--space-xl) 0;">
+            <span class="skill-tag">Nielsen</span>
+            <span class="skill-tag">Pharmedium</span>
+            <span class="skill-tag">Federal Government</span>
+            <span class="skill-tag">Yellowstone Club</span>
+            <span class="skill-tag">The Olympic Club</span>
+            <span class="skill-tag">Breckenridge Grand Vacations</span>
+            <span class="skill-tag">Huizenga Group</span>
+            <span class="skill-tag">Town of Cary, NC</span>
+        </div>
+    </section>
+
+    <!-- TESTIMONIAL -->
+    <section class="section" style="padding-top: var(--space-xl);">
+        <div class="pull-quote reveal">
+            <p>Azlan brought a wealth of knowledge and experience to our project at Yellowstone Club. His strategic insights significantly shaped our implementation, helping us confidently navigate complexities. Without his contributions, we could not have completed our massive project!</p>
+            <cite>Madison Morgan, Director of Client Success &mdash; Nines</cite>
+        </div>
+    </section>
+
+    <!-- CONTACT BAR -->
+    <section class="contact-bar">
+        <div class="contact-bar__accent"></div>
+        <div class="contact-bar__inner reveal">
+            <h2 class="contact-bar__title">Let's build something together.</h2>
+            <div class="contact-bar__links">
+                <button class="contact-bar__link" id="startConvoBtn" type="button">Start a Conversation</button>
+                <a href="mailto:azlanallahwala@gmail.com" class="contact-bar__link">Email</a>
+                <a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener" class="contact-bar__link">LinkedIn</a>
+            </div>
+
+            <!-- Inline Conversational Form -->
+            <div class="convo-form" id="convoForm">
+                <div class="convo-form__chat" id="convoChat">
+                    <!-- Messages will be injected here by JS -->
+                </div>
+
+                <!-- Step 1: What kind of work (dropdown) -->
+                <div class="convo-form__step active" id="convoStep1">
+                    <div class="convo-form__fields">
+                        <select class="convo-input convo-select" id="convoWorkType">
+                            <option value="" disabled selected>Select a project type...</option>
+                            <option value="Salesforce Consulting">Salesforce</option>
+                            <option value="AI / LLM Project">AI</option>
+                            <option value="Creative / Photography">Photography</option>
+                            <option value="Something Else">Something Else</option>
+                        </select>
+                        <button class="convo-send convo-send--next" id="convoStep1Next" type="button">Next &rarr;</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: How did you find me -->
+                <div class="convo-form__step" id="convoStep2">
+                    <div class="convo-form__pills">
+                        <button class="convo-pill" data-value="Google Search" type="button">Google Search</button>
+                        <button class="convo-pill" data-value="LinkedIn" type="button">LinkedIn</button>
+                        <button class="convo-pill" data-value="Referral" type="button">Referral</button>
+                        <button class="convo-pill" data-value="Other" type="button">Other</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Name, email, note -->
+                <div class="convo-form__step" id="convoStep3">
+                    <div class="convo-form__fields">
+                        <input type="text" class="convo-input" id="convoName" placeholder="Your name" autocomplete="name" required>
+                        <input type="email" class="convo-input" id="convoEmail" placeholder="Your email" autocomplete="email" required>
+                        <textarea class="convo-input convo-textarea" id="convoNote" placeholder="Quick note (optional)"></textarea>
+                        <button class="convo-send" id="convoSend" type="button">Send it &rarr;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="index.html" class="footer__logo">Azlan<span class="nav__logo-dot">.</span></a>
+                <nav class="footer__nav">
+                    <a href="salesforce.html">Salesforce</a>
+                    <a href="ai-lab.html">AI Lab</a>
+                    <a href="photography.html">Photography</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social">
+                    <a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+
+    <!-- Breathing Background Config -->
+    <script>
+        // ============================================
+        // BREATHING_BG_ENABLED — Master toggle
+        // Set to false to completely disable the breathing
+        // overlay and revert to the original background.
+        // ============================================
+        const BREATHING_BG_ENABLED = true;
+
+        (function() {
+            if (!BREATHING_BG_ENABLED) {
+                const el = document.querySelector('.breathing-bg');
+                if (el) el.style.display = 'none';
+            }
+        })();
+    </script>
+</body>
+</html>

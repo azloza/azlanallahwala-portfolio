@@ -1,0 +1,1007 @@
+/* ============================================
+   CINEMATIC MOTION SYSTEM
+   ============================================
+
+   MOTION TONE: Editorial Cinematic
+
+   PRINCIPLES:
+   - Every animation has a ROLE in the page's narrative
+   - Hierarchy through timing: most important reveals first
+   - Tension through delay, release through movement
+   - Horizontal = editorial (like turning a page)
+   - Vertical = discovery (like scrolling a manuscript)
+   - Clip/mask reveals = premium (content is earned, not given)
+
+   EASING VOCABULARY:
+   --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1)    → Primary. Confident deceleration.
+   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1)     → Secondary. Slightly faster settle.
+   --ease-in-out:    cubic-bezier(0.76, 0, 0.24, 1)     → Symmetrical. For transforms.
+   --ease-smooth:    cubic-bezier(0.45, 0, 0.55, 1)     → Subtle. For opacity-only.
+
+   DURATION RULES:
+   - Micro (hover, focus):     150–250ms
+   - UI (nav, buttons):        300–400ms
+   - Content reveal:           600–900ms
+   - Hero / cinematic:         1000–1400ms
+   - Orchestrated sequence:    stagger 80–120ms between beats
+
+   ============================================ */
+
+/* --- MOTION TOKENS --- */
+:root {
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+    --ease-smooth: cubic-bezier(0.45, 0, 0.55, 1);
+
+    --duration-micro: 200ms;
+    --duration-ui: 350ms;
+    --duration-content: 800ms;
+    --duration-hero: 1200ms;
+    --stagger-beat: 100ms;
+}
+
+
+/* ============================================
+   ACT I: PAGE LOAD — THE CURTAIN RISES
+   ============================================
+
+   Sequence:
+   1. Black screen holds (tension)
+   2. Curtain wipes away vertically (reveal)
+   3. Nav fades from nothing (orientation)
+   4. Hero content choreographs in (story begins)
+
+   ============================================ */
+
+/* --- CURTAIN --- */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: var(--bg-primary);
+    z-index: 9999;
+    pointer-events: none;
+    transform-origin: top;
+    animation: curtainRise 0.8s var(--ease-in-out) 0.15s forwards;
+}
+
+@keyframes curtainRise {
+    0% { transform: scaleY(1); }
+    100% { transform: scaleY(0); }
+}
+
+/* --- NAV ENTRANCE --- */
+.nav {
+    opacity: 0;
+    animation: navMaterialize 0.6s var(--ease-smooth) 0.7s forwards;
+}
+
+@keyframes navMaterialize {
+    from {
+        opacity: 0;
+        filter: blur(4px);
+    }
+    to {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+/* --- HERO CHOREOGRAPHY --- */
+/*
+   Beat 1 (0.6s): Issue line slides in from left — sets the tone
+   Beat 2 (0.8s): Title lines reveal via clip-path — the headline lands
+   Beat 3 (1.1s): Dek fades up — context arrives
+   Beat 4 (1.4s): Scroll indicator breathes in — invitation to continue
+*/
+
+.hero__issue {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: slideFromLeft 0.7s var(--ease-out-expo) 0.6s forwards;
+}
+
+@keyframes slideFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Title: each line clips in from below with stagger */
+.hero__title {
+    opacity: 0;
+    animation: none; /* Remove old animation, JS handles this now */
+}
+
+.hero__title.motion-ready {
+    opacity: 1;
+}
+
+.hero__title .line-wrapper {
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+
+.hero__title .line-inner {
+    display: block;
+    transform: translateY(105%);
+    transition: transform var(--duration-hero) var(--ease-out-expo);
+}
+
+.hero__title.motion-ready .line-inner {
+    transform: translateY(0);
+}
+
+/* Stagger each line */
+.hero__title .line-wrapper:nth-child(1) .line-inner { transition-delay: 0.8s; }
+.hero__title .line-wrapper:nth-child(2) .line-inner { transition-delay: 0.9s; }
+.hero__title .line-wrapper:nth-child(3) .line-inner { transition-delay: 1.0s; }
+.hero__title .line-wrapper:nth-child(4) .line-inner { transition-delay: 1.1s; }
+
+.hero__dek {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: contentFadeUp 0.7s var(--ease-out-expo) 1.3s forwards;
+}
+
+.hero__scroll {
+    opacity: 0;
+    animation: breatheIn 1s var(--ease-smooth) 1.6s forwards;
+}
+
+@keyframes breatheIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+/* ============================================
+   ACT II: SCROLL REVEALS — THE STORY UNFOLDS
+   ============================================
+
+   Reveal types (not one-size-fits-all):
+   - .reveal-fade     → Simple opacity. For supporting text.
+   - .reveal-up       → Translate up + fade. Default for blocks.
+   - .reveal-clip      → Clip-path wipe. For images, premium moments.
+   - .reveal-slide     → Horizontal slide. For editorial elements.
+   - .reveal-scale     → Subtle scale. For cards, containers.
+
+   ============================================ */
+
+/* --- BASE: HIDDEN STATE --- */
+.reveal {
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+.reveal.visible {
+    /* Each variant defines its own visible state */
+}
+
+/* --- REVEAL: FADE (simple, for body text & supporting elements) --- */
+.reveal,
+.reveal-fade {
+    opacity: 0;
+    transition: opacity var(--duration-content) var(--ease-smooth);
+}
+
+.reveal.visible,
+.reveal-fade.visible {
+    opacity: 1;
+}
+
+/* --- REVEAL: UP (default for most content blocks) --- */
+.reveal-up,
+.section-divider.reveal,
+.lead-story__content.reveal,
+.about-teaser__content.reveal,
+.contact-bar__inner.reveal,
+.cta-block .reveal,
+.bio-section .reveal,
+.featured-card.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity var(--duration-content) var(--ease-out-expo),
+                transform var(--duration-content) var(--ease-out-expo);
+}
+
+.reveal-up.visible,
+.section-divider.reveal.visible,
+.lead-story__content.reveal.visible,
+.about-teaser__content.reveal.visible,
+.contact-bar__inner.reveal.visible,
+.cta-block .reveal.visible,
+.bio-section .reveal.visible,
+.featured-card.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Delayed content (secondary to primary) */
+.reveal[data-delay="100"] { transition-delay: 0.1s; }
+.reveal[data-delay="150"] { transition-delay: 0.15s; }
+.reveal[data-delay="200"] { transition-delay: 0.2s; }
+.reveal[data-delay="300"] { transition-delay: 0.3s; }
+.reveal[data-delay="400"] { transition-delay: 0.4s; }
+
+/* --- REVEAL: CLIP (for images — premium wipe reveal) --- */
+.reveal-clip,
+.lead-story__image.reveal,
+.about-teaser__portrait.reveal,
+.featured-card__img .reveal {
+    clip-path: inset(0 0 100% 0);
+    opacity: 1; /* Images don't fade, they WIPE */
+    transition: clip-path 1s var(--ease-in-out);
+}
+
+.reveal-clip.visible,
+.lead-story__image.reveal.visible,
+.about-teaser__portrait.reveal.visible,
+.featured-card__img .reveal.visible {
+    clip-path: inset(0 0 0% 0);
+}
+
+/* Inner image parallax during clip reveal */
+.lead-story__image.reveal .placeholder-img,
+.about-teaser__portrait.reveal .placeholder-img {
+    transform: scale(1.15);
+    transition: transform 1.4s var(--ease-out-expo);
+}
+
+.lead-story__image.reveal.visible .placeholder-img,
+.about-teaser__portrait.reveal.visible .placeholder-img {
+    transform: scale(1.0);
+}
+
+/* --- REVEAL: SLIDE (horizontal — for editorial elements) --- */
+.reveal-slide {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity var(--duration-content) var(--ease-out-expo),
+                transform var(--duration-content) var(--ease-out-expo);
+}
+
+.reveal-slide.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* --- REVEAL: SCALE (for cards — subtle expansion) --- */
+.column-card.reveal,
+.article-card.reveal {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo);
+}
+
+.column-card.reveal.visible,
+.article-card.reveal.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Stagger: cards enter in sequence like a dealt hand */
+.column-card.reveal { transition-delay: calc(var(--i, 0) * 120ms); }
+.article-card.reveal { transition-delay: calc(var(--i, 0) * 100ms); }
+
+/* --- CASE STUDY CARDS --- */
+.case-study-feature.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity var(--duration-content) var(--ease-out-expo),
+                transform var(--duration-content) var(--ease-out-expo);
+}
+
+.case-study-feature.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.case-study-card.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo);
+    transition-delay: calc(var(--i, 0) * 100ms);
+}
+
+.case-study-card.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- RECOMMENDATION CARDS --- */
+.rec-card.reveal {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition: opacity 0.8s var(--ease-out-expo),
+                transform 0.8s var(--ease-out-expo);
+    transition-delay: calc(var(--i, 0) * 150ms);
+}
+
+.rec-card.reveal.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+
+/* ============================================
+   ACT III: SECTION DIVIDERS — CHAPTER BREAKS
+   ============================================ */
+
+/* The accent line draws itself — like an underline being written */
+.section-divider {
+    position: relative;
+}
+
+.section-divider::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.9s var(--ease-out-expo) 0.1s;
+}
+
+.section-divider.visible::before {
+    width: 60px;
+}
+
+/* The label and number fade in after the line draws */
+.section-divider__label,
+.section-divider__num {
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-smooth) 0.4s;
+}
+
+.section-divider.visible .section-divider__label,
+.section-divider.visible .section-divider__num {
+    opacity: 1;
+}
+
+
+/* ============================================
+   FEATURED STRIP — THE PAUSE
+   ============================================
+
+   The quote section is a cinematic pause.
+   It should feel like a held breath.
+
+   ============================================ */
+
+.featured-strip__quote {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: blur(6px);
+    transition: opacity 1.2s var(--ease-smooth),
+                transform 1.2s var(--ease-out-expo),
+                filter 1.2s var(--ease-smooth);
+}
+
+.featured-strip__content.reveal.visible .featured-strip__quote,
+.featured-strip__content.visible .featured-strip__quote {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+}
+
+
+/* ============================================
+   SECTION HEROES (subpages) — THE ESTABLISHING SHOT
+   ============================================ */
+
+.section-hero h1 {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: sectionTitleLand 1s var(--ease-out-expo) 0.4s forwards;
+}
+
+@keyframes sectionTitleLand {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-hero .dek {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: contentFadeUp 0.7s var(--ease-out-expo) 0.7s forwards;
+}
+
+@keyframes contentFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Contact hero */
+.contact-hero h1 {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: sectionTitleLand 1s var(--ease-out-expo) 0.3s forwards;
+}
+
+.contact-hero .dek {
+    opacity: 0;
+    animation: contentFadeUp 0.7s var(--ease-out-expo) 0.6s forwards;
+}
+
+/* About hero */
+.about-hero h1 {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: sectionTitleLand 1s var(--ease-out-expo) 0.5s forwards;
+}
+
+.about-hero .overline {
+    opacity: 0;
+    animation: slideFromLeft 0.6s var(--ease-out-expo) 0.4s forwards;
+}
+
+
+/* ============================================
+   PULL QUOTES — THE ACCENT
+   ============================================ */
+
+.pull-quote {
+    position: relative;
+    border-left-color: transparent;
+}
+
+.pull-quote::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 0;
+    background: var(--accent);
+    transition: height 1s var(--ease-out-expo) 0.15s;
+}
+
+.pull-quote.visible::before {
+    height: 100%;
+}
+
+.pull-quote p {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.7s var(--ease-smooth) 0.35s,
+                transform 0.7s var(--ease-out-expo) 0.35s;
+}
+
+.pull-quote.visible p {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+/* ============================================
+   STAT CALLOUTS — THE PUNCH
+   ============================================ */
+
+.stat-callout__number {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    transition: opacity 0.5s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo);
+}
+
+.stat-callout.visible .stat-callout__number {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.stat-callout__label {
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-smooth) 0.25s;
+}
+
+.stat-callout.visible .stat-callout__label {
+    opacity: 1;
+}
+
+
+/* ============================================
+   HOVER MICRO-INTERACTIONS — THE TACTILE LAYER
+   ============================================
+
+   Hovers should feel "expensive":
+   - Not too fast (cheap), not too slow (sluggish)
+   - Multi-property transitions with slight offsets
+   - Subtle secondary motion (image zoom, border shift)
+
+   ============================================ */
+
+/* --- CARD HOVER: MULTI-LAYERED --- */
+.article-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.5s var(--ease-out-expo),
+                border-color 0.4s var(--ease-smooth),
+                box-shadow 0.5s var(--ease-out-expo);
+}
+
+.article-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--surface-border-hover);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35),
+                0 0 0 1px rgba(232, 93, 58, 0.06);
+}
+
+/* Image zoom — slower than card lift for parallax feel */
+.article-card__img .placeholder-img {
+    transition: transform 0.8s var(--ease-out-expo);
+}
+
+.article-card:hover .article-card__img .placeholder-img {
+    transform: scale(1.05);
+}
+
+/* Title color shift with slight delay */
+.article-card__title {
+    transition: color 0.3s var(--ease-smooth) 0.05s;
+}
+
+.article-card:hover .article-card__title {
+    color: var(--accent);
+}
+
+/* Shine sweep on hover — diagonal for premium feel */
+.article-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        115deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.015) 45%,
+        rgba(255, 255, 255, 0.025) 50%,
+        rgba(255, 255, 255, 0.015) 55%,
+        transparent 60%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.9s var(--ease-out-expo);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.article-card:hover::after {
+    transform: translateX(30%);
+}
+
+/* --- COLUMN CARD HOVER --- */
+.column-card {
+    transition: transform 0.5s var(--ease-out-expo),
+                border-color 0.4s var(--ease-smooth),
+                background 0.4s var(--ease-smooth);
+}
+
+.column-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--surface-border-hover);
+    background: var(--bg-secondary);
+}
+
+.column-card__img .placeholder-img {
+    transition: transform 0.7s var(--ease-out-expo);
+}
+
+.column-card:hover .column-card__img .placeholder-img {
+    transform: scale(1.04);
+}
+
+.column-card__arrow {
+    transition: transform 0.4s var(--ease-out-expo),
+                color 0.3s var(--ease-smooth);
+}
+
+.column-card:hover .column-card__arrow {
+    transform: translateX(6px);
+    color: var(--accent);
+}
+
+/* --- TEXT LINK HOVER: ARROW TRAVEL --- */
+.text-link {
+    transition: color var(--duration-micro) var(--ease-smooth),
+                gap 0.4s var(--ease-out-expo);
+}
+
+.text-link:hover {
+    color: var(--accent-hover);
+    gap: 10px;
+}
+
+.text-link .arrow {
+    transition: transform 0.4s var(--ease-out-expo);
+}
+
+.text-link:hover .arrow {
+    transform: translateX(4px);
+}
+
+/* --- BUTTON HOVER: CONFIDENT LIFT --- */
+.btn--primary {
+    transition: background 0.3s var(--ease-smooth),
+                transform 0.4s var(--ease-out-expo),
+                box-shadow 0.4s var(--ease-out-expo);
+}
+
+.btn--primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(232, 93, 58, 0.25);
+}
+
+.btn--primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(232, 93, 58, 0.15);
+    transition-duration: 0.1s;
+}
+
+/* --- NAV LOGO HOVER --- */
+.nav__logo {
+    transition: opacity var(--duration-ui) var(--ease-smooth);
+}
+
+.nav__logo-first {
+    transition: letter-spacing 0.5s var(--ease-out-expo);
+}
+
+.nav__logo-dot {
+    transition: transform 0.4s var(--ease-out-expo);
+}
+
+/* --- NAV LINK HOVER: UNDERLINE DRAW --- */
+.nav__link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    width: 0;
+    height: 1.5px;
+    background: var(--accent);
+    transition: width 0.4s var(--ease-out-expo),
+                left 0.4s var(--ease-out-expo);
+}
+
+.nav__link:hover::after,
+.nav__link--active::after {
+    width: 100%;
+    left: 0;
+}
+
+/* --- CONTACT LINK HOVER --- */
+.contact-bar__link::after {
+    transition: width 0.4s var(--ease-out-expo),
+                left 0.4s var(--ease-out-expo);
+    left: 50%;
+}
+
+.contact-bar__link:hover::after {
+    left: 0;
+}
+
+/* --- GALLERY ITEM HOVER --- */
+.masonry-grid__item {
+    overflow: hidden;
+}
+
+.masonry-grid__item .placeholder-img {
+    transition: transform 1s var(--ease-out-expo);
+}
+
+.masonry-grid__item:hover .placeholder-img {
+    transform: scale(1.04);
+}
+
+.masonry-grid__overlay {
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-smooth);
+}
+
+.masonry-grid__item:hover .masonry-grid__overlay {
+    opacity: 1;
+}
+
+.masonry-grid__title {
+    transform: translateY(8px);
+    transition: transform 0.5s var(--ease-out-expo) 0.05s;
+}
+
+.masonry-grid__item:hover .masonry-grid__title {
+    transform: translateY(0);
+}
+
+/* --- CONTACT EMAIL HOVER --- */
+.contact-email {
+    transition: color 0.4s var(--ease-smooth),
+                letter-spacing 0.6s var(--ease-out-expo);
+}
+
+.contact-email:hover {
+    color: var(--accent);
+    letter-spacing: 0.02em;
+}
+
+/* --- SKILL TAG HOVER --- */
+.skill-tag {
+    transition: border-color 0.3s var(--ease-smooth),
+                color 0.3s var(--ease-smooth),
+                background 0.3s var(--ease-smooth);
+}
+
+.skill-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-muted);
+}
+
+/* --- FOOTER SOCIAL HOVER --- */
+.footer__social a {
+    transition: color 0.3s var(--ease-smooth),
+                transform 0.4s var(--ease-out-expo);
+}
+
+.footer__social a:hover {
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+
+/* ============================================
+   SCROLL LINE (hero) — PERSISTENT RHYTHM
+   ============================================ */
+
+.hero__scroll-line::after {
+    animation: scrollLine 2.5s var(--ease-in-out) infinite;
+}
+
+@keyframes scrollLine {
+    0% { top: -100%; opacity: 0; }
+    10% { opacity: 1; }
+    50% { top: 100%; opacity: 0; }
+    100% { top: 100%; opacity: 0; }
+}
+
+
+/* ============================================
+   LIGHTBOX — CINEMATIC OPEN/CLOSE
+   ============================================ */
+
+.lightbox {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease-smooth);
+}
+
+.lightbox.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.lightbox__img {
+    transform: scale(0.92);
+    transition: transform 0.6s var(--ease-out-expo) 0.1s;
+}
+
+.lightbox.active .lightbox__img {
+    transform: scale(1);
+}
+
+.lightbox__caption {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s var(--ease-smooth) 0.3s,
+                transform 0.4s var(--ease-out-expo) 0.3s;
+}
+
+.lightbox.active .lightbox__caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* ============================================
+   CONTACT BAR ACCENT LINE — DRAW ON REVEAL
+   ============================================ */
+
+.contact-bar__accent {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1s var(--ease-out-expo);
+}
+
+.contact-bar.in-view .contact-bar__accent {
+    transform: scaleX(1);
+}
+
+
+/* ============================================
+   SCROLL-LINKED PARALLAX (CSS custom property driven by JS)
+   ============================================ */
+
+.hero__grain {
+    transform: translateY(calc(var(--scroll-y, 0) * 0.05px));
+}
+
+
+/* ============================================
+   MOBILE NAV — CINEMATIC OVERLAY
+   ============================================ */
+
+.mobile-nav {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s var(--ease-smooth);
+}
+
+.mobile-nav.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.mobile-nav__link {
+    transform: translateY(40px) translateX(-10px);
+    opacity: 0;
+    transition: transform 0.7s var(--ease-out-expo),
+                opacity 0.5s var(--ease-smooth),
+                color var(--duration-micro) var(--ease-smooth);
+    transition-delay: calc(var(--i) * 80ms + 100ms);
+}
+
+.mobile-nav.active .mobile-nav__link {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+}
+
+.mobile-nav__email {
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-smooth) 0.5s;
+}
+
+.mobile-nav.active .mobile-nav__email {
+    opacity: 1;
+}
+
+/* --- NAV TOGGLE: CROSS MORPH --- */
+.nav__toggle span {
+    transition: transform 0.4s var(--ease-out-expo),
+                opacity 0.2s var(--ease-smooth);
+}
+
+
+/* ============================================
+   NOW EXPLORING STATUS TAGS — SUBTLE PULSE
+   ============================================ */
+
+.status-tag--progress {
+    animation: subtlePulse 3s var(--ease-smooth) infinite;
+}
+
+@keyframes subtlePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+
+/* ============================================
+   FORM FOCUS — BORDER DRAW
+   ============================================ */
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+    transition: border-color 0.4s var(--ease-smooth),
+                box-shadow 0.4s var(--ease-smooth);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(232, 93, 58, 0.08);
+}
+
+
+/* ============================================
+   FOCUS STYLES — ACCESSIBLE + ON-BRAND
+   ============================================ */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* Tap highlight */
+a, button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ============================================
+   PREFERS-REDUCED-MOTION — RESPECT ALWAYS
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+    }
+
+    .reveal,
+    .reveal-up,
+    .reveal-clip,
+    .reveal-slide,
+    .reveal-fade,
+    .reveal-scale {
+        opacity: 1 !important;
+        transform: none !important;
+        clip-path: none !important;
+        filter: none !important;
+    }
+
+    .hero__title,
+    .hero__issue,
+    .hero__dek,
+    .hero__scroll {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+    }
+
+    .hero__title .line-inner {
+        transform: none !important;
+    }
+
+    body::before {
+        display: none;
+    }
+
+    .section-divider::before {
+        width: 60px !important;
+    }
+
+    .section-divider__label,
+    .section-divider__num {
+        opacity: 1 !important;
+    }
+
+    .featured-strip__quote {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+    }
+
+    .contact-bar__accent {
+        transform: none !important;
+    }
+}

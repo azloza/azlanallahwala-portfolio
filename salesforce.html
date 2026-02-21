@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesforce — Azlan Allahwala</title>
+    <meta name="description" content="Enterprise Salesforce architecture, multi-cloud implementations, and platform solutions. Case studies from Nielsen, Olympic Club, Yellowstone Club, and more.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="atmosphere.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="index.html" class="nav__logo">
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
+            <div class="nav__links" id="navLinks">
+                <a href="salesforce.html" class="nav__link nav__link--active">Salesforce</a>
+                <a href="ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="photography.html" class="nav__link">Photography</a>
+                <a href="about.html" class="nav__link">About</a>
+                <a href="contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="ai-lab.html" class="mobile-nav__link" style="--i:1">AI Lab</a>
+            <a href="photography.html" class="mobile-nav__link" style="--i:2">Photography</a>
+            <a href="about.html" class="mobile-nav__link" style="--i:3">About</a>
+            <a href="contact.html" class="mobile-nav__link" style="--i:4">Contact</a>
+        </div>
+        <div class="mobile-nav__footer"><span class="mobile-nav__email">azlanallahwala@gmail.com</span></div>
+    </div>
+
+    <!-- SECTION HERO -->
+    <section class="section-hero section-hero--sf">
+        <div class="section-hero__grain"></div>
+        <div class="section-hero__content">
+            <h1 class="reveal">Salesforce</h1>
+            <p class="dek reveal" data-delay="100">Enterprise architecture, multi-cloud implementations, and platform solutions that scale. Delivering measurable outcomes across industries — from global media to government.</p>
+        </div>
+    </section>
+
+    <!-- FEATURED: NIELSEN -->
+    <section class="section">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">Featured Case Study</span>
+            <span class="section-divider__num">01</span>
+        </div>
+        <article class="case-study-feature reveal">
+            <div class="case-study-card__img">
+                <div class="placeholder-img placeholder-img--nielsen-hero"></div>
+            </div>
+            <div class="case-study-feature__header">
+                <span class="case-study-feature__client">Nielsen</span>
+                <h2 class="case-study-feature__title">Global Multi-Cloud Rollout</h2>
+                <div class="case-study-feature__tags">
+                    <span class="tag tag--small">Sales Cloud</span>
+                    <span class="tag tag--small">Service Cloud</span>
+                    <span class="tag tag--small">Experience Cloud</span>
+                    <span class="tag tag--small">Marketing Cloud</span>
+                    <span class="tag tag--small">Global</span>
+                </div>
+            </div>
+            <div class="case-study-feature__body">
+                <div class="case-study-pso">
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Problem</span>
+                        <p>Nielsen's legacy Salesforce environment had grown organically across regions and business units, resulting in fragmented data, inconsistent processes, and poor cross-cloud visibility. Teams across Sales, Service, and Marketing were operating in silos, with no unified view of the customer. The platform had accumulated significant technical debt, making it difficult to scale or integrate new acquisitions.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Solution</span>
+                        <p>Led a global Salesforce transformation across Sales Cloud, Service Cloud, Experience Cloud, and Marketing Cloud. Designed a unified data architecture that consolidated fragmented regional instances into a single, scalable platform. Built custom Apex-driven automation to standardize lead routing, opportunity management, and case resolution across business units. Implemented Marketing Cloud journeys integrated with Sales Cloud to enable coordinated, cross-channel engagement. Deployed Experience Cloud portals for partner and client self-service, reducing support volume and improving satisfaction. Established a governance framework and CI/CD pipeline to support ongoing development across global teams.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Outcome</span>
+                        <p>Delivered a unified, multi-cloud Salesforce platform operating across global regions with standardized processes and consolidated data. The transformation significantly improved cross-team visibility, accelerated sales cycles, and enabled coordinated marketing engagement at scale. Ongoing development is now governed through a sustainable CI/CD framework, reducing deployment risk and increasing release velocity.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <!-- CASE STUDIES GRID -->
+    <section class="section" style="padding-top: 0;">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">All Case Studies</span>
+            <span class="section-divider__num">02</span>
+        </div>
+
+        <!-- GRANTS MANAGEMENT -->
+        <article class="case-study-card reveal" style="--i:0">
+            <div class="case-study-card__img">
+                <div class="placeholder-img placeholder-img--doj"></div>
+            </div>
+            <div class="case-study-card__header">
+                <span class="case-study-card__client">Federal Agency</span>
+                <h3 class="case-study-card__title">Grants Management System</h3>
+                <div class="case-study-card__tags">
+                    <span class="tag tag--small">Salesforce Platform</span>
+                    <span class="tag tag--small">Experience Cloud</span>
+                    <span class="tag tag--small">Document Management</span>
+                    <span class="tag tag--small">Government</span>
+                </div>
+            </div>
+            <div class="case-study-card__body">
+                <div class="case-study-pso case-study-pso--compact">
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Problem</span>
+                        <p>The agency's existing grants management system relied on a patchwork of legacy tools, manual review workflows, and disconnected databases. Grant applications were processed inconsistently across divisions, with limited visibility into status, compliance, or funding allocation. The lack of a centralized platform made it difficult to track outcomes, enforce accountability, or generate the reporting required by federal oversight bodies.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Solution</span>
+                        <p>Architected and delivered a comprehensive grants management system on the Salesforce platform. Built a custom data model to track the full grants lifecycle — from application intake through review, award, disbursement, and close-out. Developed an Experience Cloud portal for external applicants to submit, monitor, and manage their grant applications in real time. Implemented role-based approval workflows with configurable review stages, scoring rubrics, and compliance checkpoints. Integrated document management capabilities to handle supporting materials, audit trails, and version-controlled submissions. Built reporting dashboards for program officers to monitor funding pipelines, flag at-risk grants, and generate federal compliance reports. Designed the architecture to accommodate multiple grant programs with distinct rules, timelines, and funding sources within a single platform instance.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Outcome</span>
+                        <p>Delivered a centralized, scalable grants management platform that replaced fragmented legacy processes with a single source of truth. The system dramatically improved processing efficiency, reduced manual review overhead, and provided real-time visibility into grant status across all stages. Federal reporting that previously required weeks of manual compilation was reduced to on-demand dashboard generation. The Experience Cloud portal significantly improved the applicant experience, reducing submission errors and support inquiries. The platform is now used across multiple divisions and serves as the foundation for future grants program expansion.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- TOWN OF CARY -->
+        <article class="case-study-card reveal" style="--i:1">
+            <div class="case-study-card__img">
+                <div class="placeholder-img placeholder-img--cary"></div>
+            </div>
+            <div class="case-study-card__header">
+                <span class="case-study-card__client">Town of Cary</span>
+                <h3 class="case-study-card__title">Agentforce Implementation</h3>
+                <div class="case-study-card__tags">
+                    <span class="tag tag--small">Agentforce</span>
+                    <span class="tag tag--small">Service Cloud</span>
+                    <span class="tag tag--small">Einstein AI</span>
+                    <span class="tag tag--small">Government</span>
+                </div>
+            </div>
+            <div class="case-study-card__body">
+                <div class="case-study-pso case-study-pso--compact">
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Problem</span>
+                        <p>The Town of Cary, NC was experiencing growing pressure on its citizen services operations. Residents expected faster response times and more accessible channels for requests ranging from utility inquiries to permitting questions. The existing Service Cloud setup handled case management, but lacked intelligent automation and self-service capabilities. Staff were manually triaging and routing a high volume of repetitive inquiries, creating bottlenecks during peak periods and limiting the team's capacity for complex, high-touch requests.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Solution</span>
+                        <p>Implemented Salesforce Agentforce to augment the Town's existing Service Cloud environment with AI-powered autonomous agents. Designed and configured Agentforce topics and actions tailored to common citizen service scenarios — including utility account inquiries, public works requests, and general information lookups. Built structured grounding data sources and integrated them with the Agentforce reasoning engine so the AI agent could retrieve accurate, context-specific answers without hallucination. Configured multi-turn conversational flows that allowed the agent to gather required information, validate inputs, and execute actions such as case creation, appointment scheduling, and status lookups. Established escalation protocols so the AI agent seamlessly transferred to human agents when confidence thresholds were not met or when the citizen explicitly requested human assistance. Implemented an analytics layer to track agent resolution rates, escalation patterns, and citizen satisfaction, providing continuous feedback for optimization.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Outcome</span>
+                        <p>Launched one of the earlier municipal Agentforce deployments, positioning the Town of Cary as a forward-looking adopter of AI in public-sector service delivery. The AI agent now handles a substantial share of inbound citizen inquiries autonomously, dramatically reducing the volume of cases requiring human intervention. Average resolution times for routine inquiries dropped significantly, and citizen satisfaction with digital interactions improved measurably. The deployment freed staff capacity to focus on complex cases and proactive community engagement. The analytics framework provides ongoing visibility into AI agent performance, enabling iterative improvements to topics, actions, and grounding data.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- YELLOWSTONE CLUB -->
+        <article class="case-study-card reveal" style="--i:2">
+            <div class="case-study-card__img">
+                <div class="placeholder-img placeholder-img--yellowstone"></div>
+            </div>
+            <div class="case-study-card__header">
+                <span class="case-study-card__client">Yellowstone Club</span>
+                <h3 class="case-study-card__title">Multi-Cloud Platform</h3>
+                <div class="case-study-card__tags">
+                    <span class="tag tag--small">Sales Cloud</span>
+                    <span class="tag tag--small">Service Cloud</span>
+                    <span class="tag tag--small">Marketing Cloud</span>
+                    <span class="tag tag--small">Hospitality</span>
+                </div>
+            </div>
+            <div class="case-study-card__body">
+                <div class="case-study-pso case-study-pso--compact">
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Problem</span>
+                        <p>Yellowstone Club, an exclusive private residential community and ski resort in Montana, was managing its member relationships, real estate sales pipeline, and concierge operations across disconnected systems and manual processes. The membership team lacked a unified view of member profiles, property interests, and engagement history. Sales operations relied on spreadsheets and fragmented CRM data, making pipeline forecasting unreliable. Concierge and member services teams had no centralized platform for tracking requests, preferences, or service history, which undermined the high-touch, personalized experience expected by members.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Solution</span>
+                        <p>Designed and implemented a multi-cloud Salesforce platform spanning Sales Cloud, Service Cloud, and Marketing Cloud, tailored to the unique operational model of a luxury private club. Built a custom data architecture to unify member profiles with property ownership records, real estate pipeline data, and concierge interaction history. Configured Sales Cloud to support the club's real estate sales process — including property interest tracking, lot availability management, and pipeline forecasting with custom stages and approval workflows. Deployed Service Cloud for concierge and member services, enabling centralized request tracking, SLA management, and a 360-degree member service history. Integrated Marketing Cloud to enable personalized member communications — including event invitations, seasonal programming, and targeted outreach based on member interests and engagement patterns. Established automation through Flows and Apex to coordinate cross-cloud processes, such as triggering personalized welcome journeys upon property closing or escalating high-priority concierge requests.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Outcome</span>
+                        <p>Delivered a unified Salesforce platform that became the operational backbone for Yellowstone Club's membership, real estate, and concierge functions. The consolidated member view dramatically improved the team's ability to deliver personalized, anticipatory service. Real estate pipeline visibility improved substantially, enabling more accurate forecasting and faster deal progression. Concierge response times improved measurably, and member satisfaction with digital interactions increased. Marketing engagement rates rose significantly as communications became more targeted and contextually relevant. The platform now supports ongoing expansion as the club grows its membership and service offerings.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- OLYMPIC CLUB -->
+        <article class="case-study-card reveal" style="--i:3">
+            <div class="case-study-card__img">
+                <div class="placeholder-img placeholder-img--olympic"></div>
+            </div>
+            <div class="case-study-card__header">
+                <span class="case-study-card__client">Olympic Club</span>
+                <h3 class="case-study-card__title">Member Engagement Platform</h3>
+                <div class="case-study-card__tags">
+                    <span class="tag tag--small">Sales Cloud</span>
+                    <span class="tag tag--small">Experience Cloud</span>
+                    <span class="tag tag--small">Marketing Cloud</span>
+                    <span class="tag tag--small">Private Club</span>
+                </div>
+            </div>
+            <div class="case-study-card__body">
+                <div class="case-study-pso case-study-pso--compact">
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Problem</span>
+                        <p>The Olympic Club, one of the oldest and most prestigious athletic clubs in the United States, was managing member relationships and engagement through outdated systems that couldn't keep pace with modern expectations. Member data was scattered across legacy databases, spreadsheets, and disconnected departmental tools. There was no centralized view of member profiles, activity history, or preferences. Communication with members was largely manual and batch-oriented, lacking personalization or segmentation. The club had no digital self-service capability for members, and internal teams spent significant time on administrative tasks that could be automated.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Solution</span>
+                        <p>Implemented a Salesforce-based member engagement platform spanning Sales Cloud, Experience Cloud, and Marketing Cloud. Designed a custom data model to consolidate member profiles, activity history, event participation, and communication preferences into a single, unified record. Deployed Experience Cloud to create a branded member portal offering self-service access to event registration, account information, facility schedules, and member directories. Configured Marketing Cloud with data extensions and journey automations to deliver personalized communications — including event promotions, membership renewals, and targeted programming based on member interests and behavior. Built Flow-based automation within Sales Cloud to streamline internal operations, including membership application processing, referral tracking, and engagement scoring. Established integration with the club's existing event management and billing systems to ensure data consistency across platforms.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Outcome</span>
+                        <p>Delivered a modern, unified member engagement platform that replaced fragmented legacy systems with a cohesive digital experience. Member self-service adoption through the Experience Cloud portal was strong, substantially reducing administrative overhead for staff. Personalized marketing communications drove significantly higher open and engagement rates compared to previous batch-send approaches. Internal teams gained a 360-degree member view for the first time, improving the quality and consistency of member interactions across departments. The platform positioned the Olympic Club to operate with the digital sophistication expected by its membership while preserving the personal, high-touch character that defines the institution.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- PHARMEDIUM -->
+        <article class="case-study-card reveal" style="--i:4">
+            <div class="case-study-card__img">
+                <div class="placeholder-img placeholder-img--pharmedium"></div>
+            </div>
+            <div class="case-study-card__header">
+                <span class="case-study-card__client">Pharmedium</span>
+                <h3 class="case-study-card__title">Territory Management</h3>
+                <div class="case-study-card__tags">
+                    <span class="tag tag--small">Sales Cloud</span>
+                    <span class="tag tag--small">Territory Management</span>
+                    <span class="tag tag--small">Healthcare</span>
+                </div>
+            </div>
+            <div class="case-study-card__body">
+                <div class="case-study-pso case-study-pso--compact">
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Problem</span>
+                        <p>Pharmedium, a leading provider of outsourced compounding services for hospitals, was managing its sales territory assignments and account ownership through a combination of manual spreadsheets and ad hoc Salesforce configurations. As the company scaled, this approach created mounting issues: territory overlaps led to duplicated outreach, reassignment lag caused gaps in account coverage during rep transitions, and leadership lacked reliable visibility into territory-level pipeline and performance. The absence of a structured territory model made it difficult to plan capacity, balance workloads, or respond to organizational changes without significant manual effort.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Solution</span>
+                        <p>Implemented Salesforce Enterprise Territory Management to replace the manual, spreadsheet-driven process with a structured, rules-based system. Designed a hierarchical territory model aligned to Pharmedium's sales organizational structure, incorporating geographic, account-type, and segment-based assignment rules. Configured territory assignment rules to automatically route accounts to the correct territory and rep based on defined criteria, eliminating manual reassignment. Built reporting and dashboards to provide territory-level pipeline visibility, coverage analysis, and performance benchmarking for sales leadership. Established a governance process for territory realignment — enabling leadership to model proposed territory changes, assess impact on pipeline distribution, and execute adjustments with minimal disruption.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Outcome</span>
+                        <p>Replaced a fragile, manual territory process with a scalable, automated system that improved account coverage and reduced assignment conflicts. Territory realignments that previously took weeks of manual coordination were completed in a fraction of the time. Sales leadership gained reliable territory-level visibility for the first time, enabling better capacity planning and more informed go-to-market decisions. The structured model also simplified onboarding for new reps, who could immediately inherit the correct accounts and pipeline context for their assigned territory.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Breckenridge Grand Vacations (BGV) -->
+        <article class="case-study-card reveal" style="--i:5">
+            <div class="case-study-card__img">
+                <div class="placeholder-img placeholder-img--bgv"></div>
+            </div>
+            <div class="case-study-card__header">
+                <span class="case-study-card__client">Breckenridge Grand Vacations (BGV)</span>
+                <h3 class="case-study-card__title">Customer Engagement Platform</h3>
+                <div class="case-study-card__tags">
+                    <span class="tag tag--small">Sales Cloud</span>
+                    <span class="tag tag--small">Service Cloud</span>
+                    <span class="tag tag--small">Marketing Cloud</span>
+                    <span class="tag tag--small">Hospitality</span>
+                </div>
+            </div>
+            <div class="case-study-card__body">
+                <div class="case-study-pso case-study-pso--compact">
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Problem</span>
+                        <p>Breckenridge Grand Vacations (BGV), a vacation ownership and hospitality company, was managing customer interactions across sales, service, and marketing through a fragmented set of tools and manual workflows. Customer data was siloed between departments, preventing a unified view of the guest journey. Sales teams lacked pipeline visibility, service teams operated without complete interaction histories, and marketing relied on batch communications with no behavioral targeting. The disconnected tech stack made it difficult to deliver the cohesive, personalized guest experience that drives loyalty and repeat engagement in the hospitality sector.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Solution</span>
+                        <p>Designed and deployed a multi-cloud Salesforce platform spanning Sales Cloud, Service Cloud, and Marketing Cloud to unify Breckenridge Grand Vacations' customer engagement operations. Built a custom data model that consolidated guest profiles, ownership records, stay history, and communication preferences into a single, 360-degree view. Configured Sales Cloud to support the vacation ownership sales pipeline with custom stages, automated follow-ups, and tour scheduling workflows. Deployed Service Cloud to centralize guest support operations, including case routing, SLA tracking, and a knowledge base for common inquiries. Integrated Marketing Cloud to enable personalized, journey-based communications triggered by guest behavior, ownership milestones, and engagement patterns. Established cross-cloud automation to coordinate handoffs between marketing, sales, and service — ensuring guests experienced a seamless journey rather than disconnected departmental interactions.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Outcome</span>
+                        <p>Delivered a unified platform that replaced fragmented departmental tools with a single, connected system for managing the full guest lifecycle. The 360-degree guest view dramatically improved the quality and consistency of interactions across sales, service, and marketing. Sales pipeline visibility enabled more accurate forecasting and improved conversion rates through better-timed follow-ups. Service resolution times improved as agents gained immediate access to complete guest histories. Marketing engagement rates increased significantly as communications became more personalized and contextually relevant. The platform established a scalable foundation for Breckenridge Grand Vacations' continued growth in the vacation ownership market.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- HUIZENGA GROUP -->
+        <article class="case-study-card reveal" style="--i:6">
+            <div class="case-study-card__img">
+                <div class="placeholder-img placeholder-img--huizenga"></div>
+            </div>
+            <div class="case-study-card__header">
+                <span class="case-study-card__client">Huizenga Group</span>
+                <h3 class="case-study-card__title">Pipeline Standardization</h3>
+                <div class="case-study-card__tags">
+                    <span class="tag tag--small">Sales Cloud</span>
+                    <span class="tag tag--small">Pipeline Management</span>
+                    <span class="tag tag--small">Investment</span>
+                </div>
+            </div>
+            <div class="case-study-card__body">
+                <div class="case-study-pso case-study-pso--compact">
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Problem</span>
+                        <p>Huizenga Group, a diversified holding and investment company, was managing its deal pipeline and investment tracking through an inconsistent mix of Salesforce configurations, spreadsheets, and informal processes. Different business units had adopted their own opportunity stages, naming conventions, and tracking methods, making it nearly impossible for leadership to get a reliable, consolidated view of the pipeline. Forecasting was manual and unreliable, and there was no standardized process for tracking deal progression, investment milestones, or portfolio performance across the group's various verticals.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Solution</span>
+                        <p>Standardized Huizenga Group's Salesforce Sales Cloud environment around a unified pipeline management framework. Designed a consolidated opportunity model with standardized stages, exit criteria, and required fields that applied across all business units while accommodating vertical-specific nuances through record types and page layouts. Built custom reporting and dashboards to provide leadership with a single, reliable view of pipeline health, deal velocity, and forecast accuracy across the group's portfolio. Implemented validation rules and automation to enforce data quality and process adherence — ensuring opportunities progressed through defined stages with the required documentation and approvals. Configured forecasting tools to replace the spreadsheet-based process with structured, collaborative forecasting within Salesforce. Established a governance model for ongoing pipeline management, including quarterly review cadences and defined ownership for data quality and process compliance.</p>
+                    </div>
+                    <div class="case-study-pso__block">
+                        <span class="case-study-pso__label">Outcome</span>
+                        <p>Replaced a fragmented, unreliable pipeline process with a structured, standardized system that delivered consistent visibility across all business units. Leadership gained access to accurate, real-time pipeline data for the first time, enabling more informed investment decisions and resource allocation. Forecast accuracy improved substantially as the process moved from manual spreadsheet aggregation to structured, system-enforced forecasting. Data quality across the pipeline improved measurably as validation rules and automation reduced incomplete or inconsistent records. The standardized framework also simplified onboarding for new team members and provided a repeatable model as Huizenga Group expanded into new verticals.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <!-- LINKEDIN RECOMMENDATIONS -->
+    <section class="recommendations">
+        <div class="recommendations__header reveal">
+            <span class="recommendations__overline">What Clients Say</span>
+            <h2 class="recommendations__title">Words That Mean the Most</h2>
+        </div>
+        <div class="recommendations__grid">
+            <div class="rec-card reveal" style="--i:0">
+                <span class="rec-card__quote-mark">&ldquo;</span>
+                <p class="rec-card__body">Azlan brought a wealth of knowledge and experience to our project at Yellowstone Club. His strategic insights significantly shaped our implementation, helping us confidently navigate complexities. Azlan's ability to foster collaboration within the team made our partnership truly effective. Without his contributions, we could not have completed our massive project!</p>
+                <div class="rec-card__divider"></div>
+                <div class="rec-card__author">
+                    <span class="rec-card__name">Madison Morgan</span>
+                    <span class="rec-card__role">Director of Client Success, Nines</span>
+                    <span class="rec-card__linkedin">via LinkedIn</span>
+                </div>
+            </div>
+            <div class="rec-card reveal" style="--i:1">
+                <span class="rec-card__quote-mark">&ldquo;</span>
+                <p class="rec-card__body">Azlan was absolutely fantastic to work with. Any Salesforce development issue our team had he was able to resolve and come up with a solution quickly and efficiently. He always went above and beyond in terms of meeting our business expectations and needs no matter WHAT time of day! He took the time to not only work the technical sides of the solutions but to also understand the business need and impact &mdash; which all around made our team more successful. I highly recommend Azlan for any of your Salesforce needs!</p>
+                <div class="rec-card__divider"></div>
+                <div class="rec-card__author">
+                    <span class="rec-card__name">Mea Miller</span>
+                    <span class="rec-card__role">CRM, Technology &amp; Data Management<br>Revenue Operations &mdash; Salesforce Lead, Nielsen</span>
+                    <span class="rec-card__linkedin">via LinkedIn</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MY APPROACH -->
+    <section class="section" style="padding-top:0">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">My Approach</span>
+            <span class="section-divider__num">03</span>
+        </div>
+        <div class="expertise-grid">
+            <div class="expertise-card reveal" style="--i:0">
+                <h4>Discovery & Architecture</h4>
+                <ul>
+                    <li>Stakeholder interviews across business and IT</li>
+                    <li>Current-state process mapping and data audit</li>
+                    <li>Technical debt assessment and org health review</li>
+                    <li>Solution architecture with scalability modeling</li>
+                    <li>Governor limit analysis and performance planning</li>
+                    <li>Build vs. buy evaluation for every component</li>
+                    <li>Executive-ready roadmap with phased delivery</li>
+                </ul>
+            </div>
+            <div class="expertise-card reveal" style="--i:1">
+                <h4>Build & Iterate</h4>
+                <ul>
+                    <li>Apex and LWC development with CI/CD pipelines</li>
+                    <li>Declarative-first design, code only when needed</li>
+                    <li>Two-week sprint cycles with demo-driven feedback</li>
+                    <li>Integration architecture via MuleSoft or REST APIs</li>
+                    <li>Data migration with validation and reconciliation</li>
+                    <li>Security model design with field-level access</li>
+                    <li>Automated testing with 90%+ code coverage</li>
+                </ul>
+            </div>
+            <div class="expertise-card reveal" style="--i:2">
+                <h4>Launch & Evolve</h4>
+                <ul>
+                    <li>Hypercare support through first full business cycle</li>
+                    <li>Admin and end-user training with role-based tracks</li>
+                    <li>Adoption metrics dashboards and health monitoring</li>
+                    <li>Post-launch optimization based on usage analytics</li>
+                    <li>Governance framework for ongoing customization</li>
+                    <li>Quarterly roadmap reviews aligned to releases</li>
+                    <li>Knowledge transfer and internal team enablement</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS BAR -->
+    <section class="section" style="padding-top:0">
+        <div class="skills-bar reveal">
+            <span class="skill-tag">Salesforce Platform</span>
+            <span class="skill-tag">Apex</span>
+            <span class="skill-tag">Lightning Web Components</span>
+            <span class="skill-tag">Flows</span>
+            <span class="skill-tag">Experience Cloud</span>
+            <span class="skill-tag">Sales Cloud</span>
+            <span class="skill-tag">Service Cloud</span>
+            <span class="skill-tag">Marketing Cloud</span>
+            <span class="skill-tag">Data Cloud</span>
+            <span class="skill-tag">Agentforce</span>
+            <span class="skill-tag">Einstein AI</span>
+            <span class="skill-tag">Territory Management</span>
+            <span class="skill-tag">Omni-Channel</span>
+            <span class="skill-tag">SOQL / SOSL</span>
+            <span class="skill-tag">REST / SOAP APIs</span>
+            <span class="skill-tag">CI/CD (Gearset, Copado)</span>
+            <span class="skill-tag">Platform Events</span>
+            <span class="skill-tag">Change Data Capture</span>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-block">
+        <div class="cta-block__inner reveal">
+            <h3>Need a Salesforce architect?</h3>
+            <a href="contact.html" class="btn btn--primary">Get in Touch <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="index.html" class="footer__logo">Azlan<span class="nav__logo-dot">.</span></a>
+                <nav class="footer__nav">
+                    <a href="salesforce.html">Salesforce</a>
+                    <a href="ai-lab.html">AI Lab</a>
+                    <a href="photography.html">Photography</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

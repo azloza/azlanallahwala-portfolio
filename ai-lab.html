@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Lab — Azlan Allahwala</title>
+    <meta name="description" content="AI projects and experiments: document intelligence, agentic workflows, and LLM-powered tools. Built with Python, LangChain, and Claude.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="atmosphere.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="nav" id="nav">
+        <div class="nav__inner">
+            <a href="index.html" class="nav__logo">
+                <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
+            </a>
+            <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
+            <div class="nav__links" id="navLinks">
+                <a href="salesforce.html" class="nav__link">Salesforce</a>
+                <a href="ai-lab.html" class="nav__link nav__link--active">AI Lab</a>
+                <a href="photography.html" class="nav__link">Photography</a>
+                <a href="about.html" class="nav__link">About</a>
+                <a href="contact.html" class="nav__link nav__link--accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav__inner">
+            <a href="salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
+            <a href="ai-lab.html" class="mobile-nav__link" style="--i:1">AI Lab</a>
+            <a href="photography.html" class="mobile-nav__link" style="--i:2">Photography</a>
+            <a href="about.html" class="mobile-nav__link" style="--i:3">About</a>
+            <a href="contact.html" class="mobile-nav__link" style="--i:4">Contact</a>
+        </div>
+        <div class="mobile-nav__footer"><span class="mobile-nav__email">azlanallahwala@gmail.com</span></div>
+    </div>
+
+    <!-- SECTION HERO -->
+    <section class="section-hero section-hero--ai">
+        <div class="section-hero__grain"></div>
+        <div class="section-hero__content">
+            <h1 class="reveal">AI Lab</h1>
+            <p class="dek reveal" data-delay="100">Building at the intersection of large language models, enterprise data, and real-world utility. Less hype, more shipping.</p>
+        </div>
+    </section>
+
+    <!-- STATS ROW -->
+    <section class="section">
+        <div class="stats-row reveal">
+            <div class="stat-callout">
+                <div class="stat-callout__number">200+</div>
+                <div class="stat-callout__label">Research papers read across NLP, retrieval, and agent architectures</div>
+            </div>
+            <div class="stat-callout">
+                <div class="stat-callout__number">12</div>
+                <div class="stat-callout__label">Models fine-tuned or prompt-engineered for production workloads</div>
+            </div>
+            <div class="stat-callout">
+                <div class="stat-callout__number">96.4%</div>
+                <div class="stat-callout__label">Avg. extraction accuracy across document intelligence pipelines</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED EXPERIMENT -->
+    <section class="section">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">Featured Experiment</span>
+            <span class="section-divider__num">01</span>
+        </div>
+        <div class="featured-card reveal">
+            <div class="featured-card__img">
+                <div class="placeholder-img placeholder-img--synthdoc" style="aspect-ratio:16/10">
+                </div>
+            </div>
+            <div class="featured-card__content">
+                <span class="featured-card__meta">LLM &middot; Document Intelligence &middot; RAG &middot; 2025</span>
+                <h2 class="featured-card__title">SynthDoc: Turning Messy PDFs into Structured Knowledge</h2>
+                <p class="featured-card__desc">Enterprise documents are chaotic: scanned invoices with inconsistent layouts, regulatory filings buried in legalese, multi-column research papers with nested tables. SynthDoc is an LLM-powered extraction pipeline that transforms these unstructured documents into queryable, structured data. It chains Claude for semantic understanding with a custom layout parser for spatial reasoning, feeding results into Pinecone for vector-based retrieval. The system processes 10,000+ pages per run with 96.4% extraction accuracy on benchmark datasets, handling edge cases like rotated text, merged cells, and handwritten annotations through a multi-pass verification loop. Currently deployed in a Salesforce-integrated workflow where extracted contract data auto-populates opportunity records.</p>
+                <a href="#" class="text-link">Explore project <span class="arrow">&rarr;</span></a>
+            </div>
+        </div>
+
+        <!-- PULL QUOTE -->
+        <div class="pull-quote reveal">
+            <p>The best AI systems disappear into the workflow. If the user has to think about the model, you have already failed at the design level.</p>
+            <cite>Operating philosophy for every experiment in this lab</cite>
+        </div>
+
+        <!-- PROJECT GRID -->
+        <div class="section-divider reveal">
+            <span class="section-divider__label">All Experiments</span>
+            <span class="section-divider__num">02</span>
+        </div>
+        <div class="project-grid" style="grid-template-columns: repeat(3, 1fr)">
+            <a href="#" class="article-card reveal" style="--i:0">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--agentic">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Agents</span>
+                        <span class="article-card__date">2025</span>
+                    </div>
+                    <h4 class="article-card__title">Agentic Workflow Orchestrator</h4>
+                    <p class="article-card__desc">Multi-agent system using Claude and tool-use to plan, execute, and self-correct complex business processes. Agents negotiate task allocation, escalate edge cases, and produce audit trails for every decision made.</p>
+                    <span class="text-link text-link--small">Explore <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="#" class="article-card reveal" style="--i:1">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--codeassist">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">RAG</span>
+                        <span class="article-card__date">2025</span>
+                    </div>
+                    <h4 class="article-card__title">Context-Aware Code Assistant</h4>
+                    <p class="article-card__desc">RAG-powered code review tool that ingests an entire repository, maps dependency graphs, and provides architecture-aware suggestions. Uses hybrid search with BM25 + dense embeddings for precise retrieval.</p>
+                    <span class="text-link text-link--small">Explore <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="#" class="article-card reveal" style="--i:2">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--synthdoc">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Vision</span>
+                        <span class="article-card__date">2024</span>
+                    </div>
+                    <h4 class="article-card__title">Visual Scene Understanding</h4>
+                    <p class="article-card__desc">Multimodal pipeline combining GPT-4V and Claude for architectural photo analysis. Extracts spatial relationships, material identification, and design-style classification with structured JSON output.</p>
+                    <span class="text-link text-link--small">Explore <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="#" class="article-card reveal" style="--i:3">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--summarizer">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Fine-tuning</span>
+                        <span class="article-card__date">2025</span>
+                    </div>
+                    <h4 class="article-card__title">Domain-Specific Summarizer</h4>
+                    <p class="article-card__desc">Fine-tuned Mistral 7B on 15K legal and compliance documents to generate executive summaries that preserve critical clauses. Outperforms zero-shot GPT-4 on domain-specific ROUGE-L by 18%.</p>
+                    <span class="text-link text-link--small">Explore <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="#" class="article-card reveal" style="--i:4">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--evalharness">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Evals</span>
+                        <span class="article-card__date">2025</span>
+                    </div>
+                    <h4 class="article-card__title">LLM Evaluation Harness</h4>
+                    <p class="article-card__desc">Custom evaluation framework for comparing LLM outputs across accuracy, latency, cost, and hallucination rate. Runs head-to-head benchmarks with human-in-the-loop scoring and automated regression detection.</p>
+                    <span class="text-link text-link--small">Explore <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+            <a href="#" class="article-card reveal" style="--i:5">
+                <div class="article-card__img">
+                    <div class="placeholder-img placeholder-img--prompt-version">
+                    </div>
+                </div>
+                <div class="article-card__body">
+                    <div class="article-card__meta">
+                        <span class="tag tag--small">Infra</span>
+                        <span class="article-card__date">2024</span>
+                    </div>
+                    <h4 class="article-card__title">Prompt Versioning &amp; Observability</h4>
+                    <p class="article-card__desc">Git-like version control for prompt templates with A/B testing, cost tracking, and latency monitoring. Integrates with LangSmith and custom dashboards to catch regressions before they reach production.</p>
+                    <span class="text-link text-link--small">Explore <span class="arrow">&rarr;</span></span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- CURRENT FOCUS / RESEARCH INTERESTS -->
+    <section class="section">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">Current Focus</span>
+            <span class="section-divider__num">03</span>
+        </div>
+        <div class="reading-column">
+            <p class="reveal">My research interests sit at the boundary where large language models meet messy, real-world enterprise data. I am particularly drawn to problems where off-the-shelf solutions fall short and custom pipelines are the only path to production-grade reliability. Three threads I keep pulling on:</p>
+            <p class="reveal"><strong>Retrieval-Augmented Generation at scale.</strong> Most RAG demos work on a handful of documents. I focus on what breaks when you point the same architecture at 50,000 PDFs with inconsistent formatting, mixed languages, and no clean metadata. Chunking strategy, re-ranking, and hybrid search become the real engineering challenges.</p>
+            <p class="reveal"><strong>Agentic systems with guardrails.</strong> Autonomous agents are powerful but brittle. My work emphasizes structured tool-use, explicit reasoning traces, and human-in-the-loop checkpoints that let agents operate in regulated environments like financial services and healthcare without sacrificing auditability.</p>
+            <p class="reveal"><strong>Evaluation-driven development.</strong> You cannot improve what you cannot measure. I build custom evaluation harnesses before writing the first line of application code, establishing baselines against which every prompt revision and architecture change is tested.</p>
+        </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section class="section">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">Tech Stack</span>
+            <span class="section-divider__num">04</span>
+        </div>
+        <div class="skills-bar reveal">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">Claude API</span>
+            <span class="skill-tag">LangChain</span>
+            <span class="skill-tag">LangGraph</span>
+            <span class="skill-tag">LangSmith</span>
+            <span class="skill-tag">OpenAI API</span>
+            <span class="skill-tag">Pinecone</span>
+            <span class="skill-tag">ChromaDB</span>
+            <span class="skill-tag">Hugging Face</span>
+            <span class="skill-tag">PyTorch</span>
+            <span class="skill-tag">FastAPI</span>
+            <span class="skill-tag">Pydantic</span>
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">AWS Bedrock</span>
+            <span class="skill-tag">Salesforce APIs</span>
+            <span class="skill-tag">PostgreSQL</span>
+            <span class="skill-tag">Redis</span>
+            <span class="skill-tag">Streamlit</span>
+            <span class="skill-tag">Jupyter</span>
+            <span class="skill-tag">Git</span>
+        </div>
+    </section>
+
+    <!-- NOW EXPLORING -->
+    <section class="now-exploring reveal">
+        <h3>Now Exploring</h3>
+        <div class="now-exploring__grid">
+            <div class="now-exploring__item">
+                <span class="now-exploring__title">Salesforce + AI Agents: autonomous case routing and field auto-population via Claude tool-use</span>
+                <span class="status-tag status-tag--progress">In Progress</span>
+            </div>
+            <div class="now-exploring__item">
+                <span class="now-exploring__title">Voice-Driven Interfaces: real-time speech-to-action pipelines with Whisper and function calling</span>
+                <span class="status-tag status-tag--prototype">Prototype</span>
+            </div>
+            <div class="now-exploring__item">
+                <span class="now-exploring__title">Multi-Modal RAG: ingesting images, tables, and charts alongside text for richer retrieval</span>
+                <span class="status-tag status-tag--progress">In Progress</span>
+            </div>
+            <div class="now-exploring__item">
+                <span class="now-exploring__title">SynthDoc v2: adding layout-aware table extraction and cross-document entity resolution</span>
+                <span class="status-tag status-tag--shipped">Shipped</span>
+            </div>
+            <div class="now-exploring__item">
+                <span class="now-exploring__title">Guardrail Framework: content filtering, PII redaction, and output validation for regulated industries</span>
+                <span class="status-tag status-tag--prototype">Prototype</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-block">
+        <div class="cta-block__inner reveal">
+            <h3>Interested in AI collaboration?</h3>
+            <a href="contact.html" class="btn btn--primary">Get in Touch <span class="arrow">&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <a href="index.html" class="footer__logo">Azlan<span class="nav__logo-dot">.</span></a>
+                <nav class="footer__nav">
+                    <a href="salesforce.html">Salesforce</a>
+                    <a href="ai-lab.html">AI Lab</a>
+                    <a href="photography.html">Photography</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
+                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

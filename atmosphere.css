@@ -1,0 +1,470 @@
+/* ============================================
+   ATMOSPHERIC BACKGROUND SYSTEM
+   ============================================
+
+   MOTION TONE: Editorial Studio Light
+
+   CONCEPT:
+   Soft, warm light fields moving behind the UI like
+   ambient studio illumination. Multiple gradient layers
+   drift, breathe, and rotate on long cycles so the
+   background feels alive without competing with content.
+
+   LAYER STRUCTURE:
+   1. Primary warm glow   — Large radial, accent-tinted, breathes + drifts
+   2. Secondary cool field — Cooler radial, counter-motion, creates depth
+   3. Accent highlight     — Small concentrated orb, slow orbit
+   4. Grain overlay        — Already in HTML, adds analog texture
+
+   MOTION RULES:
+   - Breathing scale:  1.0 → 1.15 → 1.0     (20–30s cycle)
+   - Drift:            ±5% translation         (25–40s cycle)
+   - Rotation:         0° → 360°               (60s, barely perceptible)
+   - Easing:           ease-in-out throughout
+   - Phase offsets:    layers never synchronize
+   - Opacity:          extremely low (0.03–0.08)
+
+   ============================================ */
+
+
+/* ============================================
+   HERO ATMOSPHERIC BACKGROUND
+   ============================================ */
+
+.hero__gradient {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Layer 1: Primary warm glow — large, slow breath + drift */
+.hero__gradient::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background:
+        radial-gradient(ellipse 70% 50% at 65% 30%, rgba(232, 93, 58, 0.07) 0%, transparent 70%);
+    animation:
+        atmosphereBreath 25s ease-in-out infinite,
+        atmosphereDriftA 35s ease-in-out infinite;
+    will-change: transform;
+}
+
+/* Layer 2: Secondary cool ambient — counter-motion for depth */
+.hero__gradient::after {
+    content: '';
+    position: absolute;
+    top: -15%;
+    left: -15%;
+    width: 130%;
+    height: 130%;
+    background:
+        radial-gradient(ellipse 60% 70% at 25% 70%, rgba(120, 140, 180, 0.035) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 80% 60%, rgba(232, 93, 58, 0.025) 0%, transparent 50%);
+    animation:
+        atmosphereBreathSlow 30s ease-in-out infinite,
+        atmosphereDriftB 40s ease-in-out infinite;
+    animation-delay: -8s;
+    will-change: transform;
+}
+
+/* Layer 3: Accent orb — injected via the existing .hero__gradient element background */
+.hero__gradient {
+    background:
+        radial-gradient(circle 200px at 75% 25%, rgba(232, 93, 58, 0.04) 0%, transparent 100%),
+        linear-gradient(180deg, transparent 40%, rgba(10, 10, 10, 0.5) 100%);
+    animation: atmosphereOrbit 60s linear infinite;
+}
+
+
+/* ============================================
+   SECTION HERO ATMOSPHERIC BACKGROUNDS
+   ============================================
+   Subpage heroes get a subtler version.
+*/
+
+.section-hero__grain {
+    /* Grain stays static — already handled in HTML */
+}
+
+/* Salesforce hero — purple-warm atmosphere */
+.section-hero--sf::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+        radial-gradient(ellipse 60% 50% at 60% 40%, rgba(140, 90, 200, 0.06) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 60% at 30% 70%, rgba(232, 93, 58, 0.03) 0%, transparent 60%);
+    animation:
+        atmosphereBreath 28s ease-in-out infinite,
+        atmosphereDriftA 38s ease-in-out infinite;
+    animation-delay: -5s;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
+
+/* AI hero — blue-cool atmosphere */
+.section-hero--ai::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+        radial-gradient(ellipse 60% 50% at 55% 35%, rgba(60, 120, 200, 0.06) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 75% 65%, rgba(100, 180, 220, 0.03) 0%, transparent 55%);
+    animation:
+        atmosphereBreathSlow 32s ease-in-out infinite,
+        atmosphereDriftB 36s ease-in-out infinite;
+    animation-delay: -12s;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
+
+/* Photography hero — warm golden atmosphere */
+.section-hero--photo::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+        radial-gradient(ellipse 55% 55% at 50% 45%, rgba(200, 140, 60, 0.05) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 50% at 70% 60%, rgba(232, 93, 58, 0.03) 0%, transparent 55%);
+    animation:
+        atmosphereBreath 26s ease-in-out infinite,
+        atmosphereDriftA 42s ease-in-out infinite;
+    animation-delay: -3s;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
+
+
+/* ============================================
+   FEATURED STRIP ATMOSPHERE
+   ============================================
+   The quote section gets a very subtle warm glow
+   to feel like a held breath of light.
+*/
+
+.featured-strip {
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-strip__grain {
+    /* Already in HTML */
+}
+
+.featured-strip::after {
+    content: '';
+    position: absolute;
+    inset: -30%;
+    background:
+        radial-gradient(ellipse 60% 60% at 50% 50%, rgba(232, 93, 58, 0.035) 0%, transparent 70%);
+    animation:
+        atmosphereBreathSlow 22s ease-in-out infinite;
+    animation-delay: -7s;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
+
+
+/* ============================================
+   CONTACT BAR ATMOSPHERE
+   ============================================ */
+
+.contact-bar {
+    overflow: hidden;
+}
+
+.contact-bar::after {
+    content: '';
+    position: absolute;
+    inset: -25%;
+    background:
+        radial-gradient(ellipse 50% 60% at 50% 40%, rgba(232, 93, 58, 0.03) 0%, transparent 65%);
+    animation:
+        atmosphereBreath 20s ease-in-out infinite;
+    animation-delay: -10s;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
+
+
+/* ============================================
+   ABOUT HERO ATMOSPHERE
+   ============================================ */
+
+.about-hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.about-hero::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+        radial-gradient(ellipse 50% 50% at 40% 50%, rgba(232, 93, 58, 0.04) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 70% 30%, rgba(140, 160, 200, 0.025) 0%, transparent 55%);
+    animation:
+        atmosphereBreathSlow 28s ease-in-out infinite,
+        atmosphereDriftA 45s ease-in-out infinite;
+    animation-delay: -15s;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
+
+
+/* ============================================
+   CONTACT PAGE ATMOSPHERE
+   ============================================ */
+
+.contact-hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-hero::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+        radial-gradient(ellipse 55% 50% at 55% 40%, rgba(232, 93, 58, 0.04) 0%, transparent 65%);
+    animation:
+        atmosphereBreath 24s ease-in-out infinite,
+        atmosphereDriftB 38s ease-in-out infinite;
+    animation-delay: -6s;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
+
+
+/* ============================================
+   HOMEPAGE BREATHING BACKGROUND OVERLAY
+   ============================================
+
+   A full-page animated layer that sits behind all content
+   but above the base background color. Creates a slow
+   inhale/exhale pulse across the entire homepage.
+
+   - Only renders on [data-page="home"]
+   - Controlled by BREATHING_BG_ENABLED flag in HTML
+   - Uses ::before and ::after for two phase-offset layers
+   - pointer-events: none — never blocks interaction
+   - will-change: transform, opacity — GPU-composited
+
+   ============================================ */
+
+/* --- The breathing overlay container --- */
+.breathing-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    /* Only visible on homepage — other pages don't have this div */
+}
+
+/* Layer 1: Warm inhale — expands from center-left, fades in/out */
+.breathing-bg::before {
+    content: '';
+    position: absolute;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    background:
+        radial-gradient(ellipse 55% 50% at 40% 45%, rgba(232, 93, 58, 0.035) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 55% at 65% 60%, rgba(180, 120, 80, 0.02) 0%, transparent 65%);
+    animation: homepageBreatheIn 12s ease-in-out infinite;
+    will-change: transform, opacity;
+    pointer-events: none;
+}
+
+/* Layer 2: Cool exhale — counter-phase, expands from center-right */
+.breathing-bg::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background:
+        radial-gradient(ellipse 50% 45% at 60% 35%, rgba(100, 130, 180, 0.025) 0%, transparent 65%),
+        radial-gradient(ellipse 35% 40% at 35% 70%, rgba(232, 93, 58, 0.018) 0%, transparent 60%);
+    animation: homepageBreatheOut 12s ease-in-out infinite;
+    animation-delay: -6s; /* Half-cycle offset — exhale while layer 1 inhales */
+    will-change: transform, opacity;
+    pointer-events: none;
+}
+
+
+/* ============================================
+   HIDE "AA" MONOGRAM ON HOMEPAGE
+   ============================================
+   The .hero__signature contains the AA watermark.
+   We hide it on the homepage only (via data-page).
+   It remains intact in the HTML for other uses.
+   ============================================ */
+
+[data-page="home"] .hero__signature {
+    display: none;
+}
+
+
+/* ============================================
+   KEYFRAMES — THE MOTION VOCABULARY
+   ============================================ */
+
+/* Breathing: subtle scale pulse */
+@keyframes atmosphereBreath {
+    0%, 100% {
+        transform: scale(1.0);
+    }
+    50% {
+        transform: scale(1.12);
+    }
+}
+
+/* Slower breathing variant */
+@keyframes atmosphereBreathSlow {
+    0%, 100% {
+        transform: scale(1.0) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.08) rotate(2deg);
+    }
+}
+
+/* Drift A: horizontal-dominant slow wander */
+@keyframes atmosphereDriftA {
+    0%, 100% {
+        translate: 0% 0%;
+    }
+    25% {
+        translate: 3% -1.5%;
+    }
+    50% {
+        translate: -1% 2%;
+    }
+    75% {
+        translate: -3% -0.5%;
+    }
+}
+
+/* Drift B: vertical-dominant counter-wander */
+@keyframes atmosphereDriftB {
+    0%, 100% {
+        translate: 0% 0%;
+    }
+    25% {
+        translate: -2% 3%;
+    }
+    50% {
+        translate: 1.5% -2%;
+    }
+    75% {
+        translate: 2.5% 1%;
+    }
+}
+
+/* Homepage breathing: inhale — scale up + fade in */
+@keyframes homepageBreatheIn {
+    0%, 100% {
+        transform: scale(1.0) translate(0%, 0%);
+        opacity: 0.4;
+    }
+    50% {
+        transform: scale(1.12) translate(1.5%, -1%);
+        opacity: 1;
+    }
+}
+
+/* Homepage breathing: exhale — counter-phase scale + fade */
+@keyframes homepageBreatheOut {
+    0%, 100% {
+        transform: scale(1.08) translate(0%, 0%);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.0) translate(-1%, 1.5%);
+        opacity: 0.9;
+    }
+}
+
+/* Slow orbit: barely perceptible rotation for the accent orb */
+@keyframes atmosphereOrbit {
+    0% {
+        background-position: 75% 25%, center;
+    }
+    25% {
+        background-position: 80% 40%, center;
+    }
+    50% {
+        background-position: 65% 55%, center;
+    }
+    75% {
+        background-position: 55% 35%, center;
+    }
+    100% {
+        background-position: 75% 25%, center;
+    }
+}
+
+
+/* ============================================
+   REDUCED MOTION — STATIC FALLBACK
+   ============================================
+   When the user prefers reduced motion,
+   show the static gradient with no animation.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+    .hero__gradient,
+    .hero__gradient::before,
+    .hero__gradient::after,
+    .section-hero--sf::before,
+    .section-hero--ai::before,
+    .section-hero--photo::before,
+    .featured-strip::after,
+    .contact-bar::after,
+    .about-hero::before,
+    .contact-hero::before,
+    .breathing-bg::before,
+    .breathing-bg::after {
+        animation: none !important;
+    }
+
+    /* Show a static version of the gradient */
+    .hero__gradient::before {
+        transform: scale(1.05);
+    }
+}
+
+
+/* ============================================
+   TUNING GUIDE
+   ============================================
+
+   To adjust intensity:
+   - Gradient opacity: change the rgba alpha values (0.03–0.08 range)
+     Lower = more subtle, higher = more visible
+   - Scale range: change scale values in keyframes
+     1.08 = barely breathing, 1.2 = dramatic
+   - Drift range: change translate % in drift keyframes
+     ±2% = gentle, ±5% = noticeable
+   - Speed: change animation durations
+     Longer = more premium/subtle, shorter = more energetic
+   - To disable a layer: set its opacity to 0
+
+   ============================================ */
