@@ -424,30 +424,46 @@
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
             var btn = contactForm.querySelector('.btn');
-            var formData = new FormData(contactForm);
 
-            fetch('/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams(formData).toString()
-            })
-            .then(function () {
-                btn.textContent = 'Message Sent!';
-                btn.style.background = '#44BB77';
-                setTimeout(function () {
-                    btn.textContent = 'Send Message';
-                    btn.style.background = '';
-                    contactForm.reset();
-                }, 2500);
-            })
-            .catch(function () {
-                btn.textContent = 'Error — try email instead';
-                btn.style.background = '#E85D3A';
-                setTimeout(function () {
-                    btn.textContent = 'Send Message';
-                    btn.style.background = '';
-                }, 3000);
-            });
+            // Gather form values
+            var name = (contactForm.querySelector('#name') || {}).value || '';
+            var email = (contactForm.querySelector('#email') || {}).value || '';
+            var company = (contactForm.querySelector('#company') || {}).value || '';
+            var projectType = (contactForm.querySelector('#projectType') || {}).value || '';
+            var budget = (contactForm.querySelector('#budget') || {}).value || '';
+            var timeline = (contactForm.querySelector('#timeline') || {}).value || '';
+            var message = (contactForm.querySelector('#message') || {}).value || '';
+
+            // Build mailto
+            var subject = encodeURIComponent('New project inquiry from ' + name + ' — ' + projectType);
+            var bodyParts = [
+                'Hi Azlan,',
+                '',
+                'Name: ' + name,
+                'Email: ' + email
+            ];
+            if (company) bodyParts.push('Company: ' + company);
+            if (projectType) bodyParts.push('Project Type: ' + projectType);
+            if (budget) bodyParts.push('Budget: ' + budget);
+            if (timeline) bodyParts.push('Timeline: ' + timeline);
+            bodyParts.push('');
+            if (message) bodyParts.push('Message:\n' + message);
+            bodyParts.push('');
+            bodyParts.push('Sent from your portfolio site.');
+
+            var body = encodeURIComponent(bodyParts.join('\n'));
+            var mailtoLink = 'mailto:azlanallahwala@gmail.com?subject=' + subject + '&body=' + body;
+
+            // Open email client
+            window.location.href = mailtoLink;
+
+            // Show success state
+            btn.innerHTML = 'Opening email client&hellip;';
+            btn.style.background = '#44BB77';
+            setTimeout(function () {
+                btn.innerHTML = 'Send Message <span class="arrow">&rarr;</span>';
+                btn.style.background = '';
+            }, 3000);
         });
     }
 
