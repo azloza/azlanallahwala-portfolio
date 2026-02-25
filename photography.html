@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photography — Azlan Allahwala</title>
-    <meta name="description" content="Visual stories and photographic essays by Azlan Allahwala. Street, architecture, landscape, and travel photography.">
+    <meta name="description" content="Travel and street photography by Azlan Allahwala. From Niagara Falls to Istanbul, Dubai to Sydney — visual stories from around the world.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -13,6 +13,259 @@
     <link rel="stylesheet" href="atmosphere.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <style>
+        /* Instagram Embed Grid */
+        .ig-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+        .ig-gallery__item {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: var(--bg-tertiary);
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .ig-gallery__item:hover {
+            opacity: 0.85;
+        }
+        .ig-gallery__item--wide {
+            grid-column: span 2;
+            aspect-ratio: 2/1;
+        }
+        .ig-gallery__item--tall {
+            grid-row: span 2;
+            aspect-ratio: auto;
+        }
+        .ig-gallery__item iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none;
+        }
+        .ig-gallery__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.2) 40%, transparent 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .ig-gallery__item:hover .ig-gallery__overlay {
+            opacity: 1;
+        }
+        .ig-gallery__location {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+        .ig-gallery__caption {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+        .ig-gallery__link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .ig-gallery__link:hover {
+            color: var(--accent);
+        }
+
+        /* Instagram Embed Cards — Clean Responsive Layout */
+        .ig-embed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+        .ig-embed-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: border-color 0.3s ease, transform 0.2s ease;
+        }
+        .ig-embed-card:hover {
+            border-color: var(--surface-border-hover);
+            transform: translateY(-2px);
+        }
+        .ig-embed-card__embed {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%;
+            overflow: hidden;
+            background: var(--bg-tertiary);
+        }
+        .ig-embed-card__embed iframe {
+            position: absolute;
+            top: -60px;
+            left: 0;
+            width: 100%;
+            height: calc(100% + 120px);
+            border: none;
+        }
+        .ig-embed-card__content {
+            padding: 20px;
+        }
+        .ig-embed-card__location {
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+        .ig-embed-card__caption {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        .ig-embed-card__meta {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .ig-embed-card__meta a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .ig-embed-card__meta a:hover {
+            color: var(--accent);
+        }
+
+        /* Instagram Profile CTA */
+        .ig-profile-cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 32px;
+            margin: 48px auto 0;
+            max-width: 520px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-lg);
+            transition: border-color 0.3s ease;
+        }
+        .ig-profile-cta:hover {
+            border-color: var(--surface-border-hover);
+        }
+        .ig-profile-cta__icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ig-profile-cta__icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        .ig-profile-cta__text {
+            flex: 1;
+        }
+        .ig-profile-cta__handle {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .ig-profile-cta__desc {
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        .ig-profile-cta__btn {
+            flex-shrink: 0;
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--accent);
+            color: white;
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+        .ig-profile-cta__btn:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Stats row for photography */
+        .photo-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            padding: 32px 0;
+            margin: 24px 0 48px;
+            border-top: 1px solid var(--surface-border);
+            border-bottom: 1px solid var(--surface-border);
+        }
+        .photo-stats__item {
+            text-align: center;
+        }
+        .photo-stats__num {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .photo-stats__label {
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .ig-embed-grid {
+                grid-template-columns: 1fr;
+            }
+            .photo-stats {
+                gap: 24px;
+                flex-wrap: wrap;
+            }
+            .ig-profile-cta {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -54,26 +307,28 @@
         <div class="section-hero__grain"></div>
         <div class="section-hero__content">
             <h1 class="reveal">Photography</h1>
-            <p class="dek reveal" data-delay="100">Visual essays and cinematic stories.</p>
+            <p class="dek reveal" data-delay="100">Visual stories from around the world &mdash; through the lens of a wanderer.</p>
         </div>
     </section>
 
-    <!-- FEATURED ESSAY -->
+    <!-- STATS -->
     <section class="section">
-        <div class="section-divider reveal">
-            <span class="section-divider__label">Featured Essay</span>
-            <span class="section-divider__num">01</span>
-        </div>
-
-        <div class="featured-card reveal">
-            <div class="placeholder-img placeholder-img--gallery-wide">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <div class="photo-stats reveal">
+            <div class="photo-stats__item">
+                <div class="photo-stats__num">308</div>
+                <div class="photo-stats__label">Posts</div>
             </div>
-            <div class="featured-card__content">
-                <span class="featured-card__tag">Photo Essay</span>
-                <h2 class="featured-card__title">The Geometry of Solitude</h2>
-                <p class="featured-card__desc">A meditation on the spaces between people in cities that never sleep. Shot over eighteen months across Tokyo, Istanbul, and São Paulo, this series traces the invisible architecture of loneliness — the way a figure in a doorway can hold the weight of an entire neighborhood, and how light falling through a train window can feel like a confession.</p>
-                <span class="featured-card__meta">18 photographs &middot; 2024&ndash;2025</span>
+            <div class="photo-stats__item">
+                <div class="photo-stats__num">12+</div>
+                <div class="photo-stats__label">Countries</div>
+            </div>
+            <div class="photo-stats__item">
+                <div class="photo-stats__num">1.4K</div>
+                <div class="photo-stats__label">Followers</div>
+            </div>
+            <div class="photo-stats__item">
+                <div class="photo-stats__num">6</div>
+                <div class="photo-stats__label">Years Shooting</div>
             </div>
         </div>
     </section>
@@ -81,208 +336,227 @@
     <!-- PHILOSOPHY QUOTE -->
     <section class="section">
         <div class="pull-quote reveal">
-            <p>I don't photograph what I see. I photograph what the light is trying to remember — the moment just before a street forgets the person who walked through it.</p>
-            <cite>— On looking, and the patience it demands</cite>
+            <p>Every city has a frequency. My job is to show up early enough, stay long enough, and be quiet enough to hear it &mdash; then press the shutter before the moment decides to leave.</p>
+            <cite>Veni, Vidi, Vici.</cite>
         </div>
     </section>
 
-    <!-- GALLERY -->
+    <!-- SELECTED WORK — Instagram Embeds -->
     <section class="section">
         <div class="section-divider reveal">
             <span class="section-divider__label">Selected Work</span>
+            <span class="section-divider__num">01</span>
+        </div>
+
+        <div class="ig-embed-grid">
+
+            <!-- 1 — Niagara Falls -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/DH-YjXiud-F/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Niagara Falls &middot; Canada / US</div>
+                    <p class="ig-embed-card__caption">Ice in motion. Where two nations meet at the edge of a frozen cascade, the roar never stops even when winter tries to silence it.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/DH-YjXiud-F/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 2 — Hagia Sophia -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/C89iLWdCcjy/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Hagia Sophia &middot; Istanbul, Turkey</div>
+                    <p class="ig-embed-card__caption">Fifteen centuries of light, faith, and geometry converge in a single upward gaze. The dome that held the sky before anyone thought to photograph it.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/C89iLWdCcjy/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 3 — Burj Khalifa / Dubai -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/C8AjP5uimBn/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Burj Khalifa &middot; Dubai, UAE</div>
+                    <p class="ig-embed-card__caption">When the desert builds upward. The world's tallest structure dissolving into blue hour, its reflection dancing with a thousand fountains below.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/C8AjP5uimBn/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 4 — Istanbul Street -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/C7aIU2gCqiQ/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Istanbul &middot; Turkey</div>
+                    <p class="ig-embed-card__caption">Between the minarets and the market stalls, Istanbul reveals itself in layers &mdash; every alley a story, every doorway an invitation to get beautifully lost.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/C7aIU2gCqiQ/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 5 — Batu Caves -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/C63TA_kC77L/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Batu Caves &middot; Kuala Lumpur, Malaysia</div>
+                    <p class="ig-embed-card__caption">272 steps painted in every color the jungle forgot. The stairway at Batu Caves turns devotion into a chromatic ascent toward limestone cathedrals.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/C63TA_kC77L/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 6 — Sydney Opera House -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/B_iXVZ_H2E4/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Sydney Opera House &middot; Australia</div>
+                    <p class="ig-embed-card__caption">The sails of Sydney. When architecture refuses to be a building and insists on being a poem written in concrete and harbor light.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/B_iXVZ_H2E4/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 7 — Darling Harbour -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/CAQ9nBan4GD/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Darling Harbour &middot; Sydney, Australia</div>
+                    <p class="ig-embed-card__caption">After the crowds leave, the harbour keeps its own hours. Palm trees frame the opera house at golden hour while the water holds every last drop of sunset.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/CAQ9nBan4GD/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 8 — Sydney Tower Eye Aerial -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/CAiaPN3n4qa/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Manly &middot; New South Wales, Australia</div>
+                    <p class="ig-embed-card__caption">From above, cities stop pretending. The grid reveals its logic, the green spaces exhale, and the coastline draws borders that only birds understand.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/CAiaPN3n4qa/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 9 — Night stories -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/DR3IS0rjARl/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Niagara Falls &middot; Night</div>
+                    <p class="ig-embed-card__caption">Night stories in moving light. When the falls meet neon, nature and spectacle find a fragile truce in the mist.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/DR3IS0rjARl/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 10 — Forest Trail -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/CHIsvypH6BY/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Wilderness Trail</div>
+                    <p class="ig-embed-card__caption">Some paths don't lead anywhere &mdash; and that's exactly the point. Where the canopy closes and the phone signal dies, the real journey begins.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/CHIsvypH6BY/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 11 — Sydney Tower Eye Sunset -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/CATOYJYHVAO/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Sydney Tower Eye &middot; Australia</div>
+                    <p class="ig-embed-card__caption">309 meters up, the city becomes a circuit board. Sun-streaked clouds play across glass towers while the harbour turns molten gold at dusk.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/CATOYJYHVAO/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+            <!-- 12 — Manly Beach -->
+            <div class="ig-embed-card reveal">
+                <div class="ig-embed-card__embed">
+                    <iframe src="https://www.instagram.com/p/B_LCMQqn75z/embed" loading="lazy" allowtransparency="true" scrolling="no"></iframe>
+                </div>
+                <div class="ig-embed-card__content">
+                    <div class="ig-embed-card__location">Manly Beach &middot; Sydney, Australia</div>
+                    <p class="ig-embed-card__caption">Where the Pacific meets the promenade. Manly at midday &mdash; sunlit sand, scattered swimmers, and the kind of blue that rewrites your entire color vocabulary.</p>
+                    <div class="ig-embed-card__meta"><a href="https://www.instagram.com/p/B_LCMQqn75z/" target="_blank" rel="noopener">View on Instagram &rarr;</a></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Instagram Profile CTA -->
+        <a href="https://www.instagram.com/azloza/" target="_blank" rel="noopener" class="ig-profile-cta reveal" style="text-decoration: none;">
+            <div class="ig-profile-cta__icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </div>
+            <div class="ig-profile-cta__text">
+                <div class="ig-profile-cta__handle">@azloza</div>
+                <div class="ig-profile-cta__desc">308 posts &middot; Travel, Architecture & Street Photography</div>
+            </div>
+            <span class="ig-profile-cta__btn">Follow</span>
+        </a>
+    </section>
+
+    <!-- LOCATIONS MAP / TRAVEL -->
+    <section class="section">
+        <div class="section-divider reveal">
+            <span class="section-divider__label">Places I've Shot</span>
             <span class="section-divider__num">02</span>
         </div>
 
-        <div class="gallery-filter reveal">
-            <button class="gallery-filter__btn active" data-filter="all">All</button>
-            <button class="gallery-filter__btn" data-filter="street">Street</button>
-            <button class="gallery-filter__btn" data-filter="architecture">Architecture</button>
-            <button class="gallery-filter__btn" data-filter="landscape">Landscape</button>
-            <button class="gallery-filter__btn" data-filter="travel">Travel</button>
-        </div>
-
-        <div class="masonry-grid">
-
-            <!-- 1 — Architecture, Standard -->
-            <div class="masonry-grid__item reveal" data-category="architecture" data-lightbox="" data-caption="A cathedral of glass and steel folds into the evening sky, its angles softening as the last commuters disappear below">
-                <div class="placeholder-img placeholder-img--gallery-standard">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Cathedral of Commerce</span>
-                </div>
-            </div>
-
-            <!-- 2 — Street, Portrait -->
-            <div class="masonry-grid__item reveal" data-category="street" data-lightbox="" data-caption="A woman steps through a curtain of rain on Takeshita-dori, her umbrella a parenthesis around a private world">
-                <div class="placeholder-img placeholder-img--gallery-portrait">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Parenthesis in Rain</span>
-                </div>
-            </div>
-
-            <!-- 3 — Landscape, Wide -->
-            <div class="masonry-grid__item reveal" data-category="landscape" data-lightbox="" data-caption="The fog lifts like a slow exhalation over the Douro Valley, revealing terraced vineyards stitched into ancient hillsides">
-                <div class="placeholder-img placeholder-img--gallery-wide">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">The Valley Exhales</span>
-                </div>
-            </div>
-
-            <!-- 4 — Travel, Standard -->
-            <div class="masonry-grid__item reveal" data-category="travel" data-lightbox="" data-caption="Spice merchants in the souks of Marrakech arrange their wares in pyramids of saffron, cumin, and dried rose — geometry born from centuries of ritual">
-                <div class="placeholder-img placeholder-img--gallery-standard">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Pyramids of Saffron</span>
-                </div>
-            </div>
-
-            <!-- 5 — Architecture, Square -->
-            <div class="masonry-grid__item reveal" data-category="architecture" data-lightbox="" data-caption="Two towers mirror each other across a canal in Rotterdam, their reflections negotiating an uncertain symmetry with the current">
-                <div class="placeholder-img placeholder-img--gallery-square">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Negotiated Symmetry</span>
-                </div>
-            </div>
-
-            <!-- 6 — Street, Portrait -->
-            <div class="masonry-grid__item reveal" data-category="street" data-lightbox="" data-caption="A saxophone player on the Paris Métro fills a tiled corridor with sound, his shadow stretching toward passengers who have already forgotten him">
-                <div class="placeholder-img placeholder-img--gallery-portrait">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">The Forgetting</span>
-                </div>
-            </div>
-
-            <!-- 7 — Landscape, Standard -->
-            <div class="masonry-grid__item reveal" data-category="landscape" data-lightbox="" data-caption="Storm light turns the Icelandic highlands into a theatre stage — black sand, silver rivers, and a single shaft of sun on moss-green lava fields">
-                <div class="placeholder-img placeholder-img--gallery-standard">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Theatre of Stone</span>
-                </div>
-            </div>
-
-            <!-- 8 — Travel, Square -->
-            <div class="masonry-grid__item reveal" data-category="travel" data-lightbox="" data-caption="Lanterns sway above a night market in Chiang Mai, their warm glow turning strangers into a congregation gathered around the altar of grilled fish">
-                <div class="placeholder-img placeholder-img--gallery-square">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Congregation of Light</span>
-                </div>
-            </div>
-
-            <!-- 9 — Architecture, Wide -->
-            <div class="masonry-grid__item reveal" data-category="architecture" data-lightbox="" data-caption="A brutalist stairwell in the Barbican spirals downward into a geometry that Escher might have dreamed but never dared to draw">
-                <div class="placeholder-img placeholder-img--gallery-wide">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Descent into Order</span>
-                </div>
-            </div>
-
-            <!-- 10 — Street, Standard -->
-            <div class="masonry-grid__item reveal" data-category="street" data-lightbox="" data-caption="Two children chase pigeons through Piazza San Marco at golden hour, their laughter scattering the birds into calligraphy against the basilica">
-                <div class="placeholder-img placeholder-img--gallery-standard" style="aspect-ratio:4/3">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Calligraphy of Wings</span>
-                </div>
-            </div>
-
-            <!-- 11 — Landscape, Portrait -->
-            <div class="masonry-grid__item reveal" data-category="landscape" data-lightbox="" data-caption="A lone cypress rises from the mist on the Tuscan ridgeline, an exclamation mark at the end of a sentence written by centuries of wind">
-                <div class="placeholder-img placeholder-img--gallery-portrait">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Punctuation of Wind</span>
-                </div>
-            </div>
-
-            <!-- 12 — Travel, Portrait -->
-            <div class="masonry-grid__item reveal" data-category="travel" data-lightbox="" data-caption="A fisherman mends his net in the blue hour on the shores of Essaouira, the Atlantic wind pressing his djellaba into a sculpture of patience">
-                <div class="placeholder-img placeholder-img--gallery-portrait">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Sculpture of Patience</span>
-                </div>
-            </div>
-
-            <!-- 13 — Architecture, Standard -->
-            <div class="masonry-grid__item reveal" data-category="architecture" data-lightbox="" data-caption="The latticed facade of the Institute du Monde Arabe opens and closes with the sun, a building that breathes like a living iris">
-                <div class="placeholder-img placeholder-img--gallery-standard">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">The Breathing Facade</span>
-                </div>
-            </div>
-
-            <!-- 14 — Street, Wide -->
-            <div class="masonry-grid__item reveal" data-category="street" data-lightbox="" data-caption="A long exposure turns the Shibuya crossing into a river of intention, each streak of light a life in transit between who they were and who they will become">
-                <div class="placeholder-img placeholder-img--gallery-wide">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">River of Intention</span>
-                </div>
-            </div>
-
-            <!-- 15 — Landscape, Square -->
-            <div class="masonry-grid__item reveal" data-category="landscape" data-lightbox="" data-caption="Salt flats in the Atacama at twilight — where the earth becomes sky and walking feels like flying through a mirror that has no edges">
-                <div class="placeholder-img placeholder-img--gallery-square">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-                <div class="masonry-grid__overlay">
-                    <span class="masonry-grid__title">Where Earth Becomes Sky</span>
-                </div>
-            </div>
-
+        <div class="skills-bar reveal">
+            <span class="skill-tag">Niagara Falls, Canada</span>
+            <span class="skill-tag">Istanbul, Turkey</span>
+            <span class="skill-tag">Dubai, UAE</span>
+            <span class="skill-tag">Sydney, Australia</span>
+            <span class="skill-tag">Kuala Lumpur, Malaysia</span>
+            <span class="skill-tag">Karachi, Pakistan</span>
+            <span class="skill-tag">Manly Beach, NSW</span>
+            <span class="skill-tag">Darling Harbour</span>
+            <span class="skill-tag">Batu Caves</span>
+            <span class="skill-tag">Burj Khalifa</span>
+            <span class="skill-tag">Blue Mountains</span>
+            <span class="skill-tag">Hagia Sophia</span>
         </div>
     </section>
 
-    <!-- PROCESS & EQUIPMENT -->
+    <!-- APPROACH -->
     <section class="section">
         <div class="section-divider reveal">
-            <span class="section-divider__label">Process &amp; Equipment</span>
+            <span class="section-divider__label">Approach &amp; Gear</span>
             <span class="section-divider__num">03</span>
         </div>
 
         <div class="pull-quote reveal">
-            <p>The camera is secondary. What matters is the willingness to stand still long enough for a place to show you what it actually looks like — not what you expected.</p>
-            <cite>— Notes on process</cite>
+            <p>The best camera is the one you have when the light decides to perform. I shoot instinctively &mdash; chasing golden hours, dramatic skies, and the stories buildings tell when no one is looking.</p>
+            <cite>Notes on process</cite>
         </div>
 
         <div class="skills-bar reveal">
-            <span class="skill-tag">Fujifilm X-T5</span>
-            <span class="skill-tag">Leica Q3</span>
-            <span class="skill-tag">Fujinon 23mm f/1.4</span>
-            <span class="skill-tag">Fujinon 56mm f/1.2</span>
-            <span class="skill-tag">Fujinon 16-55mm f/2.8</span>
-            <span class="skill-tag">Available Light</span>
-            <span class="skill-tag">Film Simulation Recipes</span>
-            <span class="skill-tag">Adobe Lightroom Classic</span>
-            <span class="skill-tag">Capture One Pro</span>
-            <span class="skill-tag">Manual Focus</span>
-            <span class="skill-tag">Zone Focusing</span>
-            <span class="skill-tag">Slow Shutter Handheld</span>
-            <span class="skill-tag">Golden &amp; Blue Hour</span>
-            <span class="skill-tag">Analogue Film (Portra 400)</span>
+            <span class="skill-tag">Natural Light</span>
+            <span class="skill-tag">Golden Hour</span>
+            <span class="skill-tag">Blue Hour</span>
+            <span class="skill-tag">Long Exposure</span>
+            <span class="skill-tag">Street Photography</span>
+            <span class="skill-tag">Architecture</span>
+            <span class="skill-tag">Travel Documentary</span>
+            <span class="skill-tag">Aerial / Elevated</span>
+            <span class="skill-tag">Mobile Photography</span>
+            <span class="skill-tag">Lightroom</span>
+            <span class="skill-tag">VSCO</span>
+            <span class="skill-tag">Available Light Only</span>
         </div>
     </section>
 
@@ -290,21 +564,12 @@
     <section class="section">
         <div class="cta-block reveal">
             <div class="cta-block__inner">
-                <h2>Interested in prints, licensing, or a collaborative project?</h2>
-                <p>Every photograph in this collection is available as a museum-quality archival print. I also welcome editorial commissions, brand collaborations, and location-based storytelling assignments.</p>
+                <h2>Want to collaborate on a project?</h2>
+                <p>I'm always open to creative collaborations, editorial commissions, and travel photography projects. Whether it's brand storytelling or architectural documentation &mdash; let's create something meaningful.</p>
                 <a href="contact.html" class="btn btn--primary">Get in Touch</a>
             </div>
         </div>
     </section>
-
-    <!-- LIGHTBOX -->
-    <div class="lightbox" id="lightbox">
-        <button class="lightbox__close" aria-label="Close">&times;</button>
-        <button class="lightbox__nav lightbox__nav--prev" aria-label="Previous">&larr;</button>
-        <button class="lightbox__nav lightbox__nav--next" aria-label="Next">&rarr;</button>
-        <div class="lightbox__img"></div>
-        <div class="lightbox__caption"></div>
-    </div>
 
     <!-- FOOTER -->
     <footer class="footer">
@@ -322,7 +587,11 @@
             </div>
             <div class="footer__bottom">
                 <span>&copy; 2025 Azlan Allahwala. All rights reserved.</span>
-                <div class="footer__social"><a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a></div>
+                <div class="footer__social">
+                    <a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener">LI</a>
+                    <a href="https://instagram.com/azloza" target="_blank" rel="noopener">IG</a>
+                    <a href="https://chat.azlanallahwala.com" target="_blank" rel="noopener">AI</a>
+                </div>
             </div>
         </div>
     </footer>
