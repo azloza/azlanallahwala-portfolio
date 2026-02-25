@@ -3551,6 +3551,25 @@ em {
     margin: var(--space-3xl) calc(-1 * var(--space-xl));
 }
 
+.blog-article__figure {
+    margin: var(--space-3xl) 0;
+}
+
+.blog-article__figure img {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--surface-border);
+}
+
+.blog-article__figure figcaption {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+    text-align: center;
+    margin-top: var(--space-sm);
+    line-height: 1.5;
+}
+
 .related-posts {
     border-top: 1px solid var(--surface-border);
     padding-top: var(--space-3xl);

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salesforce — Azlan Allahwala</title>
-    <meta name="description" content="Enterprise Salesforce architecture, multi-cloud implementations, and platform solutions. Case studies from Nielsen, Olympic Club, Yellowstone Club, and more.">
+    <meta name="description" content="Enterprise Salesforce architecture, multi-cloud implementations, and platform solutions. Case studies from Nielsen, Yellowstone Club, and more.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -20,14 +20,14 @@
     <nav class="nav" id="nav">
         <div class="nav__inner">
             <a href="index.html" class="nav__logo">
-                <svg class="nav__logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="16,1 29,8.5 29,23.5 16,31 3,23.5 3,8.5" stroke="#F0F0F0" stroke-width="0.8" fill="none" opacity="0.3"/><line x1="9" y1="25" x2="16" y2="6" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"/><line x1="23" y1="25" x2="16" y2="6" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"/><line x1="11" y1="19" x2="21" y2="19" stroke="#E85D3A" stroke-width="2" stroke-linecap="round"/></svg>
+                <svg class="nav__logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="nG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF7A5C"/><stop offset="100%" stop-color="#E85D3A"/></linearGradient></defs><path d="M16 2 L29.5 11.5 L24.5 27 L7.5 27 L2.5 11.5 Z" fill="url(#nG)" opacity="0.9"/><path d="M16 2 L29.5 11.5 L24.5 27 L7.5 27 L2.5 11.5 Z" stroke="#E85D3A" stroke-width="0.5" fill="none" opacity="0.4"/><path d="M16 8 L22.5 14.5 L9.5 14.5 Z" fill="white" opacity="0.95"/><rect x="11" y="14.5" width="10" height="8" fill="white" opacity="0.95" rx="0.5"/><rect x="14" y="16.5" width="4" height="4" fill="url(#nG)" opacity="0.8" rx="0.3"/></svg>
                 <span class="nav__logo-first">Azlan</span><span class="nav__logo-dot">.</span>
             </a>
             <button class="nav__toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span></button>
             <div class="nav__links" id="navLinks">
                 <a href="salesforce.html" class="nav__link nav__link--active">Salesforce</a>
-                <a href="blog.html" class="nav__link">Blog</a>
                 <a href="ai-lab.html" class="nav__link">AI Lab</a>
+                <a href="blog.html" class="nav__link">Blog</a>
                 <a href="photography.html" class="nav__link">Photography</a>
                 <a href="about.html" class="nav__link">About</a>
                 <a href="contact.html" class="nav__link nav__link--accent">Contact</a>
@@ -39,8 +39,8 @@
     <div class="mobile-nav" id="mobileNav">
         <div class="mobile-nav__inner">
             <a href="salesforce.html" class="mobile-nav__link" style="--i:0">Salesforce</a>
-            <a href="blog.html" class="mobile-nav__link" style="--i:1">Blog</a>
-            <a href="ai-lab.html" class="mobile-nav__link" style="--i:2">AI Lab</a>
+            <a href="ai-lab.html" class="mobile-nav__link" style="--i:1">AI Lab</a>
+            <a href="blog.html" class="mobile-nav__link" style="--i:2">Blog</a>
             <a href="photography.html" class="mobile-nav__link" style="--i:3">Photography</a>
             <a href="about.html" class="mobile-nav__link" style="--i:4">About</a>
             <a href="contact.html" class="mobile-nav__link" style="--i:5">Contact</a>
@@ -110,8 +110,8 @@
                 <div class="placeholder-img placeholder-img--doj"></div>
             </div>
             <div class="case-study-card__header">
-                <span class="case-study-card__client">Federal Agency</span>
-                <h3 class="case-study-card__title">Grants Management System</h3>
+                <span class="case-study-card__client">Government Agency</span>
+                <h3 class="case-study-card__title">Grants Lifecycle Platform</h3>
                 <div class="case-study-card__tags">
                     <span class="tag tag--small">Salesforce Platform</span>
                     <span class="tag tag--small">Experience Cloud</span>
@@ -123,15 +123,15 @@
                 <div class="case-study-pso case-study-pso--compact">
                     <div class="case-study-pso__block">
                         <span class="case-study-pso__label">Problem</span>
-                        <p>The agency's existing grants management system relied on a patchwork of legacy tools, manual review workflows, and disconnected databases. Grant applications were processed inconsistently across divisions, with limited visibility into status, compliance, or funding allocation. The lack of a centralized platform made it difficult to track outcomes, enforce accountability, or generate the reporting required by federal oversight bodies.</p>
+                        <p>The agency's existing grants process relied on a patchwork of legacy tools, manual review workflows, and disconnected databases. Grant applications were processed inconsistently across divisions, with limited visibility into status, compliance, or funding allocation. The lack of a centralized platform made it difficult to track outcomes, enforce accountability, or generate the reporting required by oversight bodies.</p>
                     </div>
                     <div class="case-study-pso__block">
                         <span class="case-study-pso__label">Solution</span>
-                        <p>Architected and delivered a comprehensive grants management system on the Salesforce platform. Built a custom data model to track the full grants lifecycle — from application intake through review, award, disbursement, and close-out. Developed an Experience Cloud portal for external applicants to submit, monitor, and manage their grant applications in real time. Implemented role-based approval workflows with configurable review stages, scoring rubrics, and compliance checkpoints. Integrated document management capabilities to handle supporting materials, audit trails, and version-controlled submissions. Built reporting dashboards for program officers to monitor funding pipelines, flag at-risk grants, and generate federal compliance reports. Designed the architecture to accommodate multiple grant programs with distinct rules, timelines, and funding sources within a single platform instance.</p>
+                        <p>Architected and delivered a comprehensive grants management system on the Salesforce platform. Built a custom data model to track the full grants lifecycle — from application intake through review, award, disbursement, and close-out. Developed an Experience Cloud portal for external applicants to submit, monitor, and manage their grant applications in real time. Implemented role-based approval workflows with configurable review stages, scoring rubrics, and compliance checkpoints. Integrated document management capabilities to handle supporting materials, audit trails, and version-controlled submissions. Built reporting dashboards for program officers to monitor funding pipelines, flag at-risk grants, and generate compliance reports. Designed the architecture to accommodate multiple grant programs with distinct rules, timelines, and funding sources within a single platform instance.</p>
                     </div>
                     <div class="case-study-pso__block">
                         <span class="case-study-pso__label">Outcome</span>
-                        <p>Delivered a centralized, scalable grants management platform that replaced fragmented legacy processes with a single source of truth. The system dramatically improved processing efficiency, reduced manual review overhead, and provided real-time visibility into grant status across all stages. Federal reporting that previously required weeks of manual compilation was reduced to on-demand dashboard generation. The Experience Cloud portal significantly improved the applicant experience, reducing submission errors and support inquiries. The platform is now used across multiple divisions and serves as the foundation for future grants program expansion.</p>
+                        <p>Delivered a centralized, scalable grants management platform that replaced fragmented legacy processes with a single source of truth. The system dramatically improved processing efficiency, reduced manual review overhead, and provided real-time visibility into grant status across all stages. Compliance reporting that previously required weeks of manual compilation was reduced to on-demand dashboard generation. The Experience Cloud portal significantly improved the applicant experience, reducing submission errors and support inquiries. The platform is now used across multiple divisions and serves as the foundation for future grants program expansion.</p>
                     </div>
                 </div>
             </div>
@@ -203,13 +203,13 @@
             </div>
         </article>
 
-        <!-- OLYMPIC CLUB -->
+        <!-- PRIVATE CLUB -->
         <article class="case-study-card reveal" style="--i:3">
             <div class="case-study-card__img">
                 <div class="placeholder-img placeholder-img--olympic"></div>
             </div>
             <div class="case-study-card__header">
-                <span class="case-study-card__client">Olympic Club</span>
+                <span class="case-study-card__client">Private Athletic Club</span>
                 <h3 class="case-study-card__title">Member Engagement Platform</h3>
                 <div class="case-study-card__tags">
                     <span class="tag tag--small">Sales Cloud</span>
@@ -222,7 +222,7 @@
                 <div class="case-study-pso case-study-pso--compact">
                     <div class="case-study-pso__block">
                         <span class="case-study-pso__label">Problem</span>
-                        <p>The Olympic Club, one of the oldest and most prestigious athletic clubs in the United States, was managing member relationships and engagement through outdated systems that couldn't keep pace with modern expectations. Member data was scattered across legacy databases, spreadsheets, and disconnected departmental tools. There was no centralized view of member profiles, activity history, or preferences. Communication with members was largely manual and batch-oriented, lacking personalization or segmentation. The club had no digital self-service capability for members, and internal teams spent significant time on administrative tasks that could be automated.</p>
+                        <p>One of the oldest and most prestigious private athletic clubs in the United States was managing member relationships and engagement through outdated systems that couldn't keep pace with modern expectations. Member data was scattered across legacy databases, spreadsheets, and disconnected departmental tools. There was no centralized view of member profiles, activity history, or preferences. Communication with members was largely manual and batch-oriented, lacking personalization or segmentation. The club had no digital self-service capability for members, and internal teams spent significant time on administrative tasks that could be automated.</p>
                     </div>
                     <div class="case-study-pso__block">
                         <span class="case-study-pso__label">Solution</span>
@@ -230,7 +230,7 @@
                     </div>
                     <div class="case-study-pso__block">
                         <span class="case-study-pso__label">Outcome</span>
-                        <p>Delivered a modern, unified member engagement platform that replaced fragmented legacy systems with a cohesive digital experience. Member self-service adoption through the Experience Cloud portal was strong, substantially reducing administrative overhead for staff. Personalized marketing communications drove significantly higher open and engagement rates compared to previous batch-send approaches. Internal teams gained a 360-degree member view for the first time, improving the quality and consistency of member interactions across departments. The platform positioned the Olympic Club to operate with the digital sophistication expected by its membership while preserving the personal, high-touch character that defines the institution.</p>
+                        <p>Delivered a modern, unified member engagement platform that replaced fragmented legacy systems with a cohesive digital experience. Member self-service adoption through the Experience Cloud portal was strong, substantially reducing administrative overhead for staff. Personalized marketing communications drove significantly higher open and engagement rates compared to previous batch-send approaches. Internal teams gained a 360-degree member view for the first time, improving the quality and consistency of member interactions across departments. The platform positioned the club to operate with the digital sophistication expected by its membership while preserving the personal, high-touch character that defines the institution.</p>
                     </div>
                 </div>
             </div>
@@ -446,11 +446,11 @@
     <footer class="footer">
         <div class="footer__inner">
             <div class="footer__top">
-                <a href="index.html" class="footer__logo"><svg class="footer__logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="16,1 29,8.5 29,23.5 16,31 3,23.5 3,8.5" stroke="#F0F0F0" stroke-width="0.8" fill="none" opacity="0.3"/><line x1="9" y1="25" x2="16" y2="6" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"/><line x1="23" y1="25" x2="16" y2="6" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"/><line x1="11" y1="19" x2="21" y2="19" stroke="#E85D3A" stroke-width="2" stroke-linecap="round"/></svg>Azlan<span class="nav__logo-dot">.</span></a>
+                <a href="index.html" class="footer__logo"><svg class="footer__logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="fG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF7A5C"/><stop offset="100%" stop-color="#E85D3A"/></linearGradient></defs><path d="M16 2 L29.5 11.5 L24.5 27 L7.5 27 L2.5 11.5 Z" fill="url(#fG)" opacity="0.9"/><path d="M16 2 L29.5 11.5 L24.5 27 L7.5 27 L2.5 11.5 Z" stroke="#E85D3A" stroke-width="0.5" fill="none" opacity="0.4"/><path d="M16 8 L22.5 14.5 L9.5 14.5 Z" fill="white" opacity="0.95"/><rect x="11" y="14.5" width="10" height="8" fill="white" opacity="0.95" rx="0.5"/><rect x="14" y="16.5" width="4" height="4" fill="url(#fG)" opacity="0.8" rx="0.3"/></svg>Azlan<span class="nav__logo-dot">.</span></a>
                 <nav class="footer__nav">
                     <a href="salesforce.html">Salesforce</a>
-                    <a href="blog.html">Blog</a>
                     <a href="ai-lab.html">AI Lab</a>
+                    <a href="blog.html">Blog</a>
                     <a href="photography.html">Photography</a>
                     <a href="about.html">About</a>
                     <a href="contact.html">Contact</a>
