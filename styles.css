@@ -391,6 +391,27 @@ em {
     display: none;
 }
 
+.nav__link--chat {
+    background: linear-gradient(135deg, #FF7A5C, #E85D3A);
+    color: #fff !important;
+    padding: 0.45rem 1rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.01em;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav__link--chat:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(232, 93, 58, 0.35);
+    color: #fff !important;
+}
+
+.nav__link--chat::after {
+    display: none;
+}
+
 .nav__link--active {
     color: var(--text-primary);
 }
