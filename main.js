@@ -656,6 +656,217 @@
     }
 
     /* ============================================
+       ANIMATED STATS COUNTER
+       ============================================ */
+    function initStatsCounter() {
+        var statNumbers = document.querySelectorAll('.stat-callout__number');
+        if (!statNumbers.length) return;
+
+        if (!('IntersectionObserver' in window) || prefersReducedMotion) return;
+
+        var statObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    animateNumber(entry.target);
+                    statObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(function (el) { statObserver.observe(el); });
+
+        function animateNumber(el) {
+            var text = el.textContent.trim();
+            var suffix = text.replace(/[\d.]/g, '');
+            var targetNum = parseFloat(text);
+            if (isNaN(targetNum)) return;
+
+            var duration = 1800;
+            var startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = Math.min((timestamp - startTime) / duration, 1);
+                var eased = 1 - Math.pow(1 - progress, 3);
+                var current = Math.round(eased * targetNum);
+
+                if (text.indexOf('.') !== -1) {
+                    current = (eased * targetNum).toFixed(1);
+                }
+
+                el.textContent = current + suffix;
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    el.textContent = text;
+                }
+            }
+
+            el.textContent = '0' + suffix;
+            requestAnimationFrame(step);
+        }
+    }
+
+    /* ============================================
+       SMOOTH PAGE TRANSITIONS
+       ============================================ */
+    function initPageTransitions() {
+        if (prefersReducedMotion) return;
+
+        document.body.classList.add('page-loaded');
+
+        document.addEventListener('click', function (e) {
+            var link = e.target.closest('a');
+            if (!link) return;
+
+            var href = link.getAttribute('href');
+            if (!href) return;
+            if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http') || href.startsWith('//')) return;
+            if (link.target === '_blank') return;
+            if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+
+            e.preventDefault();
+            document.body.classList.add('page-transitioning');
+
+            setTimeout(function () {
+                window.location.href = href;
+            }, 350);
+        });
+    }
+
+    /* ============================================
+       CUSTOM CURSOR
+       ============================================ */
+    function initCustomCursor() {
+        if (prefersReducedMotion) return;
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
+        var dot = document.createElement('div');
+        dot.className = 'cursor-dot';
+        document.body.appendChild(dot);
+
+        var ring = document.createElement('div');
+        ring.className = 'cursor-ring';
+        document.body.appendChild(ring);
+
+        var mouseX = 0, mouseY = 0;
+        var ringX = 0, ringY = 0;
+
+        document.addEventListener('mousemove', function (e) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            dot.style.left = mouseX + 'px';
+            dot.style.top = mouseY + 'px';
+        });
+
+        function animateRing() {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            ring.style.left = ringX + 'px';
+            ring.style.top = ringY + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+
+        document.addEventListener('mousedown', function () {
+            dot.classList.add('cursor-dot--click');
+            ring.classList.add('cursor-ring--click');
+        });
+        document.addEventListener('mouseup', function () {
+            dot.classList.remove('cursor-dot--click');
+            ring.classList.remove('cursor-ring--click');
+        });
+
+        var interactiveEls = 'a, button, [role="button"], input, textarea, select, .article-card, .convo-pill, .skill-tag';
+        document.addEventListener('mouseover', function (e) {
+            if (e.target.closest(interactiveEls)) {
+                ring.classList.add('cursor-ring--hover');
+            }
+        });
+        document.addEventListener('mouseout', function (e) {
+            if (e.target.closest(interactiveEls)) {
+                ring.classList.remove('cursor-ring--hover');
+            }
+        });
+    }
+
+    /* ============================================
+       ANIMATED FAVICON
+       ============================================ */
+    function initAnimatedFavicon() {
+        var canvas = document.createElement('canvas');
+        canvas.width = 32;
+        canvas.height = 32;
+        var ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        var link = document.querySelector('link[rel="icon"]');
+        if (!link) return;
+
+        var phase = 0;
+        var isHidden = false;
+
+        document.addEventListener('visibilitychange', function () {
+            isHidden = document.hidden;
+        });
+
+        function drawFavicon() {
+            ctx.clearRect(0, 0, 32, 32);
+
+            var pulse = isHidden ? 0.6 + 0.4 * Math.sin(phase) : 0.9;
+
+            var grad = ctx.createLinearGradient(0, 0, 32, 32);
+            grad.addColorStop(0, 'rgba(255,122,92,' + pulse + ')');
+            grad.addColorStop(1, 'rgba(232,93,58,' + pulse + ')');
+
+            ctx.beginPath();
+            ctx.moveTo(16, 2);
+            ctx.lineTo(29.5, 11.5);
+            ctx.lineTo(24.5, 27);
+            ctx.lineTo(7.5, 27);
+            ctx.lineTo(2.5, 11.5);
+            ctx.closePath();
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(16, 8);
+            ctx.lineTo(22.5, 14.5);
+            ctx.lineTo(9.5, 14.5);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(255,255,255,' + (pulse * 0.95) + ')';
+            ctx.fill();
+
+            ctx.fillStyle = 'rgba(255,255,255,' + (pulse * 0.95) + ')';
+            ctx.fillRect(11, 14.5, 10, 8);
+
+            ctx.fillStyle = grad;
+            ctx.globalAlpha = pulse * 0.8;
+            ctx.fillRect(14, 16.5, 4, 4);
+            ctx.globalAlpha = 1;
+
+            link.href = canvas.toDataURL('image/png');
+            phase += 0.08;
+
+            if (isHidden) {
+                requestAnimationFrame(drawFavicon);
+            }
+        }
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                drawFavicon();
+            } else {
+                var svgFavicon = document.querySelector('link[rel="icon"][type="image/svg+xml"]');
+                if (svgFavicon) {
+                    link.href = 'favicon.svg';
+                }
+            }
+        });
+    }
+
+    /* ============================================
        READING PROGRESS BAR
        ============================================ */
     function initReadingProgress() {
@@ -709,6 +920,10 @@
         initConvoForm();
         initActiveNavLink();
         initReadingProgress();
+        initStatsCounter();
+        initPageTransitions();
+        initCustomCursor();
+        initAnimatedFavicon();
     }
 
     if (document.readyState === 'loading') {

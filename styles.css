@@ -3995,3 +3995,169 @@ em {
 .placeholder-img--blog-docs { background: linear-gradient(135deg, #2a1a3a 0%, #3a2a5a 50%, #e85d3a 100%); }
 .placeholder-img--blog-presales { background: linear-gradient(135deg, #1a2a1a 0%, #2a4a2a 50%, #4a8a4a 100%); }
 .placeholder-img--blog-n8n { background: linear-gradient(135deg, #2a1a0a 0%, #4a3a1a 50%, #e85d3a 100%); }
+
+/* ============================================
+   CUSTOM CURSOR
+   ============================================ */
+.cursor-dot {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: width 0.15s ease, height 0.15s ease, background 0.15s ease;
+}
+
+.cursor-ring {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid rgba(232, 93, 58, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.cursor-dot--click {
+    width: 4px;
+    height: 4px;
+    background: var(--accent-hover);
+}
+
+.cursor-ring--click {
+    width: 24px;
+    height: 24px;
+    border-color: rgba(232, 93, 58, 0.6);
+}
+
+.cursor-ring--hover {
+    width: 48px;
+    height: 48px;
+    border-color: rgba(232, 93, 58, 0.2);
+    background: rgba(232, 93, 58, 0.04);
+}
+
+/* Hide default cursor when custom cursor is active */
+body:has(.cursor-dot) {
+    cursor: none;
+}
+
+body:has(.cursor-dot) a,
+body:has(.cursor-dot) button,
+body:has(.cursor-dot) input,
+body:has(.cursor-dot) textarea,
+body:has(.cursor-dot) select,
+body:has(.cursor-dot) [role="button"] {
+    cursor: none;
+}
+
+/* Hide custom cursor on touch/mobile */
+@media (hover: none), (pointer: coarse) {
+    .cursor-dot,
+    .cursor-ring {
+        display: none !important;
+    }
+}
+
+/* ============================================
+   PHOTOGRAPHY FULL BLEED GALLERY
+   ============================================ */
+.photo-fullbleed {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    width: 100vw;
+    margin-left: calc(-1 * var(--margin));
+    margin-right: calc(-1 * var(--margin));
+    max-width: none;
+    padding: 0;
+}
+
+.photo-fullbleed__item {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: var(--bg-tertiary);
+    text-decoration: none;
+}
+
+.photo-fullbleed__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.photo-fullbleed__item:hover img {
+    transform: scale(1.06);
+}
+
+.photo-fullbleed__item--wide {
+    grid-column: span 2;
+    aspect-ratio: 2/1;
+}
+
+.photo-fullbleed__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.1) 40%, transparent 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.photo-fullbleed__item:hover .photo-fullbleed__overlay {
+    opacity: 1;
+}
+
+.photo-fullbleed__location {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 4px;
+}
+
+.photo-fullbleed__caption {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .photo-fullbleed {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0;
+    }
+    .photo-fullbleed__item--wide {
+        grid-column: span 2;
+    }
+}
+
+/* ============================================
+   PAGE TRANSITION FADE
+   ============================================ */
+body.page-transitioning {
+    opacity: 0 !important;
+    transition: opacity 0.35s ease;
+}
+
+body.page-loaded {
+    animation: pageIn 0.5s ease forwards;
+}
+
+@keyframes pageIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
