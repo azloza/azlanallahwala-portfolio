@@ -12,8 +12,8 @@
     --surface-border: #252525;
     --surface-border-hover: #363636;
     --text-primary: #F0F0F0;
-    --text-secondary: #999999;
-    --text-muted: #5A5A5A;
+    --text-secondary: #B0B0B0;
+    --text-muted: #707070;
     --accent: #E85D3A;
     --accent-hover: #FF7A5C;
     --accent-muted: rgba(232, 93, 58, 0.12);
@@ -224,7 +224,7 @@ em {
 .section {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: var(--space-4xl) var(--margin);
+    padding: var(--space-3xl) var(--margin);
 }
 
 .section-divider {
@@ -3863,10 +3863,10 @@ em {
 }
 
 .logo-carousel__item img {
-    height: 28px !important;
-    max-height: 28px;
+    height: 40px !important;
+    max-height: 40px;
     width: auto !important;
-    max-width: 120px;
+    max-width: 140px;
     filter: brightness(0) invert(1);
     object-fit: contain;
     display: block;
@@ -4163,4 +4163,100 @@ body.page-loaded {
 @keyframes pageIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+/* ============================================
+   HERO CTA BUTTON
+   ============================================ */
+.hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: var(--accent);
+    color: white;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-top: var(--space-xl);
+}
+
+.hero__cta:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(232, 93, 58, 0.25);
+}
+
+.hero__cta .arrow {
+    transition: transform 0.2s ease;
+}
+
+.hero__cta:hover .arrow {
+    transform: translateX(3px);
+}
+
+/* ============================================
+   AVAILABILITY BADGE
+   ============================================ */
+.availability-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: var(--space-lg);
+}
+
+.availability-badge__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #44CC77;
+    animation: availPulse 2s ease-in-out infinite;
+}
+
+@keyframes availPulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(68, 204, 119, 0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(68, 204, 119, 0); }
+}
+
+/* ============================================
+   CONTACT CTA REDESIGN
+   ============================================ */
+.contact-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    background: var(--accent);
+    color: white;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-top: var(--space-lg);
+}
+
+.contact-cta-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(232, 93, 58, 0.25);
+}
+
+.contact-bar__subtitle {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 520px;
+    margin: var(--space-md) auto 0;
 }
