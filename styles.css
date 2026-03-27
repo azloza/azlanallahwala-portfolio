@@ -3802,3 +3802,187 @@ em {
         margin-left: 0;
     }
 }
+
+/* ============================================
+   CLIENT LOGO CAROUSEL
+   ============================================ */
+.logo-carousel {
+    overflow: hidden;
+    padding: var(--space-2xl) 0;
+    border-top: 1px solid var(--surface-border);
+    border-bottom: 1px solid var(--surface-border);
+    margin-bottom: var(--space-3xl);
+    position: relative;
+}
+
+.logo-carousel::before,
+.logo-carousel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.logo-carousel::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-primary), transparent);
+}
+
+.logo-carousel::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-primary), transparent);
+}
+
+.logo-carousel__track {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4xl);
+    animation: logoScroll 25s linear infinite;
+    width: max-content;
+}
+
+.logo-carousel__track:hover {
+    animation-play-state: paused;
+}
+
+.logo-carousel__item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    opacity: 0.4;
+    transition: opacity 0.4s ease;
+    cursor: default;
+}
+
+.logo-carousel__item:hover {
+    opacity: 0.8;
+}
+
+.logo-carousel__item img {
+    height: 28px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    object-fit: contain;
+}
+
+.logo-carousel__item span {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+@keyframes logoScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@media (max-width: 768px) {
+    .logo-carousel__track {
+        gap: var(--space-3xl);
+    }
+    .logo-carousel__item img {
+        height: 22px;
+    }
+    .logo-carousel__item span {
+        font-size: 0.75rem;
+    }
+}
+
+/* ============================================
+   READING PROGRESS BAR
+   ============================================ */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+    z-index: 9999;
+    transition: width 0.1s linear;
+    pointer-events: none;
+}
+
+/* ============================================
+   LINKEDIN FOLLOW BUTTON
+   ============================================ */
+.linkedin-follow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 10px 20px;
+    background: #0A66C2;
+    color: white;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.linkedin-follow:hover {
+    background: #004182;
+    transform: translateY(-1px);
+}
+
+.linkedin-follow svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* ============================================
+   HOMEPAGE TESTIMONIALS
+   ============================================ */
+.home-testimonials {
+    padding: var(--space-3xl) var(--margin);
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.home-testimonials__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+    .home-testimonials__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   BLOG THUMBNAILS (colored gradient overlays)
+   ============================================ */
+.placeholder-img--blog-migration,
+.placeholder-img--blog-agentforce,
+.placeholder-img--blog-lwc,
+.placeholder-img--blog-governor,
+.placeholder-img--blog-grants,
+.placeholder-img--blog-esri,
+.placeholder-img--blog-docs,
+.placeholder-img--blog-presales,
+.placeholder-img--blog-n8n {
+    aspect-ratio: 16/10;
+}
+
+.placeholder-img--blog-migration { background: linear-gradient(135deg, #1a2a3a 0%, #0d4f6e 50%, #e85d3a 100%); }
+.placeholder-img--blog-agentforce { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #e85d3a 100%); }
+.placeholder-img--blog-lwc { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
+.placeholder-img--blog-governor { background: linear-gradient(135deg, #1a0a0a 0%, #4a1a1a 50%, #e85d3a 100%); }
+.placeholder-img--blog-grants { background: linear-gradient(135deg, #0a1a2a 0%, #1a3a5a 50%, #2a5a8a 100%); }
+.placeholder-img--blog-esri { background: linear-gradient(135deg, #0a2a1a 0%, #1a4a3a 50%, #2a6a5a 100%); }
+.placeholder-img--blog-docs { background: linear-gradient(135deg, #2a1a3a 0%, #3a2a5a 50%, #e85d3a 100%); }
+.placeholder-img--blog-presales { background: linear-gradient(135deg, #1a2a1a 0%, #2a4a2a 50%, #4a8a4a 100%); }
+.placeholder-img--blog-n8n { background: linear-gradient(135deg, #2a1a0a 0%, #4a3a1a 50%, #e85d3a 100%); }

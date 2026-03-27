@@ -26,6 +26,32 @@
     <link rel="stylesheet" href="atmosphere.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Azlan Allahwala",
+        "url": "https://azlanallahwala.com",
+        "image": "https://azlanallahwala.com/images/azlan-portrait.png",
+        "jobTitle": "Senior Salesforce Architect",
+        "description": "Salesforce Architect, AI Builder, and Visual Storyteller with 10+ years of enterprise experience and 12 Salesforce certifications.",
+        "sameAs": [
+            "https://linkedin.com/in/azlanallahwala",
+            "https://instagram.com/azloza",
+            "https://chat.azlanallahwala.com"
+        ],
+        "knowsAbout": ["Salesforce", "Enterprise Architecture", "AI", "LLM", "Photography"],
+        "alumniOf": {
+            "@type": "Organization",
+            "name": "Salesforce Certified Professional"
+        },
+        "worksFor": {
+            "@type": "Organization",
+            "name": "Independent Consultant"
+        }
+    }
+    </script>
 </head>
 <body data-page="home">
 
@@ -160,7 +186,7 @@
             </a>
             <a href="photography.html" class="article-card reveal" style="--i:1">
                 <div class="article-card__img" style="aspect-ratio:16/9;">
-                    <img src="images/photography/hagia-sophia.jpg" alt="Hagia Sophia interior, Istanbul" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" loading="lazy">
+                    <picture><source srcset="images/photography/hagia-sophia.webp" type="image/webp"><img src="images/photography/hagia-sophia.jpg" alt="Hagia Sophia interior, Istanbul" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" loading="lazy"></picture>
                 </div>
                 <div class="article-card__body">
                     <div class="article-card__meta">
@@ -365,7 +391,7 @@
         <div class="recent-work__grid">
             <a href="photography.html" class="article-card reveal" style="--i:0">
                 <div class="article-card__img" style="aspect-ratio:16/9;">
-                    <img src="images/photography/niagara-falls.jpg" alt="Niagara Falls panoramic view" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" loading="lazy">
+                    <picture><source srcset="images/photography/niagara-falls.webp" type="image/webp"><img src="images/photography/niagara-falls.jpg" alt="Niagara Falls panoramic view" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" loading="lazy"></picture>
                 </div>
                 <div class="article-card__body">
                     <div class="article-card__meta">
@@ -379,7 +405,7 @@
             </a>
             <a href="photography.html" class="article-card reveal" style="--i:1">
                 <div class="article-card__img" style="aspect-ratio:16/9;">
-                    <img src="images/photography/burj-khalifa.jpg" alt="Burj Khalifa, Dubai skyline" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" loading="lazy">
+                    <picture><source srcset="images/photography/burj-khalifa.webp" type="image/webp"><img src="images/photography/burj-khalifa.jpg" alt="Burj Khalifa, Dubai skyline" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" loading="lazy"></picture>
                 </div>
                 <div class="article-card__body">
                     <div class="article-card__meta">
@@ -393,7 +419,7 @@
             </a>
             <a href="photography.html" class="article-card reveal" style="--i:2">
                 <div class="article-card__img" style="aspect-ratio:16/9;">
-                    <img src="images/photography/batu-caves.jpg" alt="Batu Caves rainbow steps, Kuala Lumpur" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" loading="lazy">
+                    <picture><source srcset="images/photography/batu-caves.webp" type="image/webp"><img src="images/photography/batu-caves.jpg" alt="Batu Caves rainbow steps, Kuala Lumpur" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" loading="lazy"></picture>
                 </div>
                 <div class="article-card__body">
                     <div class="article-card__meta">
@@ -407,7 +433,7 @@
             </a>
             <a href="photography.html" class="article-card reveal" style="--i:3">
                 <div class="article-card__img" style="aspect-ratio:16/9;">
-                    <img src="images/photography/sydney-opera.jpg" alt="Sydney Opera House at dusk" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" loading="lazy">
+                    <picture><source srcset="images/photography/sydney-opera.webp" type="image/webp"><img src="images/photography/sydney-opera.jpg" alt="Sydney Opera House at dusk" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" loading="lazy"></picture>
                 </div>
                 <div class="article-card__body">
                     <div class="article-card__meta">
@@ -429,38 +455,73 @@
     <section class="about-teaser section">
         <div class="about-teaser__grid">
             <div class="about-teaser__portrait reveal portrait-blend">
-                <img src="images/azlan-portrait.png" alt="Azlan Allahwala" class="portrait-blend__img">
+                <picture><source srcset="images/azlan-portrait.webp" type="image/webp"><img src="images/azlan-portrait.png" alt="Azlan Allahwala" class="portrait-blend__img"></picture>
             </div>
             <div class="about-teaser__content reveal" data-delay="150">
                 <span class="overline">About</span>
                 <h2 class="about-teaser__title">Azlan Allahwala</h2>
                 <p class="about-teaser__bio">Ten years deep in enterprise Salesforce. Building AI tools that actually ship. Shooting photographs in cities most people only see from a plane window. I take things apart, understand how they work, and put them back together better than I found them &mdash; whether that's a platform serving 10,000 users or a frame of light falling through a train window in Tokyo at 6 AM.</p>
                 <a href="about.html" class="text-link">The full story <span class="arrow">&rarr;</span></a>
+                <a href="https://linkedin.com/in/azlanallahwala" target="_blank" rel="noopener" class="linkedin-follow" style="margin-top: var(--space-lg);">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    Connect on LinkedIn
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- TRUSTED BY -->
+    <!-- TRUSTED BY — Logo Carousel -->
     <section class="section" style="padding-top: 0; padding-bottom: 0;">
         <div class="section-divider reveal">
             <span class="section-divider__label">Trusted By</span>
             <span class="section-divider__num">05</span>
         </div>
-        <div class="skills-bar reveal" style="justify-content: center; gap: var(--space-2xl); padding: var(--space-xl) 0;">
-            <span class="skill-tag">Nielsen</span>
-            <span class="skill-tag">Pharmedium</span>
-            <span class="skill-tag">Yellowstone Club</span>
-            <span class="skill-tag">Breckenridge Grand Vacations</span>
-            <span class="skill-tag">Huizenga Group</span>
-            <span class="skill-tag">Town of Cary, NC</span>
+        <div class="logo-carousel reveal">
+            <div class="logo-carousel__track">
+                <div class="logo-carousel__item"><img src="images/nielsen-logo.png" alt="Nielsen" loading="lazy"><span>Nielsen</span></div>
+                <div class="logo-carousel__item"><img src="images/yellowstone-logo.png" alt="Yellowstone Club" loading="lazy"><span>Yellowstone Club</span></div>
+                <div class="logo-carousel__item"><img src="images/pharmedium-logo.png" alt="Pharmedium" loading="lazy"><span>Pharmedium</span></div>
+                <div class="logo-carousel__item"><img src="images/bgv-logo.png" alt="Breckenridge Grand Vacations" loading="lazy"><span>BGV</span></div>
+                <div class="logo-carousel__item"><img src="images/huizenga-logo.png" alt="Huizenga Group" loading="lazy"><span>Huizenga Group</span></div>
+                <div class="logo-carousel__item"><img src="images/olympic-logo.png" alt="Private Athletic Club" loading="lazy"><span>Private Athletic Club</span></div>
+                <div class="logo-carousel__item"><img src="images/cary-logo.png" alt="Town of Cary" loading="lazy"><span>Town of Cary, NC</span></div>
+                <!-- Duplicate for seamless loop -->
+                <div class="logo-carousel__item"><img src="images/nielsen-logo.png" alt="Nielsen" loading="lazy"><span>Nielsen</span></div>
+                <div class="logo-carousel__item"><img src="images/yellowstone-logo.png" alt="Yellowstone Club" loading="lazy"><span>Yellowstone Club</span></div>
+                <div class="logo-carousel__item"><img src="images/pharmedium-logo.png" alt="Pharmedium" loading="lazy"><span>Pharmedium</span></div>
+                <div class="logo-carousel__item"><img src="images/bgv-logo.png" alt="Breckenridge Grand Vacations" loading="lazy"><span>BGV</span></div>
+                <div class="logo-carousel__item"><img src="images/huizenga-logo.png" alt="Huizenga Group" loading="lazy"><span>Huizenga Group</span></div>
+                <div class="logo-carousel__item"><img src="images/olympic-logo.png" alt="Private Athletic Club" loading="lazy"><span>Private Athletic Club</span></div>
+                <div class="logo-carousel__item"><img src="images/cary-logo.png" alt="Town of Cary" loading="lazy"><span>Town of Cary, NC</span></div>
+            </div>
         </div>
     </section>
 
-    <!-- TESTIMONIAL -->
+    <!-- TESTIMONIALS -->
     <section class="section" style="padding-top: var(--space-xl);">
-        <div class="pull-quote reveal">
-            <p>Azlan brought a wealth of knowledge and experience to our project at Yellowstone Club. His strategic insights significantly shaped our implementation, helping us confidently navigate complexities. Without his contributions, we could not have completed our massive project!</p>
-            <cite>Madison Morgan, Director of Client Success &mdash; Nines</cite>
+        <div class="home-testimonials">
+            <div class="home-testimonials__grid">
+                <div class="rec-card reveal" style="--i:0">
+                    <span class="rec-card__quote-mark">&ldquo;</span>
+                    <p class="rec-card__body">Azlan brought a wealth of knowledge and experience to our project at Yellowstone Club. His strategic insights significantly shaped our implementation, helping us confidently navigate complexities. Without his contributions, we could not have completed our massive project!</p>
+                    <div class="rec-card__divider"></div>
+                    <div class="rec-card__author">
+                        <span class="rec-card__name">Madison Morgan</span>
+                        <span class="rec-card__role">Director of Client Success, Nines</span>
+                        <span class="rec-card__linkedin">via LinkedIn</span>
+                    </div>
+                </div>
+                <div class="rec-card reveal" style="--i:1">
+                    <span class="rec-card__quote-mark">&ldquo;</span>
+                    <p class="rec-card__body">Azlan was absolutely fantastic to work with. Any Salesforce development issue our team had he was able to resolve and come up with a solution quickly and efficiently. He always went above and beyond in terms of meeting our business expectations and needs no matter WHAT time of day!</p>
+                    <div class="rec-card__divider"></div>
+                    <div class="rec-card__author">
+                        <span class="rec-card__name">Mea Miller</span>
+                        <span class="rec-card__role">CRM, Technology &amp; Data Management, Nielsen</span>
+                        <span class="rec-card__linkedin">via LinkedIn</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 

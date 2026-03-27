@@ -656,6 +656,38 @@
     }
 
     /* ============================================
+       READING PROGRESS BAR
+       ============================================ */
+    function initReadingProgress() {
+        var article = document.querySelector('.blog-article');
+        if (!article) return;
+
+        var bar = document.createElement('div');
+        bar.className = 'reading-progress';
+        document.body.appendChild(bar);
+
+        window.addEventListener('scroll', function () {
+            var articleRect = article.getBoundingClientRect();
+            var articleTop = articleRect.top + window.pageYOffset;
+            var articleHeight = article.offsetHeight;
+            var windowHeight = window.innerHeight;
+            var scrolled = window.pageYOffset;
+
+            var start = articleTop;
+            var end = articleTop + articleHeight - windowHeight;
+            var progress = 0;
+
+            if (scrolled >= start && scrolled <= end) {
+                progress = ((scrolled - start) / (end - start)) * 100;
+            } else if (scrolled > end) {
+                progress = 100;
+            }
+
+            bar.style.width = progress + '%';
+        });
+    }
+
+    /* ============================================
        INIT — ORCHESTRATE THE SEQUENCE
        ============================================ */
 
@@ -676,6 +708,7 @@
         initContactForm();
         initConvoForm();
         initActiveNavLink();
+        initReadingProgress();
     }
 
     if (document.readyState === 'loading') {
