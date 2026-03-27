@@ -4072,8 +4072,11 @@ body:has(.cursor-dot) [role="button"] {
     grid-template-columns: repeat(3, 1fr);
     gap: 3px;
     width: 100vw;
-    margin-left: calc(-1 * var(--margin));
-    margin-right: calc(-1 * var(--margin));
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
     max-width: none;
     padding: 0;
 }
