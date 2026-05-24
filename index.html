@@ -4092,6 +4092,193 @@ html[data-theme="light"] .contact-simple {
 }
 .nav-cta-book:hover .arrow { transform: translateX(3px); }
 
+/* ============ ATLAS V3 — REAL WORLD MAP ============ */
+.atlas-v3 {
+  position: relative;
+  margin-top: 56px;
+  padding: 72px 56px 56px;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+html[data-theme="light"] .atlas-v3 { background: #fff; }
+.atlas-v3::before {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(212,162,86,0.08), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(212,162,86,0.06), transparent 50%);
+  pointer-events: none;
+}
+.atlas-v3-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--fg-3);
+  position: relative; z-index: 2;
+}
+.atlas-v3-head .accent { color: var(--accent-2); }
+.atlas-map-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 784 / 458;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.atlas-map {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  /* The map SVG is solid black. Recolor via filter for dark/light. */
+  /* Dark: muted amber stroke; Light: deep neutral */
+  filter:
+    brightness(0) saturate(100%)
+    invert(74%) sepia(33%) saturate(420%) hue-rotate(347deg) brightness(86%) contrast(85%)
+    opacity(0.55);
+  pointer-events: none;
+  user-select: none;
+}
+html[data-theme="light"] .atlas-map {
+  filter:
+    brightness(0) saturate(100%)
+    invert(20%) sepia(10%) saturate(400%) hue-rotate(340deg) brightness(95%) contrast(90%)
+    opacity(0.45);
+}
+.atlas-map-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(212,162,86,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(212,162,86,0.05) 1px, transparent 1px);
+  background-size: 8.33% 12.5%; /* 12 cols × 8 rows */
+  pointer-events: none;
+}
+html[data-theme="light"] .atlas-map-grid {
+  background-image:
+    linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+}
+.atlas-pin {
+  position: absolute;
+  width: 14px; height: 14px;
+  margin-left: -7px; margin-top: -7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(212,162,86,0.18), 0 0 18px rgba(212,162,86,0.55);
+  cursor: pointer;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+  z-index: 3;
+}
+.atlas-pin::after {
+  content: ""; position: absolute; inset: -10px;
+  border-radius: 50%; border: 1px solid var(--accent);
+  opacity: 0.55;
+  animation: atlasPulse 2.4s ease-out infinite;
+}
+.atlas-pin:hover { transform: scale(1.25); box-shadow: 0 0 0 6px rgba(212,162,86,0.22), 0 0 26px rgba(212,162,86,0.75); }
+.atlas-pin.is-active { transform: scale(1.4); }
+.atlas-pin.is-active::after { animation-duration: 1.4s; opacity: 0.9; }
+@keyframes atlasPulse {
+  0%   { transform: scale(0.7); opacity: 0.7; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.atlas-pin-label {
+  position: absolute;
+  top: 18px; left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--fg-2);
+  padding: 3px 8px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity .25s var(--ease);
+  pointer-events: none;
+}
+.atlas-pin:hover .atlas-pin-label,
+.atlas-pin.is-active .atlas-pin-label { opacity: 1; }
+
+.atlas-card {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  align-items: stretch;
+  position: relative;
+  z-index: 2;
+}
+.atlas-card-img {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.atlas-card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: opacity .6s var(--ease);
+}
+.atlas-card-img .frame-num {
+  position: absolute; top: 16px; left: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.2em;
+  color: rgba(245,245,247,0.85);
+  background: rgba(0,0,0,0.45);
+  padding: 4px 10px; border-radius: 4px;
+  backdrop-filter: blur(8px);
+}
+.atlas-card-meta { display: flex; flex-direction: column; justify-content: space-between; padding: 8px 0; }
+.atlas-card-cat {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-2); font-weight: 500; margin-bottom: 12px;
+}
+.atlas-card-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.1; letter-spacing: -0.025em;
+  margin-bottom: 16px;
+}
+.atlas-card-place {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--fg-2); margin-bottom: 4px;
+}
+.atlas-card-coords { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--fg-3); margin-bottom: 24px; }
+.atlas-card-nav { display: flex; gap: 10px; align-items: center; }
+.atlas-card-nav button {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: transparent; color: var(--fg);
+  border: 1px solid var(--line-2);
+  cursor: pointer; font-size: 16px; line-height: 1;
+  transition: border-color .25s var(--ease), color .25s var(--ease), transform .25s var(--ease);
+}
+.atlas-card-nav button:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.atlas-card-counter {
+  margin-left: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.18em; color: var(--fg-3);
+}
+.atlas-attrib {
+  margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--fg-3); text-align: right;
+  position: relative; z-index: 2;
+}
+.atlas-attrib a { color: var(--fg-2); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.atlas-attrib a:hover { color: var(--accent); }
+
+@media (max-width: 800px) {
+  .atlas-v3 { padding: 40px 20px 28px; }
+  .atlas-card { grid-template-columns: 1fr; gap: 24px; }
+  .atlas-pin { width: 12px; height: 12px; margin-left: -6px; margin-top: -6px; }
+}
+
 </style>
 </head>
 <body>
@@ -5025,72 +5212,30 @@ const FieldNotes = () => (
 );
 window.FieldNotes = FieldNotes;
 
-// ============== PHOTOGRAPHY ==============
-// ============== TWEAKS (Photography) ==============
-const PHOTO_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "photoMode": "projector",
-  "grain": 0.35,
-  "vignette": 0.55,
-  "autoplay": true
-}/*EDITMODE-END*/;
-
-const usePhotoTweaks = () => {
-  const [t, setT] = React.useState(PHOTO_TWEAK_DEFAULTS);
-  const setTweak = (k, v) => {
-    const next = typeof k === 'object' ? { ...t, ...k } : { ...t, [k]: v };
-    setT(next);
-    try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: typeof k === 'object' ? k : { [k]: v } }, '*'); } catch {}
-  };
-  return [t, setTweak];
-};
-
+// ============== PHOTOGRAPHY (Atlas v3 — real world map, atlas-only) ==============
 const Photography = () => {
-  const [tweaks, setTweak] = usePhotoTweaks();
-  const [editMode, setEditMode] = React.useState(false);
-
-  // Edit-mode protocol
-  React.useEffect(() => {
-    const onMsg = (e) => {
-      const d = e.data || {};
-      if (d.type === '__activate_edit_mode') setEditMode(true);
-      if (d.type === '__deactivate_edit_mode') setEditMode(false);
-    };
-    window.addEventListener('message', onMsg);
-    try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch {}
-    return () => window.removeEventListener('message', onMsg);
-  }, []);
-
   const frames = [
-    { img:'assets/photography/batu-caves.jpg', place:'Kuala Lumpur', cat:'Travel', title:'Batu Caves, Steps to the Divine', year:2023, coords:'3.2379° N · 101.6840° E', exif:{Camera:'Sony α7 IV',Lens:'24-70mm f/2.8',Focal:'24mm',Aperture:'f/8',Shutter:'1/400',ISO:'200'} },
-    { img:'assets/photography/niagara-falls.jpg', place:'Niagara Falls', cat:'Landscape', title:'Where Thunder Meets Mist', year:2022, coords:'43.0962° N · 79.0377° W', exif:{Camera:'Sony α7 IV',Lens:'16-35mm f/4',Focal:'16mm',Aperture:'f/11',Shutter:'1/1600',ISO:'100'} },
-    { img:'assets/photography/sydney-bridge.jpg', place:'Sydney', cat:'Architecture', title:'Steel Over Sandstone', year:2023, coords:'33.8523° S · 151.2108° E', exif:{Camera:'Sony α7 IV',Lens:'70-200mm f/4',Focal:'135mm',Aperture:'f/5.6',Shutter:'1/800',ISO:'400'} },
-    { img:'assets/photography/istanbul-architecture.jpg', place:'Istanbul', cat:'Architecture', title:'Modern Geometry in Light', year:2024, coords:'41.0082° N · 28.9784° E', exif:{Camera:'Sony α7 IV',Lens:'35mm f/1.4',Focal:'35mm',Aperture:'f/5.6',Shutter:'1/500',ISO:'200'} },
-    { img:'assets/photography/istanbul-mosque.jpg', place:'Istanbul', cat:'Travel', title:'Where the Sacred Meets the Everyday', year:2024, coords:'41.0054° N · 28.9768° E', exif:{Camera:'Sony α7 IV',Lens:'24-70mm f/2.8',Focal:'50mm',Aperture:'f/4',Shutter:'1/250',ISO:'800'} }
+    { img:'assets/photography/batu-caves.jpg',            place:'Kuala Lumpur',  cat:'Travel',       title:'Batu Caves, Steps to the Divine',     year:2023, coords:'3.2379° N · 101.6840° E',   x:78.19, y:63.11 },
+    { img:'assets/photography/niagara-falls.jpg',         place:'Niagara Falls', cat:'Landscape',    title:'Where Thunder Meets Mist',            year:2022, coords:'43.0962° N · 79.0377° W',   x:23.81, y:36.05 },
+    { img:'assets/photography/sydney-bridge.jpg',         place:'Sydney',        cat:'Architecture', title:'Steel Over Sandstone',                year:2023, coords:'33.8523° S · 151.2108° E',  x:93.09, y:88.17 },
+    { img:'assets/photography/istanbul-architecture.jpg', place:'Istanbul',      cat:'Architecture', title:'Modern Geometry in Light',            year:2024, coords:'41.0082° N · 28.9784° E',   x:56.31, y:37.45 },
+    { img:'assets/photography/istanbul-mosque.jpg',       place:'Istanbul',      cat:'Travel',       title:'Where the Sacred Meets the Everyday', year:2024, coords:'41.0054° N · 28.9768° E',   x:56.10, y:37.55 }
   ];
-
   const [active, setActive] = React.useState(0);
   const [paused, setPaused] = React.useState(false);
-  const [tilt, setTilt] = React.useState({x:0,y:0});
 
   React.useEffect(() => {
-    if (paused || !tweaks.autoplay) return;
+    if (paused) return;
     const id = setInterval(() => setActive(a => (a + 1) % frames.length), 6500);
     return () => clearInterval(id);
-  }, [paused, tweaks.autoplay, frames.length]);
+  }, [paused, frames.length]);
 
-  const stageRef = React.useRef(null);
-  const onMove = (e) => {
-    const el = stageRef.current; if (!el) return;
-    const r = el.getBoundingClientRect();
-    setTilt({ x: ((e.clientX-r.left)/r.width-0.5)*8, y: ((e.clientY-r.top)/r.height-0.5)*-5 });
-  };
-  const onLeave = () => setTilt({x:0,y:0});
-
-  const grainStyle = { '--grain': tweaks.grain, '--vignette': tweaks.vignette };
   const a = frames[active];
+  const prev = () => setActive((active - 1 + frames.length) % frames.length);
+  const next = () => setActive((active + 1) % frames.length);
 
   return (
-    <section className="photo-section section-pad" id="photo" style={grainStyle}>
+    <section className="photo-section section-pad" id="photo">
       <div className="container">
         <div className="section-head reveal">
           <div>
@@ -5102,596 +5247,61 @@ const Photography = () => {
 
         <div className="azloza-wordmark reveal">AZL<em>oza</em></div>
 
-        {tweaks.photoMode === 'projector' && (
-          <div className="projector-room reveal" ref={stageRef} onMouseMove={onMove} onMouseLeave={onLeave}>
-            {/* Projector beam */}
-            <div className="pr-beam"></div>
-            {/* Stage */}
-            <div className="pr-stage">
-              {frames.map((f, i) => (
-                <div
-                  key={i}
-                  className={`pr-plate ${i === active ? 'is-active' : ''}`}
-                  style={i === active ? { transform: `translate3d(${tilt.x}px, ${tilt.y}px, 0) scale(1.01)` } : null}
-                >
-                  <img src={f.img} alt={f.title} />
-                  <span className="pr-grain"></span>
-                  <span className="pr-vignette"></span>
-                  <span className="pr-corner pr-tl"></span>
-                  <span className="pr-corner pr-tr"></span>
-                  <span className="pr-corner pr-bl"></span>
-                  <span className="pr-corner pr-br"></span>
-                </div>
-              ))}
-
-              <div className="pr-readout pr-top">
-                <span className="pr-rec"><span className="pr-rec-dot"></span>SLIDE {String(active+1).padStart(2,'0')} / {String(frames.length).padStart(2,'0')}</span>
-                <span className="pr-coords">{a.coords}</span>
-              </div>
-              <div className="pr-readout pr-bottom" key={'bot-'+active}>
-                <div className="pr-info">
-                  <div className="pr-place">{a.place.toUpperCase()} · {a.cat.toUpperCase()} · {a.year}</div>
-                  <div className="pr-title">{a.title}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Scattered prints — darkroom table */}
-            <div className="pr-prints">
-              {frames.map((f, i) => (
-                <button
-                  key={i}
-                  className={`pr-print pr-print-${i} ${i === active ? 'is-active' : ''}`}
-                  onClick={() => { setActive(i); setPaused(true); }}
-                  aria-label={f.title}
-                >
-                  <img src={f.img} alt="" />
-                  <div className="pr-print-tape"></div>
-                  <div className="pr-print-label">
-                    <span className="pr-print-num">#{String(i+1).padStart(2,'0')}</span>
-                    <span className="pr-print-place">{f.place}, {f.year}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
+        <div
+          className="atlas-v3 reveal"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          <div className="atlas-v3-head">
+            <span><span className="accent">●</span> AZLOZA · LIGHT ATLAS</span>
+            <span>N · S · E · W</span>
           </div>
-        )}
 
-        {tweaks.photoMode === 'postcards' && (
-          <div className="postcards-stack reveal">
-            {frames.map((f, i) => {
-              const offset = ((i - active + frames.length) % frames.length);
-              const visible = offset < 4;
-              return (
-                <div
-                  key={i}
-                  className={`postcard ${i === active ? 'is-top' : ''}`}
-                  style={{
-                    transform: `translate(${offset*22}px, ${offset*14}px) rotate(${(i*7-12)}deg)`,
-                    opacity: visible ? 1 : 0,
-                    zIndex: 100 - offset
-                  }}
-                  onClick={() => { setActive((active+1) % frames.length); setPaused(true); }}
-                >
-                  <img src={f.img} alt={f.title} />
-                  <div className="postcard-stamp">{String(i+1).padStart(2,'0')}</div>
-                  <div className="postcard-info">
-                    <div className="postcard-place">{f.place.toUpperCase()}</div>
-                    <div className="postcard-title">{f.title}</div>
-                    <div className="postcard-coords">{f.coords}</div>
-                  </div>
-                  <div className="postcard-postmark">
-                    <span>{f.year}</span>
-                    <span className="postmark-ring"></span>
-                  </div>
-                </div>
-              );
-            })}
-            <div className="postcards-hint">CLICK TO FLIP →</div>
-          </div>
-        )}
-
-        {tweaks.photoMode === 'atlas' && (
-          <div className="atlas-v2 reveal">
-            {/* Hero card on the left */}
-            <div className="atlas-hero">
-              <div className="atlas-hero-badge">
-                <span className="ahb-dot"></span>
-                NOW SHOWING · {String(active+1).padStart(2,'0')} OF {String(frames.length).padStart(2,'0')}
-              </div>
-              <div className="atlas-hero-frame" key={'ah-'+active}>
-                <img src={a.img} alt={a.title}/>
-                <span className="ahf-corner ahf-tl"></span>
-                <span className="ahf-corner ahf-tr"></span>
-                <span className="ahf-corner ahf-bl"></span>
-                <span className="ahf-corner ahf-br"></span>
-              </div>
-              <div className="atlas-hero-meta" key={'am-'+active}>
-                <div className="ahm-place">{a.place.toUpperCase()} · {a.cat.toUpperCase()} · {a.year}</div>
-                <div className="ahm-title">{a.title}</div>
-                <div className="ahm-coords">
-                  <span className="ahm-coord-cross">+</span>
-                  {a.coords}
-                </div>
-              </div>
-              <div className="atlas-hero-counter">
-                <span>FRAME</span>
-                <span className="ahc-num">{String(active+1).padStart(2,'0')}</span>
-                <span className="ahc-line"></span>
-                <span>OF {String(frames.length).padStart(2,'0')}</span>
-              </div>
-            </div>
-
-            {/* World map */}
-            <div className="atlas-world">
-              <div className="atlas-world-label">
-                <span>AZLOZA · LIGHT ATLAS</span>
-                <span className="awl-meta">N · S · E · W</span>
-              </div>
-              <svg viewBox="0 0 1000 500" className="atlas-svg" preserveAspectRatio="xMidYMid meet">
-                <defs>
-                  <pattern id="atlas-grid" width="50" height="50" patternUnits="userSpaceOnUse">
-                    <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(212,162,86,0.10)" strokeWidth="0.5"/>
-                  </pattern>
-                  <linearGradient id="atlas-fade" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="rgba(212,162,86,0.08)"/>
-                    <stop offset="100%" stopColor="rgba(212,162,86,0.02)"/>
-                  </linearGradient>
-                </defs>
-                <rect width="1000" height="500" fill="url(#atlas-grid)"/>
-                {/* Stylized continents — generalized polygons */}
-                <g className="atlas-continents" fill="rgba(232,192,125,0.13)" stroke="rgba(232,192,125,0.45)" strokeWidth="1">
-                  {/* North America */}
-                  <path d="M 130,90 L 170,80 L 220,75 L 260,90 L 290,120 L 285,150 L 270,180 L 240,210 L 205,225 L 180,210 L 150,200 L 130,170 L 110,140 L 115,110 Z"/>
-                  <path d="M 195,235 L 220,240 L 235,260 L 250,290 L 240,310 L 220,310 L 200,290 L 195,260 Z"/>
-                  {/* South America */}
-                  <path d="M 260,310 L 290,315 L 310,335 L 305,375 L 295,410 L 280,430 L 265,420 L 255,395 L 250,360 L 255,330 Z"/>
-                  {/* Europe */}
-                  <path d="M 470,90 L 500,85 L 525,95 L 540,115 L 535,135 L 510,150 L 480,145 L 460,125 L 460,105 Z"/>
-                  {/* Africa */}
-                  <path d="M 480,165 L 525,160 L 555,175 L 575,210 L 585,250 L 575,290 L 560,320 L 540,335 L 520,330 L 505,300 L 490,260 L 480,220 L 478,190 Z"/>
-                  {/* Asia (broad) */}
-                  <path d="M 555,80 L 620,75 L 690,85 L 750,100 L 800,120 L 830,150 L 820,180 L 790,200 L 760,210 L 720,205 L 680,195 L 640,180 L 605,160 L 580,140 L 565,115 Z"/>
-                  {/* India */}
-                  <path d="M 685,205 L 705,210 L 715,235 L 705,260 L 695,265 L 685,250 L 680,225 Z"/>
-                  {/* SE Asia / Indonesia */}
-                  <path d="M 745,225 L 775,225 L 800,235 L 820,255 L 810,275 L 785,275 L 760,265 L 745,250 Z"/>
-                  {/* Australia */}
-                  <path d="M 800,330 L 850,325 L 880,335 L 895,360 L 880,385 L 850,395 L 815,390 L 795,370 L 795,345 Z"/>
-                  {/* Greenland */}
-                  <path d="M 380,55 L 410,50 L 425,75 L 415,95 L 395,100 L 380,85 Z"/>
-                  {/* UK */}
-                  <path d="M 463,95 L 470,92 L 472,105 L 467,110 L 460,105 Z"/>
-                  {/* Japan */}
-                  <path d="M 825,140 L 833,150 L 836,165 L 830,168 L 825,158 Z"/>
-                  {/* New Zealand */}
-                  <path d="M 905,400 L 918,398 L 920,412 L 910,418 Z"/>
-                </g>
-
-                {/* Dashed travel path connecting all locations in order */}
-                <path
-                  className="atlas-route"
-                  d="M 782.5,241.0 
-                     L 280.5,130.3 
-                     L 920.0,344.0 
-                     L 580.5,136.1"
-                  fill="none"
-                  stroke="rgba(232,192,125,0.55)"
-                  strokeWidth="1.3"
-                  strokeDasharray="4 4"
-                />
-
-                {/* Equator and meridian markers */}
-                <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(212,162,86,0.10)" strokeDasharray="2 6"/>
-                <line x1="500" y1="0" x2="500" y2="500" stroke="rgba(212,162,86,0.10)" strokeDasharray="2 6"/>
-              </svg>
-
-              {/* Animated photo pins */}
-              <div className="atlas-pins-v2">
-                {(() => {
-                  const f = frames[0];
-                  const px = 78.25;
-                  const py = 48.20;
-                  // Polaroid offset: alternate above/below; KL right, Niagara up-left, Sydney up-right, Istanbul up
-                  const layouts = [
-                    { dx: 60, dy: -90 },   // KL: up-right
-                    { dx: -110, dy: -80 }, // Niagara: up-left
-                    { dx: 60, dy: -100 },  // Sydney: up-right
-                    { dx: 70, dy: -100 },  // Istanbul arch: up-right
-                    { dx: -130, dy: 30 }   // Istanbul mosque: down-left
-                  ];
-                  const L = layouts[0];
-                  const tilts = [-4, 6, -3, 5, -7];
-                  return (
-                    <div
-                      className={`atlas-pin-v2 ${0 === active ? 'is-active' : ''}`}
-                      style={{ left: px + '%', top: py + '%' }}
-                      key={0}
-                    >
-                      {/* String connecting polaroid to map */}
-                      <svg className="apv-thread" width={Math.abs(L.dx)+20} height={Math.abs(L.dy)+20}
-                        style={{
-                          left: L.dx < 0 ? L.dx - 10 : -10,
-                          top: L.dy < 0 ? L.dy - 10 : -10,
-                          width: Math.abs(L.dx)+20,
-                          height: Math.abs(L.dy)+20
-                        }}>
-                        <line
-                          x1={L.dx < 0 ? Math.abs(L.dx)+10 : 10}
-                          y1={L.dy < 0 ? Math.abs(L.dy)+10 : 10}
-                          x2={L.dx < 0 ? 10 : Math.abs(L.dx)+10}
-                          y2={L.dy < 0 ? 10 : Math.abs(L.dy)+10}
-                          stroke="rgba(232,192,125,0.65)"
-                          strokeWidth="1"
-                          strokeDasharray="2 3"
-                        />
-                      </svg>
-
-                      {/* Pin glyph at the actual coordinate */}
-                      <span className="apv-pin">
-                        <span className="apv-pin-dot"></span>
-                        <span className="apv-pin-ring"></span>
-                      </span>
-
-                      {/* Polaroid offset from pin */}
-                      <button
-                        className="apv-polaroid"
-                        style={{
-                          transform: `translate(${L.dx}px, ${L.dy}px) rotate(${tilts[0]}deg)`
-                        }}
-                        onClick={() => { setActive(0); setPaused(true); }}
-                        aria-label={f.title}
-                      >
-                        <span className="apv-pin-tack"></span>
-                        <img src={f.img} alt=""/>
-                        <span className="apv-cap">
-                          <span className="apv-cap-num">{String(0+1).padStart(2,'0')}</span>
-                          <span className="apv-cap-place">{f.place}</span>
-                        </span>
-                      </button>
-                    </div>
-                  );
-                })()}
-                {(() => {
-                  const f = frames[1];
-                  const px = 28.05;
-                  const py = 26.06;
-                  // Polaroid offset: alternate above/below; KL right, Niagara up-left, Sydney up-right, Istanbul up
-                  const layouts = [
-                    { dx: 60, dy: -90 },   // KL: up-right
-                    { dx: -110, dy: -80 }, // Niagara: up-left
-                    { dx: 60, dy: -100 },  // Sydney: up-right
-                    { dx: 70, dy: -100 },  // Istanbul arch: up-right
-                    { dx: -130, dy: 30 }   // Istanbul mosque: down-left
-                  ];
-                  const L = layouts[1];
-                  const tilts = [-4, 6, -3, 5, -7];
-                  return (
-                    <div
-                      className={`atlas-pin-v2 ${1 === active ? 'is-active' : ''}`}
-                      style={{ left: px + '%', top: py + '%' }}
-                      key={1}
-                    >
-                      {/* String connecting polaroid to map */}
-                      <svg className="apv-thread" width={Math.abs(L.dx)+20} height={Math.abs(L.dy)+20}
-                        style={{
-                          left: L.dx < 0 ? L.dx - 10 : -10,
-                          top: L.dy < 0 ? L.dy - 10 : -10,
-                          width: Math.abs(L.dx)+20,
-                          height: Math.abs(L.dy)+20
-                        }}>
-                        <line
-                          x1={L.dx < 0 ? Math.abs(L.dx)+10 : 10}
-                          y1={L.dy < 0 ? Math.abs(L.dy)+10 : 10}
-                          x2={L.dx < 0 ? 10 : Math.abs(L.dx)+10}
-                          y2={L.dy < 0 ? 10 : Math.abs(L.dy)+10}
-                          stroke="rgba(232,192,125,0.65)"
-                          strokeWidth="1"
-                          strokeDasharray="2 3"
-                        />
-                      </svg>
-
-                      {/* Pin glyph at the actual coordinate */}
-                      <span className="apv-pin">
-                        <span className="apv-pin-dot"></span>
-                        <span className="apv-pin-ring"></span>
-                      </span>
-
-                      {/* Polaroid offset from pin */}
-                      <button
-                        className="apv-polaroid"
-                        style={{
-                          transform: `translate(${L.dx}px, ${L.dy}px) rotate(${tilts[1]}deg)`
-                        }}
-                        onClick={() => { setActive(1); setPaused(true); }}
-                        aria-label={f.title}
-                      >
-                        <span className="apv-pin-tack"></span>
-                        <img src={f.img} alt=""/>
-                        <span className="apv-cap">
-                          <span className="apv-cap-num">{String(1+1).padStart(2,'0')}</span>
-                          <span className="apv-cap-place">{f.place}</span>
-                        </span>
-                      </button>
-                    </div>
-                  );
-                })()}
-                {(() => {
-                  const f = frames[2];
-                  const px = 92.00;
-                  const py = 68.81;
-                  // Polaroid offset: alternate above/below; KL right, Niagara up-left, Sydney up-right, Istanbul up
-                  const layouts = [
-                    { dx: 60, dy: -90 },   // KL: up-right
-                    { dx: -110, dy: -80 }, // Niagara: up-left
-                    { dx: 60, dy: -100 },  // Sydney: up-right
-                    { dx: 70, dy: -100 },  // Istanbul arch: up-right
-                    { dx: -130, dy: 30 }   // Istanbul mosque: down-left
-                  ];
-                  const L = layouts[2];
-                  const tilts = [-4, 6, -3, 5, -7];
-                  return (
-                    <div
-                      className={`atlas-pin-v2 ${2 === active ? 'is-active' : ''}`}
-                      style={{ left: px + '%', top: py + '%' }}
-                      key={2}
-                    >
-                      {/* String connecting polaroid to map */}
-                      <svg className="apv-thread" width={Math.abs(L.dx)+20} height={Math.abs(L.dy)+20}
-                        style={{
-                          left: L.dx < 0 ? L.dx - 10 : -10,
-                          top: L.dy < 0 ? L.dy - 10 : -10,
-                          width: Math.abs(L.dx)+20,
-                          height: Math.abs(L.dy)+20
-                        }}>
-                        <line
-                          x1={L.dx < 0 ? Math.abs(L.dx)+10 : 10}
-                          y1={L.dy < 0 ? Math.abs(L.dy)+10 : 10}
-                          x2={L.dx < 0 ? 10 : Math.abs(L.dx)+10}
-                          y2={L.dy < 0 ? 10 : Math.abs(L.dy)+10}
-                          stroke="rgba(232,192,125,0.65)"
-                          strokeWidth="1"
-                          strokeDasharray="2 3"
-                        />
-                      </svg>
-
-                      {/* Pin glyph at the actual coordinate */}
-                      <span className="apv-pin">
-                        <span className="apv-pin-dot"></span>
-                        <span className="apv-pin-ring"></span>
-                      </span>
-
-                      {/* Polaroid offset from pin */}
-                      <button
-                        className="apv-polaroid"
-                        style={{
-                          transform: `translate(${L.dx}px, ${L.dy}px) rotate(${tilts[2]}deg)`
-                        }}
-                        onClick={() => { setActive(2); setPaused(true); }}
-                        aria-label={f.title}
-                      >
-                        <span className="apv-pin-tack"></span>
-                        <img src={f.img} alt=""/>
-                        <span className="apv-cap">
-                          <span className="apv-cap-num">{String(2+1).padStart(2,'0')}</span>
-                          <span className="apv-cap-place">{f.place}</span>
-                        </span>
-                      </button>
-                    </div>
-                  );
-                })()}
-                {(() => {
-                  const f = frames[3];
-                  const px = 58.05;
-                  const py = 27.22;
-                  // Polaroid offset: alternate above/below; KL right, Niagara up-left, Sydney up-right, Istanbul up
-                  const layouts = [
-                    { dx: 60, dy: -90 },   // KL: up-right
-                    { dx: -110, dy: -80 }, // Niagara: up-left
-                    { dx: 60, dy: -100 },  // Sydney: up-right
-                    { dx: 70, dy: -100 },  // Istanbul arch: up-right
-                    { dx: -130, dy: 30 }   // Istanbul mosque: down-left
-                  ];
-                  const L = layouts[3];
-                  const tilts = [-4, 6, -3, 5, -7];
-                  return (
-                    <div
-                      className={`atlas-pin-v2 ${3 === active ? 'is-active' : ''}`}
-                      style={{ left: px + '%', top: py + '%' }}
-                      key={3}
-                    >
-                      {/* String connecting polaroid to map */}
-                      <svg className="apv-thread" width={Math.abs(L.dx)+20} height={Math.abs(L.dy)+20}
-                        style={{
-                          left: L.dx < 0 ? L.dx - 10 : -10,
-                          top: L.dy < 0 ? L.dy - 10 : -10,
-                          width: Math.abs(L.dx)+20,
-                          height: Math.abs(L.dy)+20
-                        }}>
-                        <line
-                          x1={L.dx < 0 ? Math.abs(L.dx)+10 : 10}
-                          y1={L.dy < 0 ? Math.abs(L.dy)+10 : 10}
-                          x2={L.dx < 0 ? 10 : Math.abs(L.dx)+10}
-                          y2={L.dy < 0 ? 10 : Math.abs(L.dy)+10}
-                          stroke="rgba(232,192,125,0.65)"
-                          strokeWidth="1"
-                          strokeDasharray="2 3"
-                        />
-                      </svg>
-
-                      {/* Pin glyph at the actual coordinate */}
-                      <span className="apv-pin">
-                        <span className="apv-pin-dot"></span>
-                        <span className="apv-pin-ring"></span>
-                      </span>
-
-                      {/* Polaroid offset from pin */}
-                      <button
-                        className="apv-polaroid"
-                        style={{
-                          transform: `translate(${L.dx}px, ${L.dy}px) rotate(${tilts[3]}deg)`
-                        }}
-                        onClick={() => { setActive(3); setPaused(true); }}
-                        aria-label={f.title}
-                      >
-                        <span className="apv-pin-tack"></span>
-                        <img src={f.img} alt=""/>
-                        <span className="apv-cap">
-                          <span className="apv-cap-num">{String(3+1).padStart(2,'0')}</span>
-                          <span className="apv-cap-place">{f.place}</span>
-                        </span>
-                      </button>
-                    </div>
-                  );
-                })()}
-                {(() => {
-                  const f = frames[4];
-                  const px = 58.05;
-                  const py = 27.22;
-                  // Polaroid offset: alternate above/below; KL right, Niagara up-left, Sydney up-right, Istanbul up
-                  const layouts = [
-                    { dx: 60, dy: -90 },   // KL: up-right
-                    { dx: -110, dy: -80 }, // Niagara: up-left
-                    { dx: 60, dy: -100 },  // Sydney: up-right
-                    { dx: 70, dy: -100 },  // Istanbul arch: up-right
-                    { dx: -130, dy: 30 }   // Istanbul mosque: down-left
-                  ];
-                  const L = layouts[4];
-                  const tilts = [-4, 6, -3, 5, -7];
-                  return (
-                    <div
-                      className={`atlas-pin-v2 ${4 === active ? 'is-active' : ''}`}
-                      style={{ left: px + '%', top: py + '%' }}
-                      key={4}
-                    >
-                      {/* String connecting polaroid to map */}
-                      <svg className="apv-thread" width={Math.abs(L.dx)+20} height={Math.abs(L.dy)+20}
-                        style={{
-                          left: L.dx < 0 ? L.dx - 10 : -10,
-                          top: L.dy < 0 ? L.dy - 10 : -10,
-                          width: Math.abs(L.dx)+20,
-                          height: Math.abs(L.dy)+20
-                        }}>
-                        <line
-                          x1={L.dx < 0 ? Math.abs(L.dx)+10 : 10}
-                          y1={L.dy < 0 ? Math.abs(L.dy)+10 : 10}
-                          x2={L.dx < 0 ? 10 : Math.abs(L.dx)+10}
-                          y2={L.dy < 0 ? 10 : Math.abs(L.dy)+10}
-                          stroke="rgba(232,192,125,0.65)"
-                          strokeWidth="1"
-                          strokeDasharray="2 3"
-                        />
-                      </svg>
-
-                      {/* Pin glyph at the actual coordinate */}
-                      <span className="apv-pin">
-                        <span className="apv-pin-dot"></span>
-                        <span className="apv-pin-ring"></span>
-                      </span>
-
-                      {/* Polaroid offset from pin */}
-                      <button
-                        className="apv-polaroid"
-                        style={{
-                          transform: `translate(${L.dx}px, ${L.dy}px) rotate(${tilts[4]}deg)`
-                        }}
-                        onClick={() => { setActive(4); setPaused(true); }}
-                        aria-label={f.title}
-                      >
-                        <span className="apv-pin-tack"></span>
-                        <img src={f.img} alt=""/>
-                        <span className="apv-cap">
-                          <span className="apv-cap-num">{String(4+1).padStart(2,'0')}</span>
-                          <span className="apv-cap-place">{f.place}</span>
-                        </span>
-                      </button>
-                    </div>
-                  );
-                })()}
-              </div>
-
-              {/* Compass rose */}
-              <div className="atlas-compass">
-                <svg viewBox="0 0 80 80">
-                  <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(232,192,125,0.4)" strokeWidth="0.6"/>
-                  <circle cx="40" cy="40" r="28" fill="none" stroke="rgba(232,192,125,0.25)" strokeWidth="0.4"/>
-                  <path d="M 40 8 L 44 40 L 40 72 L 36 40 Z" fill="rgba(232,192,125,0.55)"/>
-                  <path d="M 8 40 L 40 36 L 72 40 L 40 44 Z" fill="rgba(232,192,125,0.25)"/>
-                  <text x="40" y="14" textAnchor="middle" fontSize="9" fill="rgba(232,192,125,0.85)" fontFamily="JetBrains Mono">N</text>
-                  <text x="40" y="74" textAnchor="middle" fontSize="9" fill="rgba(232,192,125,0.5)" fontFamily="JetBrains Mono">S</text>
-                  <text x="74" y="44" textAnchor="middle" fontSize="9" fill="rgba(232,192,125,0.5)" fontFamily="JetBrains Mono">E</text>
-                  <text x="6" y="44" textAnchor="middle" fontSize="9" fill="rgba(232,192,125,0.5)" fontFamily="JetBrains Mono">W</text>
-                </svg>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="pr-footer reveal">
-          <span>05 / 05 · Travel · Architecture · Light</span>
-          <span className="pr-progress">
-            {frames.map((_, i) => (
-              <span
+          <div className="atlas-map-wrap">
+            <img className="atlas-map" src="assets/world-map.svg" alt="World map" />
+            <div className="atlas-map-grid"></div>
+            {frames.map((f, i) => (
+              <div
                 key={i}
-                className={`pr-tick ${i === active ? 'is-active' : ''}`}
-                onClick={() => { setActive(i); setPaused(true); }}
-              ></span>
+                className={`atlas-pin ${i === active ? 'is-active' : ''}`}
+                style={{ left: f.x + '%', top: f.y + '%' }}
+                onClick={() => setActive(i)}
+                title={f.place}
+              >
+                <span className="atlas-pin-label">{f.place}</span>
+              </div>
             ))}
-          </span>
+          </div>
+
+          <div className="atlas-card">
+            <div className="atlas-card-img">
+              <img src={a.img} alt={a.title} key={a.img} />
+              <div className="frame-num">{String(active+1).padStart(2,'0')} · {a.year}</div>
+            </div>
+            <div className="atlas-card-meta">
+              <div>
+                <div className="atlas-card-cat">{a.cat}</div>
+                <div className="atlas-card-title">{a.title}</div>
+                <div className="atlas-card-place">{a.place}</div>
+                <div className="atlas-card-coords">{a.coords}</div>
+              </div>
+              <div className="atlas-card-nav">
+                <button onClick={prev} aria-label="Previous">←</button>
+                <button onClick={next} aria-label="Next">→</button>
+                <span className="atlas-card-counter">{String(active+1).padStart(2,'0')} / {String(frames.length).padStart(2,'0')}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="atlas-attrib">
+            Map · <a href="https://github.com/flekschas/simple-world-map" target="_blank" rel="noopener noreferrer">simple-world-map</a> by Fritz Lekschas · CC BY-SA 3.0
+          </div>
+        </div>
+
+        <div className="reveal" style={{marginTop:48, textAlign:'center'}}>
           <a className="text-link" href="#" style={{fontSize:14}}>View full gallery @azloza →</a>
         </div>
       </div>
-
-      {/* Tweaks panel */}
-      {editMode && (
-        <div className="photo-tweaks-panel">
-          <div className="ptp-head">
-            <span>Tweaks · Photography</span>
-            <button className="ptp-close" onClick={() => {
-              setEditMode(false);
-              try { window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); } catch {}
-            }}>×</button>
-          </div>
-          <div className="ptp-section">
-            <div className="ptp-label">Layout mode</div>
-            <div className="ptp-radios">
-              {['projector','postcards','atlas'].map(m => (
-                <button
-                  key={m}
-                  className={`ptp-radio ${tweaks.photoMode === m ? 'is-on' : ''}`}
-                  onClick={() => setTweak('photoMode', m)}
-                >{m}</button>
-              ))}
-            </div>
-            <div className="ptp-hint">
-              {tweaks.photoMode === 'projector' && 'Cinematic single-frame stage with scattered darkroom prints.'}
-              {tweaks.photoMode === 'postcards' && 'Stack of physical postcards. Click to flip through.'}
-              {tweaks.photoMode === 'atlas' && 'World map with pinned coordinates. Click any pin.'}
-            </div>
-          </div>
-          <div className="ptp-section">
-            <div className="ptp-label">Grain · {Math.round(tweaks.grain*100)}%</div>
-            <input type="range" min="0" max="1" step="0.05"
-              value={tweaks.grain}
-              onChange={(e) => setTweak('grain', parseFloat(e.target.value))}/>
-          </div>
-          <div className="ptp-section">
-            <div className="ptp-label">Vignette · {Math.round(tweaks.vignette*100)}%</div>
-            <input type="range" min="0" max="1" step="0.05"
-              value={tweaks.vignette}
-              onChange={(e) => setTweak('vignette', parseFloat(e.target.value))}/>
-          </div>
-          <div className="ptp-section">
-            <button
-              className={`ptp-toggle ${tweaks.autoplay ? 'is-on' : ''}`}
-              onClick={() => setTweak('autoplay', !tweaks.autoplay)}
-            >
-              <span className="ptp-toggle-dot"></span>
-              Autoplay {tweaks.autoplay ? 'on' : 'off'}
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
